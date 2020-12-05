@@ -18,6 +18,9 @@ minimum movement catalog
 5. In your terminal you need to install some NPM dependencies for API creationg and also create files that handle the information exposed by the API (see scripts.sh for examples)
   1. `npm install i express` allows us to use the express library
   2. `npm i express firebase-admin` allows interaction firebase project
+  3. Update the functions/index.js and functions/api/object.js files for rendering JSON objects
+  4. When ready, preview changes with `firebase serve`
+  5. Use curl or an API client to check each of the endpoints
 6. When you're ready to deploy, `firebase deploy`
 
 
@@ -35,33 +38,3 @@ In the comments of the JS files, you'll see these as the {{base_url}} variable
 * On prod: https://<hosting-region>-<project-id>.cloudfunctions.net/api
 
 ---
-
-Examples for localhost HTTP Requests and Responses
-
-```
-POST: {{base_url}}/media/add
-
-BODY: {
-	"filename": "B-1arm.mp4",
-	"tags": "movement"
-}
-
-RESPONSE (using an api client, such as Insomnia) 
-{
-  "media_filename": "B-1arm.mp4",
-  "media_name": "Untitled",
-  "media_tags": "movement",
-  "created_at": "2020-12-05T19:00:57.970Z",
-  "id": "K72Fhm9cZzSGq0hEOORa"
-}
-```
-
-You can use the terminal to test the api endpoint as well 
-
-```
-GET {{base_url}}/media
-
-RESPONSE (using curl)
-curl {{base_url}}/media
-[{"id":"W5lpup9A76ORXGsPkTaE","name":"Untitled","filename":"B-1arm.mp4","tags":"movement"},{"id":"K72Fhm9cZzSGq0hEOORa","name":"Untitled","filename":"B-2arm.mp4","tags":"movement"}]
-```
