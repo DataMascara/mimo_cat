@@ -21,7 +21,9 @@ minimum movement catalog
   3. Update the functions/index.js and functions/api/object.js files for rendering JSON objects
   4. When ready, preview changes with `firebase serve`
   5. Use curl or an API client to check each of the endpoints
-6. When you're ready to deploy, `firebase deploy`
+6. User auth requires turning on the type of validation in the firebase console. Enable the Email/Password option.
+7. In your console create the new files for user auth and install 
+8. When you're ready to deploy, `firebase deploy`
 
 
 getting started https://firebase.google.com/docs/functions/get-started?authuser=2

@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const app = require('express')();
+const auth = require('./util/auth');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -17,10 +18,28 @@ const {
     editMedia
 } = require('./api/media')
 
-app.get('/media', getAllMedia);
-app.post('/media/add', addMedia);
-app.delete('/media/:id', deleteMedia);
-app.put('/media/:id', editMedia);
+app.get('/media', auth, getAllMedia);
+app.post('/media/add', auth, addMedia);
+app.delete('/media/:id', auth, deleteMedia);
+app.put('/media/:id', auth, editMedia);
+
+// Users
+const {
+  loginUser,
+  signUpUser,
+  uploadProfilePhoto,
+  getUserDetail,
+  updateUserDetails
+} = require('./api/users');
+
+// Users
+app.post('/login', loginUser);
+app.post('/signup', signUpUser);
+app.post('/user/image', auth, uploadProfilePhoto);;
+app.get('/user', auth, getUserDetail);
+app.post('/user', auth, updateUserDetails);
+
+
 
 /* Exports function that expose the /api route to at us-east4 region 
  * Pattern https://<hosting-region>-<project-id>.cloudfunctions.net/api

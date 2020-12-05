@@ -47,6 +47,7 @@ exports.addMedia = (request, response) => {
 				media_filename: request.body.filename,
 				media_name: request.body.name || "Untitled",
         media_tags: request.body.tags || "Unknown",
+        created_by: request.user.username,
 				created_at: new Date().toISOString()
     }
     db
