@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import Account from '../components/account';
 import Media from '../components/media';
+import Movement from '../components/movement';
+import Routine from '../components/routine';
 
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,15 +13,19 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import withStyles from '@material-ui/core/styles/withStyles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import NotesIcon from '@material-ui/icons/Notes';
 import Avatar from '@material-ui/core/Avatar';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
+import QueueIcon from '@material-ui/icons/Queue';
+import PermMediaIcon from '@material-ui/icons/PermMedia';
 
 import { authMiddleWare } from '../util/auth'
 
@@ -67,11 +73,19 @@ class home extends Component {
 	};
 
 	loadAccountPage = (event) => {
-		this.setState({ render: true });
+		this.setState({ render: false, page: 'Profile' });
 	};
 
 	loadMediaPage = (event) => {
-		this.setState({ render: false });
+		this.setState({ render: true, page: 'Media' });
+  };
+  
+  loadMovementPage = (event) => {
+		this.setState({ render: false, page: 'Movement' });
+  };
+
+  loadRoutinePage = (event) => {
+		this.setState({ render: false, page: 'Routine' });
 	};
 
 	logoutHandler = (event) => {
@@ -155,21 +169,51 @@ class home extends Component {
 							</p>
 						</center>
 						<Divider />
-						<List>
-							<ListItem button key="Media" onClick={this.loadMediaPage}>
+            <List component="nav"
+              aria-labelledby="nested-list-subheader"
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                  Routine Builder
+                </ListSubheader>
+              }>
+              <ListItem button key="Routines" onClick={this.loadRoutinePage}>
 								<ListItemIcon>
 									{' '}
-									<NotesIcon />{' '}
+									<AccessibilityNewIcon />{' '}
+								</ListItemIcon>
+								<ListItemText primary="Routines" />
+							</ListItem>
+              <ListItem button key="Movements" onClick={this.loadMovementPage} component="nav" >
+								<ListItemIcon>
+									{' '}
+									<QueueIcon />{' '}
+								</ListItemIcon>
+								<ListItemText primary="Movements" />
+							</ListItem>
+							<ListItem button key="Media" onClick={this.loadMediaPage} component="nav" >
+								<ListItemIcon>
+									{' '}
+									<PermMediaIcon />{' '}
 								</ListItemIcon>
 								<ListItemText primary="Media" />
 							</ListItem>
+              </List>
 
-							<ListItem button key="Account" onClick={this.loadAccountPage}>
+              <Divider />
+
+              <List component="nav"
+              aria-labelledby="nested-list-subheader2"
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader2">
+                  Account
+                </ListSubheader>
+              }>
+							<ListItem button key="Profile" onClick={this.loadAccountPage} component="nav" >
 								<ListItemIcon>
 									{' '}
 									<AccountBoxIcon />{' '}
 								</ListItemIcon>
-								<ListItemText primary="Account" />
+								<ListItemText primary="Profile" />
 							</ListItem>
 
 							<ListItem button key="Logout" onClick={this.logoutHandler}>
@@ -182,11 +226,21 @@ class home extends Component {
 						</List>
 					</Drawer>
 
-					<div>{this.state.render ? <Account /> : <Media />}</div>
+          <div>
+            { (this.state.page === 'Profile') ? <Account /> 
+            : (this.state.page === 'Routine') ? <Routine />
+            : (this.state.page === 'Movement') ? <Movement /> 
+            : < Media /> }
+          </div>
 				</div>
 			);
 		}
 	}
 }
+// condition ? exprIfTrue : exprIfFalse
+// condition1 ? value1
+//          : condition2 ? value2
+//          : condition3 ? value3
+//          : value4;
 
 export default withStyles(styles)(home);
