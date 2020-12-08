@@ -29,6 +29,8 @@ import PermMediaIcon from '@material-ui/icons/PermMedia';
 
 import { authMiddleWare } from '../util/auth'
 
+axios.defaults.baseURL = 'https://us-east4-mimo-cat-f82c7.cloudfunctions.net/api';
+
 const drawerWidth = 240;
 
 const styles = (theme) => ({
@@ -69,7 +71,8 @@ const styles = (theme) => ({
 
 class home extends Component {
 	state = {
-		render: false
+    render: false,
+    page: 'Media'
 	};
 
 	loadAccountPage = (event) => {
@@ -108,7 +111,7 @@ class home extends Component {
 	componentWillMount = () => {
 		authMiddleWare(this.props.history);
 		const authToken = localStorage.getItem('AuthToken');
-		axios.defaults.headers.common = { Authorization: `${authToken}` };
+    axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
 			.get('/user')
 			.then((response) => {
@@ -125,6 +128,7 @@ class home extends Component {
 				});
 			})
 			.catch((error) => {
+        console.log(error);
 				if(error.response.status === 403) {
 					this.props.history.push('/login')
 				}
@@ -135,6 +139,7 @@ class home extends Component {
 
 	render() {
 		const { classes } = this.props;		
+
 		if (this.state.uiLoading === true) {
 			return (
 				<div className={classes.root}>
@@ -170,9 +175,9 @@ class home extends Component {
 						</center>
 						<Divider />
             <List component="nav"
-              aria-labelledby="nested-list-subheader"
+              aria-labelledby="nested-list-subheader" 
               subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
+                <ListSubheader component="div" id="nested-list-subheader" >
                   Routine Builder
                 </ListSubheader>
               }>
@@ -183,14 +188,14 @@ class home extends Component {
 								</ListItemIcon>
 								<ListItemText primary="Routines" />
 							</ListItem>
-              <ListItem button key="Movements" onClick={this.loadMovementPage} component="nav" >
+              <ListItem button key="Movements" onClick={this.loadMovementPage} component="nav">
 								<ListItemIcon>
 									{' '}
 									<QueueIcon />{' '}
 								</ListItemIcon>
 								<ListItemText primary="Movements" />
 							</ListItem>
-							<ListItem button key="Media" onClick={this.loadMediaPage} component="nav" >
+							<ListItem button key="Media" onClick={this.loadMediaPage} component="nav">
 								<ListItemIcon>
 									{' '}
 									<PermMediaIcon />{' '}
@@ -208,7 +213,7 @@ class home extends Component {
                   Account
                 </ListSubheader>
               }>
-							<ListItem button key="Profile" onClick={this.loadAccountPage} component="nav" >
+							<ListItem button key="Profile" onClick={this.loadAccountPage} component="nav">
 								<ListItemIcon>
 									{' '}
 									<AccountBoxIcon />{' '}

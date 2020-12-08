@@ -43,8 +43,6 @@ class signup extends Component {
 		this.state = {
 			firstName: '',
 			lastName: '',
-			phoneNumber: '',
-			country: '',
 			username: '',
 			email: '',
 			password: '',
@@ -74,8 +72,6 @@ class signup extends Component {
 		const newUserData = {
 			firstName: this.state.firstName,
 			lastName: this.state.lastName,
-			phoneNumber: this.state.phoneNumber,
-			country: this.state.country,
 			username: this.state.username,
 			email: this.state.email,
 			password: this.state.password,
@@ -142,7 +138,7 @@ class signup extends Component {
 								/>
 							</Grid>
 
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12} sm={12}>
 								<TextField
 									variant="outlined"
 									required
@@ -153,22 +149,6 @@ class signup extends Component {
 									autoComplete="username"
 									helperText={errors.username}
 									error={errors.username ? true : false}
-									onChange={this.handleChange}
-								/>
-							</Grid>
-
-							<Grid item xs={12} sm={6}>
-								<TextField
-									variant="outlined"
-									required
-									fullWidth
-									id="phoneNumber"
-									label="Phone Number"
-									name="phoneNumber"
-									autoComplete="phoneNumber"
-									pattern="[7-9]{1}[0-9]{9}"
-									helperText={errors.phoneNumber}
-									error={errors.phoneNumber ? true : false}
 									onChange={this.handleChange}
 								/>
 							</Grid>
@@ -184,21 +164,6 @@ class signup extends Component {
 									autoComplete="email"
 									helperText={errors.email}
 									error={errors.email ? true : false}
-									onChange={this.handleChange}
-								/>
-							</Grid>
-
-							<Grid item xs={12}>
-								<TextField
-									variant="outlined"
-									required
-									fullWidth
-									id="country"
-									label="Country"
-									name="country"
-									autoComplete="country"
-									helperText={errors.country}
-									error={errors.country ? true : false}
 									onChange={this.handleChange}
 								/>
 							</Grid>
@@ -243,10 +208,8 @@ class signup extends Component {
                                 !this.state.email || 
                                 !this.state.password ||
                                 !this.state.firstName || 
-                                !this.state.lastName ||
-                                !this.state.country || 
-                                !this.state.username || 
-                                !this.state.phoneNumber}
+                                !this.state.lastName || 
+                                !this.state.username}
 						>
 							Sign Up
 							{loading && <CircularProgress size={30} className={classes.progess} />}

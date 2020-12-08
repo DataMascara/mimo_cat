@@ -382,19 +382,19 @@ class media extends Component {
 
 										<div className={classes.media_tags}>
 											{item.tags.split(',').map((t) => (
-												<Chip label={t} variant="outlined" />
+												<Chip label={t} variant="outlined" color="primary" />
 											))}
 										</div>
 									</CardContent>
 									<CardActions>
-										<Button size="small" color="primary" onClick={() => this.handleViewOpen({ item })}>
+										<Button size="small" color="secondary" onClick={() => this.handleViewOpen({ item })}>
 											{' '}
 											View{' '}
 										</Button>
-										<Button size="small" color="primary" onClick={() => this.handleEditClickOpen({ item })}>
+										<Button size="small" color="secondary" onClick={() => this.handleEditClickOpen({ item })}>
 											Edit
 										</Button>
-										<Button size="small" color="primary" onClick={() => this.deleteMediaHandler({ item })}>
+										<Button size="small" color="secondary" onClick={() => this.deleteMediaHandler({ item })}>
 											Delete
 										</Button>
 									</CardActions>
@@ -414,33 +414,21 @@ class media extends Component {
 							{this.state.media_name}
 						</DialogTitle>
 						<DialogContent dividers>
-                            <TextField
-								fullWidth
-								id="media_name"
-								name="media_name"
-								value={this.state.media_name}
-								InputProps={{
-									disableUnderline: true
-								}}
-							/>
-							<TextField
-								fullWidth
-								id="media_FileName"
-								name="media_FileName"
-								value={this.state.media_filename}
-								InputProps={{
-									disableUnderline: true
-								}}
-							/>
-                            <TextField
-								fullWidth
-								id="media_tags"
-								name="media_tags"
-								value={this.state.media_tags}
-								InputProps={{
-									disableUnderline: true
-								}}
-							/>
+						<CardMedia
+											component="iframe"
+											className={classes.media}
+											title={this.state.media_name}
+											image={`https://storage.googleapis.com/mimo-cat-f82c7/movement/${this.state.media_filename}`}
+									/>
+						<Typography className={classes.pos} color="textSecondary">
+						{this.state.media_filename}
+						</Typography>
+            <div className={classes.media_tags}>
+							{this.state.media_tags.split(',').map((t) => (
+								<Chip label={t} variant="outlined" color="primary" />
+							))}
+						</div>
+										
 						</DialogContent>
 					</Dialog>
 				</main>

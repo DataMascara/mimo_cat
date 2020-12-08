@@ -53,8 +53,6 @@ exports.loginUser = (request, response) => {
     "firstName": "test",
     "lastName": "test",
     "email":"email@domain.com",
-    "phoneNumber": ".....",
-    "country": "US",
     "password": "......",
     "confirmPassword": "......",
     "username": "test1"
@@ -65,8 +63,6 @@ exports.signUpUser = (request, response) => {
         firstName: request.body.firstName,
         lastName: request.body.lastName,
         email: request.body.email,
-        phoneNumber: request.body.phoneNumber,
-        country: request.body.country,
         password: request.body.password,
         confirmPassword: request.body.confirmPassword,
         username: request.body.username
@@ -102,8 +98,6 @@ exports.signUpUser = (request, response) => {
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
                 username: newUser.username,
-                phoneNumber: newUser.phoneNumber,
-                country: newUser.country,
                 email: newUser.email,
                 createdAt: new Date().toISOString(),
                 userId
@@ -145,10 +139,10 @@ exports.uploadProfilePhoto = (request, response) => {
 	const path = require('path');
 	const os = require('os');
 	const fs = require('fs');
-  const busboy = new BusBoy({ headers: request.headers, 
-                              limits: {
-                              fileSize: 6*1024*1024 //2MB limit
-                            } });
+    const busboy = new BusBoy({ headers: request.headers, 
+                                limits: {
+                                fileSize: 6*1024*1024 //2MB limit
+                                } });
 
 	let imageFileName;
 	let imageToBeUploaded = {};
@@ -160,7 +154,7 @@ exports.uploadProfilePhoto = (request, response) => {
 		}
 		const imageExtension = filename.split('.')[filename.split('.').length - 1];
         imageFileName = `${request.user.username}.${imageExtension}`;
-		const filePath = path.join(os.tmpdir(), imageFileName);
+    const filePath = path.join(os.tmpdir(), imageFileName);
     console.log(`Handling file upload field ${fieldname}: ${imageFileName} (${filePath})`);
 		imageToBeUploaded = { filePath, mimetype };
 		file.pipe(fs.createWriteStream(filePath));

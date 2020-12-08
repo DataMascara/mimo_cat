@@ -61,11 +61,13 @@ class login extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log(nextProps);
+		if(nextProps.UI){
 		if (nextProps.UI.errors) {
 			this.setState({
 				errors: nextProps.UI.errors
 			});
-		}
+		}}
 	}
 
 	handleChange = (event) => {

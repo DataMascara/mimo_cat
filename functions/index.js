@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const app = require('express')();
+const cors = require("cors");
 const auth = require('./util/auth');
 
 // // Create and Deploy Your First Cloud Functions
@@ -9,6 +10,21 @@ const auth = require('./util/auth');
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+
+const allowedOrigins = [
+  'http://localhost:3000', 
+  'https://mimo-cat-f82c7.web.app'
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}
+app.use(cors(corsOptions));
 
 /* Media API endpoints */
 const {
