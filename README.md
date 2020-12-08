@@ -11,13 +11,11 @@ Folder Structure
 ├── functions
 │   ├── api
 │   │   ├── media.js
-│   │   ├── movements.js
 │   │   └── users.js
 │   ├── index.js
 │   └── util
 │       ├── admin.js
 │       ├── auth.js
-│       ├── config-example.js
 │       ├── config.js
 │       └── validators.js
 └── view
@@ -78,7 +76,7 @@ Folder Structure
 10. When you're ready to deploy, from root directory `firebase deploy`
     * You can use the preview feature with:  firebase hosting:channel:deploy <nickname> --project <project-id>
     firebase hosting:channel:deploy CHANNEL_ID
-    * You have to set up the hosting configs with `firebase init` to be able to deploy to hosting.
+    * You have to set up the hosting configs with `firebase init` (it will create a firebase.json file) to be able to deploy to hosting.
 
 Helpful links for firebase dev: 
 * *getting started https://firebase.google.com/docs/functions/get-started?authuser=2
