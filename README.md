@@ -5,7 +5,9 @@ minimum movement catalog
 
 Folder Structure
 
-```
+```sh
+├── .firebaserc
+├── firebase.json
 ├── functions
 │   ├── api
 │   │   ├── media.js
@@ -20,7 +22,6 @@ Folder Structure
 │       └── validators.js
 └── view
     ├── build
-    ├── firebase.json
     ├── package.json
     ├── public
     └── src
@@ -38,7 +39,6 @@ Folder Structure
         ├── setupTests.js
         └── util
             └── auth.js
-
 ```
 
 ---
@@ -75,9 +75,10 @@ Folder Structure
     3. `npm i @material-ui/icons axios react-router-dom` are more packages you might find useful
     4. Set proxy in the package.json file to be able to connect to the correct backend
 9. When you're ready to package your frontend, `npm run build`
-10. When you're ready to deploy, `firebase deploy`
+10. When you're ready to deploy, from root directory `firebase deploy`
     * You can use the preview feature with:  firebase hosting:channel:deploy <nickname> --project <project-id>
     firebase hosting:channel:deploy CHANNEL_ID
+    * You have to set up the hosting configs with `firebase init` to be able to deploy to hosting.
 
 Helpful links for firebase dev: 
 * *getting started https://firebase.google.com/docs/functions/get-started?authuser=2
@@ -94,8 +95,7 @@ In the comments of the JS files, you'll see these as the {{base_url}} variable
 * On localhost: `http://localhost:5000/<project-id>/<region>/<function-name>/<app-routes>`
 * On prod: `https://<hosting-region>-<project-id>.cloudfunctions.net/api`
 
----
+** Firebase Hosting**
 
-hosting for CDN
-npm install -g firebase-tools
-firebase login
+* On prod: https://mimo-cat-f82c7.web.app
+
