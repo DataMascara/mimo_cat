@@ -1,6 +1,10 @@
 # mimo_cat
 minimum movement catalog
 
+Project idea from Maho Ogawa ([www.suisoco.com](https://www.suisoco.com)) of Brooklyn College.
+
+The project is based off of the project spec requirements and prototype produced by students in CISC 4900 of Fall 2020: @khinethet, @stevezhuravel, @CallMeOnii-chan supervised by @katychuang
+
 ---
 
 Folder Structure
@@ -41,7 +45,17 @@ Folder Structure
 
 ---
 
-# Setup
+# Installing from this directory
+
+1. `npm i -g firebase-tools create-react-app``
+2. Clone the repository
+3. Go into the project root `cd mimo_cat` and then one more time into functions subfolder.
+4. From the functions folder, install dependencies. `npm i`
+5. Copy the configs from the firebase console into config.js. The config-example.js file shows the structure of the file.
+6. Move into the view folder, install dependecies. `npm i`
+
+
+# First Time Setup
 
 1. In Firebase console: go to the Functions section and click button 'get started'
 2. in terminal of local computer, install firebase command line tools using npm: npm install -g firebase-tools (this is a one time thing on a new computer)
@@ -60,7 +74,7 @@ Folder Structure
     4. When ready, preview changes with `firebase serve`
     5. Use curl or an API client to check each of the endpoints
 6. User auth requires turning on the type of validation in the firebase console. Enable the Email/Password option.
-7. In your console create the new files for user auth and install 
+7. In your console create the new files for user auth and install
 8. Create front end using tool called *create-react-app* that automates much of the processes.
     1. Install this tool with `npm install -g create-react-app`
     2. Use this command from root directory to create subdirectory `create-react-app view`
@@ -78,7 +92,7 @@ Folder Structure
     firebase hosting:channel:deploy CHANNEL_ID
     * You have to set up the hosting configs with `firebase init` (it will create a firebase.json file) to be able to deploy to hosting.
 
-Helpful links for firebase dev: 
+Helpful links for firebase dev:
 * *getting started https://firebase.google.com/docs/functions/get-started?authuser=2
 * *see some example functions https://github.com/firebase/functions-samples
 
@@ -93,7 +107,7 @@ In the comments of the JS files, you'll see these as the {{base_url}} variable
 * On localhost: `http://localhost:5000/<project-id>/<region>/<function-name>/<app-routes>`
 * On prod: `https://<hosting-region>-<project-id>.cloudfunctions.net/api`
 
-** Firebase Hosting**
+**Firebase Hosting**
 
 * On prod: https://mimo-cat-f82c7.web.app
 
