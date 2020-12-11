@@ -5,6 +5,7 @@ import Account from '../components/account';
 import Media from '../components/media';
 import Movement from '../components/movement';
 import Routine from '../components/routine';
+import BatchEdit1 from '../components/grid';
 
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -89,6 +90,10 @@ class home extends Component {
 
   loadRoutinePage = (event) => {
 		this.setState({ render: false, page: 'Routine' });
+	};
+
+  loadBatchEditPage = (event) => {
+		this.setState({ render: false, page: 'BatchEdit1' });
 	};
 
 	logoutHandler = (event) => {
@@ -203,6 +208,24 @@ class home extends Component {
 								<ListItemText primary="Media" />
 							</ListItem>
               </List>
+							<Divider />
+
+							<List component="nav"
+              aria-labelledby="nested-list-subheader" 
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader" >
+                  Batch Edit
+                </ListSubheader>
+              }>
+							<ListItem button key="BatchEdit1" onClick={this.loadBatchEditPage} component="nav">
+								<ListItemIcon>
+									{' '}
+									<PermMediaIcon />{' '}
+								</ListItemIcon>
+								<ListItemText primary="Media Files" />
+							</ListItem>
+              </List>
+
 
               <Divider />
 
@@ -234,7 +257,10 @@ class home extends Component {
           <div>
             { (this.state.page === 'Profile') ? <Account /> 
             : (this.state.page === 'Routine') ? <Routine />
+						: (this.state.page === 'Movement') ? <Movement /> 
             : (this.state.page === 'Movement') ? <Movement /> 
+						: (this.state.page === 'Movement') ? <Movement /> 
+						: (this.state.page === 'BatchEdit1') ? <BatchEdit1 />
             : < Media /> }
           </div>
 				</div>

@@ -17,7 +17,9 @@ const styles = (theme) => ({
 		padding: theme.spacing(3)
 	},
 	toolbar: theme.mixins.toolbar,
-	root: {},
+	root: {
+		maxWidth: 870
+	},
 	details: {
 		display: 'flex'
 	},
@@ -77,6 +79,7 @@ class account extends Component {
 		};
 	}
 
+	// Recommended as per https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
 	componentWillMount = () => {
 		authMiddleWare(this.props.history);
 		const authToken = localStorage.getItem('AuthToken');

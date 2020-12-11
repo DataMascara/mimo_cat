@@ -4,28 +4,30 @@ const { db } = require('../util/admin');
   curl -X GET {{base_url}}/media
   */
 exports.getAllMedia = (request, response) => {
-	db
-		.collection('media')
-		.orderBy('created_at', 'desc')
-		.get()
-		.then((data) => {
-			let media = [];
-			data.forEach((doc) => {
-				media.push({
+  db
+    .collection('media')
+    .orderBy('media_name', 'asc')
+    .get()
+    .then((data) => {
+      let media = [];
+      data.forEach((doc) => {
+        media.push({
+          active: doc.data().active,
+          created_at: doc.data().created_at,
+          created_by: doc.data().created_by,
+          category: doc.data().media_category,
+          filename: doc.data().media_filename,
           id: doc.id,
           name: doc.data().media_name,
-          filename: doc.data().media_filename,
           tags: doc.data().media_tags,
-          created_by: doc.data().created_by,
-					created_at: doc.data().createdAt,
-				});
-			});
-			return response.json(media);
-		})
-		.catch((err) => {
-			console.error(err);
-			return response.status(500).json({ error: err.code});
-		});
+        });
+      });
+      return response.json(media);
+    })
+    .catch((err) => {
+      console.error(err);
+      return response.status(500).json({ error: err.code});
+    });
 };
 
 /* POST HTTP Request
@@ -39,16 +41,18 @@ exports.getAllMedia = (request, response) => {
           }' 
 */
 exports.addMedia = (request, response) => {
-	if (request.body.filename.trim() === '') {
-		return response.status(400).json({ filename: 'Must not be empty' });
+  if (request.body.filename.trim() === '') {
+    return response.status(400).json({ filename: 'Must not be empty' });
     }
     
     const newMedia = {
-				media_filename: request.body.filename,
-				media_name: request.body.name || "Untitled",
-        media_tags: request.body.tags || "Unknown",
+        active: request.body.active || true,
+        created_at: new Date().toISOString(),
         created_by: request.user.username,
-				created_at: new Date().toISOString()
+        media_category: request.body.category || "",
+        media_filename: request.body.filename || "",
+        media_name: request.body.name || "Untitled",
+        media_tags: request.body.tags || "Unknown",
     }
     db
         .collection('media')
@@ -59,9 +63,9 @@ exports.addMedia = (request, response) => {
             return response.json(responseItem);
         })
         .catch((err) => {
-			response.status(500).json({ error: 'Something went wrong' });
-			console.error(err);
-		});
+      response.status(500).json({ error: 'Something went wrong' });
+      console.error(err);
+    });
 };
 
 /* DELETE HTTP Request
@@ -70,7 +74,7 @@ exports.addMedia = (request, response) => {
   --header 'Content-Type: application/json'
 */
 exports.deleteMedia = (request, response) => {
-	const document = db.doc(`/media/${request.params.id}`);
+  const document = db.doc(`/media/${request.params.id}`);
     document
         .get()
         .then((doc) => {
@@ -94,18 +98,18 @@ exports.deleteMedia = (request, response) => {
   --header 'Content-Type: application/json'
 */
 exports.editMedia = ( request, response ) => { 
-	if(request.body.id || request.body.created_at){
-			response.status(403).json({message: 'Not allowed to edit'});
-	}
-	let document = db.collection('media').doc(`${request.params.id}`);
-	document.update(request.body)
-	.then(()=> {
-			response.json({message: 'Updated successfully'});
-	})
-	.catch((err) => {
-			console.error(err);
-			return response.status(500).json({ 
-							error: err.code 
-			});
-	});
+  if(request.body.id || request.body.created_at){
+      response.status(403).json({message: 'Not allowed to edit'});
+  }
+  let document = db.collection('media').doc(`${request.params.id}`);
+  document.update(request.body)
+  .then(()=> {
+      response.json({message: 'Updated successfully'});
+  })
+  .catch((err) => {
+      console.error(err);
+      return response.status(500).json({ 
+              error: err.code 
+      });
+  });
 };
