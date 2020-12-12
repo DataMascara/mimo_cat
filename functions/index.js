@@ -13,6 +13,7 @@ const auth = require('./util/auth');
 
 const allowedOrigins = [
   'http://localhost:3000', 
+  'https://mimo-cat-f82c7--preview-5g5u3mvt.web.app',
   'https://mimo-cat-f82c7.web.app'
 ];
 const corsOptions = {
@@ -25,6 +26,32 @@ const corsOptions = {
   }
 }
 app.use(cors(corsOptions));
+
+/* Routines API endpoints */
+const {
+  getAllRoutines,
+  addRoutine,
+  deleteRoutine,
+  editRoutine
+} = require('./api/routines')
+
+app.get('/routines', auth, getAllRoutines);
+app.post('/routines/add', auth, addRoutine);
+app.delete('/routines/:id', auth, deleteRoutine);
+app.put('/routines/:id', auth, editRoutine);
+
+/* Movements API endpoints */
+const {
+  getAllMovements,
+  addMovement,
+  deleteMovement,
+  editMovement
+} = require('./api/movements')
+
+app.get('/movements', auth, getAllMovements);
+app.post('/movements/add', auth, addMovement);
+app.delete('/movements/:id', auth, deleteMovement);
+app.put('/movements/:id', auth, editMovement);
 
 /* Media API endpoints */
 const {
@@ -55,6 +82,25 @@ app.post('/user/image', auth, uploadProfilePhoto);;
 app.get('/user', auth, getUserDetail);
 app.post('/user', auth, updateUserDetails);
 
+
+
+// Open endpoint for diagnostics 
+app.get("/moo", (req, res) => {
+  const reqQueryObject = "1 " + req.query // returns object with all parameters
+  return res.json(allowedOrigins);
+})
+
+
+
+// app.listen(5000, () => console.log(`App is running`));
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 
 
 /* Exports function that expose the /api route to at us-east4 region 

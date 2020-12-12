@@ -21,11 +21,7 @@ import Chip from '@material-ui/core/Chip';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -427,7 +423,7 @@ class media extends Component {
 
 						{this.state.media.filter((x) => x.category === 'movement' )
 							.map((item) => (
-							<Grid item xs={12} sm={6} sm={4} md={3}>
+							<Grid item xs={12} sm={4} md={3}>
 								<Card variant="outlined">
 									<CardMedia
 											component="iframe"

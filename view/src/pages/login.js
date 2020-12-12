@@ -59,7 +59,7 @@ class login extends Component {
 			loading: false
 		};
 	}
-
+	// Recommended as per https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
 	componentWillReceiveProps(nextProps) {
 		console.log(nextProps);
 		if(nextProps.UI){
@@ -107,6 +107,7 @@ class login extends Component {
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<div className={classes.paper}>
+					<h1>Minimum Movement Catalog</h1>
 					<Avatar className={classes.avatar}>
 						<LockOutlinedIcon />
 					</Avatar>

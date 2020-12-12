@@ -113,6 +113,7 @@ class home extends Component {
 		};
 	}
 
+  // Recommended as per https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
 	componentWillMount = () => {
 		authMiddleWare(this.props.history);
 		const authToken = localStorage.getItem('AuthToken');
@@ -120,7 +121,7 @@ class home extends Component {
 		axios
 			.get('/user')
 			.then((response) => {
-				console.log(response.data);
+				// console.log(response.data);
 				this.setState({
 					firstName: response.data.userCredentials.firstName,
 					lastName: response.data.userCredentials.lastName,
@@ -256,12 +257,10 @@ class home extends Component {
 
           <div>
             { (this.state.page === 'Profile') ? <Account /> 
-            : (this.state.page === 'Routine') ? <Routine />
-						: (this.state.page === 'Movement') ? <Movement /> 
-            : (this.state.page === 'Movement') ? <Movement /> 
+            : (this.state.page === 'Media') ? <Media />
 						: (this.state.page === 'Movement') ? <Movement /> 
 						: (this.state.page === 'BatchEdit1') ? <BatchEdit1 />
-            : < Media /> }
+            : < Routine /> }
           </div>
 				</div>
 			);

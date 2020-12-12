@@ -51,7 +51,7 @@ class signup extends Component {
 			loading: false
 		};
 	}
-
+	// Recommended as per https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.UI.errors) {
 			this.setState({

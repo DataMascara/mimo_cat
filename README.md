@@ -110,4 +110,3 @@ In the comments of the JS files, you'll see these as the {{base_url}} variable
 **Firebase Hosting**
 
 * On prod: https://mimo-cat-f82c7.web.app
-

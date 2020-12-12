@@ -10,7 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import { Card, CardActions, CardContent, Divider, Grid, TextField } from '@material-ui/core';
+import { Card, CardContent, Divider, Grid, TextField } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -21,7 +21,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select'; 
-
+import Pagination from '@material-ui/core/Pagination';
 
 // import { makeStyles } from '@material-ui/core/styles';
 import ImageList from '@material-ui/core/ImageList';
@@ -164,21 +164,34 @@ class media extends Component {
         category: 'movement',
         sort: 'Name'
       },
+      page: 1,
+      page_count: 0,
+      pageSize: 10,
       open: false,
       uiLoading: true,
       buttonType: '',
       viewOpen: false
     };
 
+    this.pageSizes = [3, 6, 9];
+
     this.deleteMediaHandler = this.deleteMediaHandler.bind(this);
     this.handleEditClickOpen = this.handleEditClickOpen.bind(this);
     this.handleViewOpen = this.handleViewOpen.bind(this);
+
   }
 
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     });
+  };
+
+  handleChangePage = (event, newPage) => {
+    this.setState({
+      [event.target.page]: newPage
+    });
+    // setPage(newPage);
   };
 
   componentWillMount = () => {
@@ -437,10 +450,13 @@ class media extends Component {
 
             </ImageList>
             <Divider />
+            
 
             <ImageList className={classes.tileRoot} variant="standard" cols={3}  gap={8}>
             <ImageListItem key="Subheader" cols={1}>
                 <ListSubheader component="div">Movements</ListSubheader>
+                <Typography>Page: {this.state.page}</Typography>
+                <Pagination count={10} size="small" page={this.state.page} onPageChange={this.handleChangePage} />
               </ImageListItem>
 
               {this.state.media.filter(item => item.category === 'movement').map((item) => (
