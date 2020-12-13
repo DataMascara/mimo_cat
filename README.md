@@ -43,9 +43,11 @@ To test api locally, `firebase serve --only functions` is fine since there's onl
 
 To deploy the api changes, `firebase deploy --only functions` will deploy all the functions while `firebase serve --only functions:api` will only deploy the api function.
 
-Not that the region settings are specificed in the the code. 
+Note that the region settings are specificed in the the code with the function `.region('us-east4')`
 
-To test the UI locally, you must be in the view folder before running `npm run start` - this command looks at the 
+To test the UI locally, you must be in the view folder before running `npm run start` - this command looks at the package.json file for configuration information. While you're in that mode, it will refresh the page as you make changes to the JS files. You can set the proxy field in the `package.json` to connect to a specific backend location. Exit out of that preview mode using `CTRL+C` to return back to a regular terminal prompt. Make sure that you've cleaned up the URLs to the backend if you've been shifting between localhost and prod modes. 
+
+To deploy the UI changes, `npm run build` while in the view folder to use creat-react-app's tools for packaging a deployable version. The `package.json` is configured such that a new build folder is created with the files to deploy in there. Go back to the root folder `cd ..` to run the firebase commands for deploying to the hosting server: `firebase deploy --only hosting --project <project-id>` 
 
 ---
 
