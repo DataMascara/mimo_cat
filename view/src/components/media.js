@@ -10,7 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import { Card, CardContent, Divider, Grid, TextField } from '@material-ui/core';
+import { Card, CardActions, CardContent, Divider, Grid, TextField } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -21,13 +21,18 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select'; 
-import Pagination from '@material-ui/core/Pagination';
+
 
 // import { makeStyles } from '@material-ui/core/styles';
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
+
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+
 
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -63,7 +68,7 @@ const styles = (theme) => ({
   form: {
     width: '98%',
     marginLeft: 13,
-    marginTop: theme.spacing(10)
+    marginTop: theme.spacing(0)
   },
   root: {
     minWidth: 800,
@@ -164,34 +169,21 @@ class media extends Component {
         category: 'movement',
         sort: 'Name'
       },
-      page: 1,
-      page_count: 0,
-      pageSize: 10,
       open: false,
       uiLoading: true,
       buttonType: '',
       viewOpen: false
     };
 
-    this.pageSizes = [3, 6, 9];
-
     this.deleteMediaHandler = this.deleteMediaHandler.bind(this);
     this.handleEditClickOpen = this.handleEditClickOpen.bind(this);
     this.handleViewOpen = this.handleViewOpen.bind(this);
-
   }
 
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     });
-  };
-
-  handleChangePage = (event, newPage) => {
-    this.setState({
-      [event.target.page]: newPage
-    });
-    // setPage(newPage);
   };
 
   componentWillMount = () => {
@@ -355,7 +347,24 @@ class media extends Component {
         </main>
       );
     } else {
-
+      const catBuckets = [
+        {
+          value: '',
+          label: 'None',
+        },
+        {
+          value: 'movement',
+          label: 'Movement',
+        },
+        {
+          value: 'clips',
+          label: 'Clip',
+        },
+        {
+          value: 'other',
+          label: 'Other',
+        },
+      ];
 
       return (
         <main className={classes.content}>
@@ -394,12 +403,12 @@ class media extends Component {
                       value={this.state.media_tags}
                       onChange={this.handleChange}
                       inputProps={{ readOnly: true }} 
-                      renderValue={(selected) => {
-                        if (selected.length === 0) {
-                          return <em>Tags</em>;
-                        }
-                        return selected.join(', ');
-                      }}
+                      // renderValue={(selected) => {
+                      //   if (selected.length === 0) {
+                      //     return <em>Tags</em>;
+                      //   }
+                      //   return selected.join(', ');
+                      // }}
                     >
                       <MenuItem key="1" value="all">All tags</MenuItem>
                       <MenuItem key="2" value="arm">Arm</MenuItem>
@@ -424,11 +433,12 @@ class media extends Component {
 
               {this.state.media.filter(item => item.category === 'clips').map((item) => (
                 <ImageListItem key={item.media_filename}>
-                  <video width="320" height="240" controls>
-  
-                    <source src={`${baseurl}/${item.category}/${item.filename}`} type="video/mp4" />
-                    Your browser does not support the video tag. 
-                  </video>
+                  <img
+                    srcSet={`${baseurl}/${item.category}/${item.thumbnail}`}
+                    // {`${item.img}?w=248&fit=crop&auto=format 1x,
+                    //     ${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                    alt={item.title}
+                  />
 
                   <ImageListItemBar
                     title={item.name}
@@ -450,21 +460,25 @@ class media extends Component {
 
             </ImageList>
             <Divider />
-            
 
             <ImageList className={classes.tileRoot} variant="standard" cols={3}  gap={8}>
             <ImageListItem key="Subheader" cols={1}>
                 <ListSubheader component="div">Movements</ListSubheader>
-                <Typography>Page: {this.state.page}</Typography>
-                <Pagination count={10} size="small" page={this.state.page} onPageChange={this.handleChangePage} />
               </ImageListItem>
 
               {this.state.media.filter(item => item.category === 'movement').map((item) => (
                 <ImageListItem key={item.media_filename}>
+                  <img
+                    srcSet={`${baseurl}/${item.category}/${item.thumbnail}`}
+                    // {`${item.img}?w=248&fit=crop&auto=format 1x,
+                    //     ${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                    alt={item.title}
+                  />
+                  {/*                   
                   <video width="320" height="240" controls>
                     <source src={`${baseurl}/${item.category}/${item.filename}`} type="video/mp4" />
                     Your browser does not support the video tag. 
-                  </video>
+                  </video> */}
 
                   <ImageListItemBar
                     title={item.name}
@@ -497,115 +511,112 @@ class media extends Component {
             <AddCircleIcon style={{ fontSize: 60 }} />
           </IconButton>
           
-          <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-            <AppBar className={classes.appBar}>
-              <Toolbar>
-                <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-                  <CloseIcon />
-                </IconButton>
-                <Typography variant="h6" className={classes.title}>
-                  {this.state.buttonType === 'Edit' ? 'Edit Media' : 'Create a new Media'}
-                </Typography>
-                <Button
+          <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}  aria-labelledby="edit-media-dialog">
+          <DialogTitle id="edit-dialog-title">
+            <Typography variant="h6" className={classes.title}>
+              {this.state.buttonType === 'Edit' ? 'Edit Media' : 'Create a new Media'}
+            </Typography>
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <DialogContentText>
+              Instructions for the form can go here.
+            </DialogContentText>
+
+
+            <form className={classes.form} noValidate>
+            <TextField
+                variant="standard"
+                disabled
+                fullWidth
+                id="media_id"
+                label="Id"
+                name="media_id"
+                autoComplete="mediaId"
+                helperText={errors.media_id}
+                value={this.state.media_id}
+                error={errors.media_id ? true : false}
+                onChange={this.handleChange}
+              />
+
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="media_name"
+                label="Display Name"
+                name="media_name"
+                autoComplete="mediaName"
+                helperText={errors.media_name}
+                value={this.state.media_name}
+                error={errors.media_name ? true : false}
+                onChange={this.handleChange}
+                margin="normal"
+              />
+
+            
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="media_tags"
+                label="Tags"
+                name="media_tags"
+                autoComplete="mediaTags"
+                helperText={errors.media_tags}
+                error={errors.media_tags ? true : false}
+                onChange={this.handleChange}
+                value={this.state.media_tags}
+                helperText="Tags separated by commas"
+                margin="normal"
+              />
+              <TextField
+                id="outlined-select-category"
+                select
+                fullWidth
+                label="Select Category"
+                value={this.state.filters.category}
+                onChange={this. handleChange}
+                helperText="Subfolder"
+              >
+                {catBuckets.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="media_filename"
+                label="FileName"
+                name="media_filename"
+                autoComplete="mediaFileName"
+                helperText={errors.media_filename}
+                error={errors.media_filename ? true : false}
+                onChange={this.handleChange}
+                value={this.state.media_filename}
+                helperText="Filename"
+                margin="normal"
+              />
+
+            </form>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button
                   autoFocus
-                  color="inherit"
+                  variant="contained"
+                  color="primary"
                   onClick={handleSubmit}
-                  className={classes.submitButton}
                 >
                   {this.state.buttonType === 'Edit' ? 'Save' : 'Submit'}
                 </Button>
-              </Toolbar>
-            </AppBar>
-
-            <form className={classes.form} noValidate>
-          
-              <Grid container spacing={2}>
-              <Grid item xs={12}>
-                  <TextField
-                    variant="standard"
-                    disabled
-                    fullWidth
-                    id="media_id"
-                    label="Id"
-                    name="media_id"
-                    autoComplete="mediaId"
-                    helperText={errors.media_id}
-                    value={this.state.media_id}
-                    error={errors.media_id ? true : false}
-                    onChange={this.handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="media_name"
-                    label="Media Name"
-                    name="media_name"
-                    autoComplete="mediaName"
-                    helperText={errors.media_name}
-                    value={this.state.media_name}
-                    error={errors.media_name ? true : false}
-                    onChange={this.handleChange}
-                  />
-                </Grid>
-                
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="media_tags"
-                    label="Tags"
-                    name="media_tags"
-                    autoComplete="mediaTags"
-                    helperText={errors.media_tags}
-                    error={errors.media_tags ? true : false}
-                    onChange={this.handleChange}
-                    value={this.state.media_tags}
-                  />
-                </Grid>
-                
-                <Grid item xs={6}>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel id="filter_category-label">Category</InputLabel>
-                    <Select fullWidth
-                      labelId="filter_category"
-                      id="media_category"
-                      name="media_category"
-                      value={this.state.media_category}
-                      onChange={this.handleChange}
-                    >
-                      <MenuItem value="">None</MenuItem>
-                      <MenuItem value="movement">Movement</MenuItem>
-                      <MenuItem value="clip">Clip</MenuItem>
-                      <MenuItem value="other">Other</MenuItem>
-                    </Select>
-                    <FormHelperText>Subfolder</FormHelperText>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="media_filename"
-                    label="FileName"
-                    name="media_filename"
-                    autoComplete="mediaFileName"
-                    helperText={errors.media_filename}
-                    error={errors.media_filename ? true : false}
-                    onChange={this.handleChange}
-                    value={this.state.media_filename}
-                  />
-                  <FormHelperText>Filename</FormHelperText>
-                </Grid>
-              </Grid>
-            </form>
+            </DialogActions>
           </Dialog>
-         
-          
+
   
         </main>
       );

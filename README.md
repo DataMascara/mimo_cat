@@ -1,13 +1,55 @@
-# mimo_cat
-minimum movement catalog
+# minimum movement catalog
+`mimo_cat`
 
-Project idea from Maho Ogawa ([www.suisoco.com](https://www.suisoco.com)) of Brooklyn College.
+This is a database of dance movements.
+
+Project idea from Maho Ogawa ([www.suisoco.com](https://www.suisoco.com)) for her dissertation study at Brooklyn College.
 
 The project is based off of the project spec requirements and prototype produced by students in CISC 4900 of Fall 2020: @khinethet, @stevezhuravel, @CallMeOnii-chan supervised by @katychuang
 
+# Setup
+
+## Dependencies
+
+* Firebase CLI ([firebase-tools](https://github.com/firebase/firebase-tools))
+* Node/NPM
+* ReactJS - *this project specifically uses `create-react-app`*
+* [Material UI](https://material-ui.com/), [Material UI Icons](https://material-ui.com/components/material-icons/)
+* Firebase firestore, storage, and hosting 
+
 ---
 
-Folder Structure
+## Contribution guide
+
+First - contact (@[katychuang](https://github.com/katychuang)) to get permissions. 
+
+### Setup from this repo 
+
+1. Install CLI tools needed for managing various 
+    - All at once `npm i -g firebase-tools create-react-app` 
+2. Clone this repository `git clone git@github.com:DataMascara/mimo_cat.git`
+3. Install backend dependences: 
+    - Go into the project root `cd mimo_cat` and then one more time into functions subfolder `cd functions`.
+    - From within the functions folder, install dependencies. `npm i`
+4. Configuring access with firebase: 
+    - Copy the configs from the firebase console under your app settings information page into `config.js`. The *config-example.js* file shows the structure of the file. 
+6. Install frontend dependencies:
+    - Go into the view subfolder. From the project root, `cd view`
+    - install dependecies. Running `npm i` works because there is a `package.json` file in that subfolder that specifies which libraries to install.
+
+### Development flow
+
+To test api locally, `firebase serve --only functions` is fine since there's only one function in this codebase. For added specificity while developing, you can call it with `firebase serve --only functions:api`
+
+To deploy the api changes, `firebase deploy --only functions` will deploy all the functions while `firebase serve --only functions:api` will only deploy the api function.
+
+Not that the region settings are specificed in the the code. 
+
+To test the UI locally, you must be in the view folder before running `npm run start` - this command looks at the 
+
+---
+
+## Folder Structure of the project
 
 ```sh
 ├── .firebaserc
@@ -15,6 +57,7 @@ Folder Structure
 ├── functions
 │   ├── api
 │   │   ├── media.js
+│   │   └── routine.js
 │   │   └── users.js
 │   ├── index.js
 │   └── util
@@ -23,7 +66,7 @@ Folder Structure
 │       ├── config.js
 │       └── validators.js
 └── view
-    ├── build
+    ├── build              # created from `npm run build`, deployed folder
     ├── package.json
     ├── public
     └── src
@@ -43,22 +86,12 @@ Folder Structure
             └── auth.js
 ```
 
----
-
-# Installing from this directory
-
-1. `npm i -g firebase-tools create-react-app``
-2. Clone the repository
-3. Go into the project root `cd mimo_cat` and then one more time into functions subfolder.
-4. From the functions folder, install dependencies. `npm i`
-5. Copy the configs from the firebase console into config.js. The config-example.js file shows the structure of the file.
-6. Move into the view folder, install dependecies. `npm i`
 
 
-# First Time Setup
+## First Time Setup
 
 1. In Firebase console: go to the Functions section and click button 'get started'
-2. in terminal of local computer, install firebase command line tools using npm: npm install -g firebase-tools (this is a one time thing on a new computer)
+2. in terminal of local computer, install firebase command line tools using npm: `npm install -g firebase-tools` (this is a one time thing on a new computer)
 3. In the directory where you want to start your project; `firebase init`
     1. select set up functions only (3rd on list), and use exiesting project. Javascript; no eslint; yes to dependencies installed now
     2. This creates a subfolder, `functions` as its own nodejs app. At the time of this writing it is set to engine node v12.
@@ -92,21 +125,51 @@ Folder Structure
     firebase hosting:channel:deploy CHANNEL_ID
     * You have to set up the hosting configs with `firebase init` (it will create a firebase.json file) to be able to deploy to hosting.
 
-Helpful links for firebase dev:
-* *getting started https://firebase.google.com/docs/functions/get-started?authuser=2
-* *see some example functions https://github.com/firebase/functions-samples
 
 ---
 
-# URL Patterns for api
+# URL Patterns
 
 In the comments of the JS files, you'll see these as the {{base_url}} variable
 
 **Firebase Functions**
+
+*For api*
 
 * On localhost: `http://localhost:5000/<project-id>/<region>/<function-name>/<app-routes>`
 * On prod: `https://<hosting-region>-<project-id>.cloudfunctions.net/api`
 
 **Firebase Hosting**
 
+*For frontend*
+
+* On localhost: https://localhost:3000
 * On prod: https://mimo-cat-f82c7.web.app
+
+**Firebase Storate**
+
+*For media assets*
+
+* `https://storage.googleapis.com/<project-id>/<folder>/<path>/<file>`
+
+---
+
+# Credits
+
+* Favicon https://thenounproject.com/term/japanese/42819/
+
+# References
+
+Helpful links for firebase dev:
+
+* Fireabse Guides https://firebase.google.com/docs/guides
+* Firebase JavaScript SDK Reference https://firebase.google.com/docs/reference/js
+* Sample code
+    * getting started https://firebase.google.com/docs/functions/get-started 
+    * see some example functions https://github.com/firebase/functions-samples
+    * Firebase quick start exampleshttps://github.com/firebase/quickstart-js
+
+
+Helpful Links for frontend dev:
+
+* In case you're looking for Material-UI v5 changes, check the migration guide https://next.material-ui.com/guides/migration-v4/#pagination

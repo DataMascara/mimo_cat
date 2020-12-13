@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import PropTypes from 'prop-types';
 import Account from '../components/account';
 import Media from '../components/media';
 import Movement from '../components/movement';
 import Routine from '../components/routine';
 import BatchEdit1 from '../components/grid';
 
+import { Box, Button, Link, Grid, Container } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -23,41 +26,34 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Avatar from '@material-ui/core/Avatar';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
 import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
 import QueueIcon from '@material-ui/icons/Queue';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu'; 
 
 import { authMiddleWare } from '../util/auth'
+import { COLUMN_FILTER_BUTTON_CLICK } from '@material-ui/data-grid';
 
 axios.defaults.baseURL = 'https://us-east4-mimo-cat-f82c7.cloudfunctions.net/api';
 
-const drawerWidth = 240;
+
 
 const styles = (theme) => ({
+	content:{
+		marginTop: 140,
+	},
 	root: {
 		display: 'flex'
 	},
 	appBar: {
 		zIndex: theme.zIndex.drawer + 1
 	},
-	drawer: {
-		width: drawerWidth,
-		flexShrink: 0
-	},
-	drawerPaper: {
-		width: drawerWidth
-	},
 	content: {
 		flexGrow: 1,
 		padding: theme.spacing(3)
-	},
-	avatar: {
-		height: 110,
-		width: 100,
-		flexShrink: 0,
-		flexGrow: 0,
-		marginTop: 20
 	},
 	uiProgess: {
 		position: 'fixed',
@@ -67,13 +63,106 @@ const styles = (theme) => ({
 		left: '50%',
 		top: '35%'
 	},
-	toolbar: theme.mixins.toolbar
+	toolbar: theme.mixins.toolbar,
+	appBar: {
+		background: '#FFFFFF',
+		color: theme.palette.primary.main
+	},
+	toolbar: {
+    // justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+	},
+	left: {
+		color: theme.palette.primary.main
+  },
+	right: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+	rightLink: {
+    fontSize: 14,
+		// color: theme.palette.common.white, 
+		marginLeft: theme.spacing(2),
+		whiteSpace: 'normal',
+		fontWeight: 700
+	},
+	horizontalList: {
+		display: 'inline-block',
+	}
 });
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 
 class home extends Component {
 	state = {
-    render: false,
-    page: 'Media'
+		render: false,
+		page: 'Media',
+		value: 0,
+		anchorEl: null,
+		openUserMenu: Boolean(this.anchorEl)
 	};
 
 	loadAccountPage = (event) => {
@@ -101,12 +190,23 @@ class home extends Component {
 		this.props.history.push('/login');
 	};
 
+	handleMenu = (event) => {
+		this.setState({  
+			  anchorEl: event.currentTarget
+			, openUserMenu: true });
+	};
+	handleClose = () => {
+		this.setState({  anchorEl: null });
+  };
+	
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			firstName: '',
 			lastName: '',
+			username: '',
 			profilePicture: '',
 			uiLoading: true,
 			imageLoading: false
@@ -141,10 +241,12 @@ class home extends Component {
 				console.log(error);
 				this.setState({ errorMsg: 'Error in retrieving the data' });
 			});
-	};
+		};
+		
 
 	render() {
-		const { classes } = this.props;		
+		
+		const { classes } = this.props;
 
 		if (this.state.uiLoading === true) {
 			return (
@@ -157,112 +259,121 @@ class home extends Component {
 				<div className={classes.root}>
 					<CssBaseline />
 					<AppBar position="fixed" className={classes.appBar}>
-						<Toolbar>
-							<Typography variant="h6" noWrap>
-								Minimal Movement Catalog
-							</Typography>
+						<Toolbar className={classes.toolbar}> 
+							<div className={classes.left} />
+								<Link
+									variant="h6"
+									underline="none"
+									color="textPrimary"
+									className={classes.title}
+									href="/"
+								>
+									{'Minimal Movement Catalog'}
+								</Link>
+								<div className={classes.right}> 
+							
+								</div>
+									{/* onClick={() => {}} */}
+								<div className={classes.right}> 
+									<IconButton  aria-label="source code" 
+									 target="_blank" href="http://github.com/DataMascara/mimo_cat"
+									 >
+										<GitHubIcon />
+									</IconButton>
+									<Button
+										color="default" 
+										className={classes.rightLink} 
+										aria-controls="menu-appbar"
+										aria-haspopup="true"
+										onClick={this.handleMenu}
+										// onClick={this.loadAccountPage}
+										startIcon={<Avatar src={this.state.profilePicture}  />}
+									>
+										<Box color="text.primary" >
+											<Typography variant="body1" gutterBottom>
+												{this.state.firstName}{' '}{this.state.lastName}
+											</Typography>
+											<Typography variant="caption" >{this.state.username}</Typography> 
+										</Box>
+										
+									</Button>
+									
+								</div>
 						</Toolbar>
+						<Divider />
+						<Tabs value={this.state.value} 
+						onChange={this.handleChange} 
+						centered 
+						indicatorColor="secondary"
+						aria-label="tabs">
+							<Tab label="Routines" onClick={this.loadRoutinePage} {...a11yProps(0)}  />
+							<Tab label="Movements" onClick={this.loadMovementPage} {...a11yProps(1)} />
+							<Tab label="Media"  onClick={this.loadMediaPage} {...a11yProps(2)} />
+							<Tab label="Files"  onClick={this.loadBatchEditPage} {...a11yProps(3)} />
+						</Tabs>
 					</AppBar>
-					<Drawer
-						className={classes.drawer}
-						variant="permanent"
-						classes={{
-							paper: classes.drawerPaper
-						}}
-					>
-						<div className={classes.toolbar} />
-						<Divider />
-						<center>
-							<Avatar src={this.state.profilePicture} className={classes.avatar} />
-							<p>
-								{' '}
-								{this.state.firstName} {this.state.lastName}
-							</p>
-						</center>
-						<Divider />
-            <List component="nav"
-              aria-labelledby="nested-list-subheader" 
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader" >
-                  Routine Builder
-                </ListSubheader>
-              }>
-              <ListItem button key="Routines" onClick={this.loadRoutinePage}>
-								<ListItemIcon>
-									{' '}
-									<AccessibilityNewIcon />{' '}
-								</ListItemIcon>
-								<ListItemText primary="Routines" />
-							</ListItem>
-              <ListItem button key="Movements" onClick={this.loadMovementPage} component="nav">
-								<ListItemIcon>
-									{' '}
-									<QueueIcon />{' '}
-								</ListItemIcon>
-								<ListItemText primary="Movements" />
-							</ListItem>
-							<ListItem button key="Media" onClick={this.loadMediaPage} component="nav">
-								<ListItemIcon>
-									{' '}
-									<PermMediaIcon />{' '}
-								</ListItemIcon>
-								<ListItemText primary="Media" />
-							</ListItem>
-              </List>
-							<Divider />
+					
+					<TabPanel value={this.state.value} index={0}>
+						< Routine /> 
+					</TabPanel>
+					<TabPanel value={this.state.value} index={1}>
+					<Movement /> 
+					</TabPanel>
+					<TabPanel value={this.state.value} index={2}>
+						<Media />
+					</TabPanel>
+					<TabPanel value={this.state.value} index={2}>
+						<BatchEdit1 />
+					</TabPanel>
 
-							<List component="nav"
-              aria-labelledby="nested-list-subheader" 
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader" >
-                  Batch Edit
-                </ListSubheader>
-              }>
-							<ListItem button key="BatchEdit1" onClick={this.loadBatchEditPage} component="nav">
-								<ListItemIcon>
-									{' '}
-									<PermMediaIcon />{' '}
-								</ListItemIcon>
-								<ListItemText primary="Media Files" />
-							</ListItem>
-              </List>
+					<StyledMenu
+                id="menu-appbar"
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={this.state.openUserMenu}
+                onClose={this.handleClose}
+              >
+								<StyledMenuItem onClick={this.loadAccountPage}>
+									<ListItemIcon>
+										<AccountBoxIcon fontSize="small" />
+									</ListItemIcon>
+									<ListItemText primary="Edit Profile" />
+								</StyledMenuItem>
+								<StyledMenuItem onClick={this.logoutHandler}> 
+									<ListItemIcon>
+										<ExitToAppIcon fontSize="small" />
+									</ListItemIcon>
+									<ListItemText primary="Logout" />
+								</StyledMenuItem> 
+          </StyledMenu>
+					<Container>
+					<Grid container spacing={3}>
+						<Grid item xs={12}>
+							<Box></Box>
+							<Box></Box>
+						</Grid>
+						<Grid item xs={12}>
+							<div>
+								{ (this.state.page === 'Profile') ? <Account /> 
+								: (this.state.page === 'Media') ? <Media />
+								: (this.state.page === 'Movement') ? <Movement /> 
+								: (this.state.page === 'BatchEdit1') ? <BatchEdit1 />
+								: < Routine /> }
+							</div>
+						</Grid>
+					</Grid>
+					</Container>
 
-
-              <Divider />
-
-              <List component="nav"
-              aria-labelledby="nested-list-subheader2"
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader2">
-                  Account
-                </ListSubheader>
-              }>
-							<ListItem button key="Profile" onClick={this.loadAccountPage} component="nav">
-								<ListItemIcon>
-									{' '}
-									<AccountBoxIcon />{' '}
-								</ListItemIcon>
-								<ListItemText primary="Profile" />
-							</ListItem>
-
-							<ListItem button key="Logout" onClick={this.logoutHandler}>
-								<ListItemIcon>
-									{' '}
-									<ExitToAppIcon />{' '}
-								</ListItemIcon>
-								<ListItemText primary="Logout" />
-							</ListItem>
-						</List>
-					</Drawer>
-
-          <div>
-            { (this.state.page === 'Profile') ? <Account /> 
-            : (this.state.page === 'Media') ? <Media />
-						: (this.state.page === 'Movement') ? <Movement /> 
-						: (this.state.page === 'BatchEdit1') ? <BatchEdit1 />
-            : < Routine /> }
-          </div>
 				</div>
+
 			);
 		}
 	}

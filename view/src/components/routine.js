@@ -44,7 +44,6 @@ const styles = ((theme) => ({
     },
     toolbar: theme.mixins.toolbar,
     root: {
-        minWidth: 850,
         flexGrow : 1,
         "& .MuiPaper-root": {
           borderColor: '#FFFFFF'
@@ -209,7 +208,7 @@ class routine extends Component {
 
     render() {
 
-        const DialogTitle = withStyles(styles)((props) => {
+    const DialogTitle = withStyles(styles)((props) => {
 			const { children, classes, onClose, ...other } = props;
 			return (
 				<MuiDialogTitle disableTypography className={classes.root} {...other}>

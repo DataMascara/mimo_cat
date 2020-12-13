@@ -18,6 +18,7 @@ import CardContent from '@material-ui/core/CardContent';
 import EditIcon from '@material-ui/icons/Edit';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
+import Box from '@material-ui/core/Box';
 
 
 import MenuItem from '@material-ui/core/MenuItem';
@@ -37,8 +38,8 @@ import { authMiddleWare } from '../util/auth';
 
 const styles = (theme) => ({
   content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
+      flexGrow: 1,
+      padding: theme.spacing(3),
     },
     toolbar: theme.mixins.toolbar,
   title: {
@@ -53,10 +54,9 @@ const styles = (theme) => ({
     right: 0
   },
   form: {
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(0)
   },
   root: {
-    minWidth: 800,
     flexGrow : 1,
     "& .MuiPaper-root": {
       borderColor: '#FFFFFF'
@@ -421,11 +421,10 @@ class mediagrid extends Component {
 						</CardContent>
 					</Card>
           <br />
-          <Card  className={classes.root} >
-						<CardContent>
-							<div className={classes.root} style={{ display: 'flex', height: '70vh' }}>
+  
+  
+							<Box sx={{ flexGrow: 1, minWidth: 800, display: 'flex', height: '70vh' }}>
 
-							
               <Grid container spacing={3} style={{  width: '100%' }}>	
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
 
@@ -438,9 +437,8 @@ class mediagrid extends Component {
                 />
               </Grid> 
               </Grid>
-              </div> 
-						</CardContent>
-					</Card>
+              </Box> 
+              
 
           
           <IconButton
@@ -453,10 +451,8 @@ class mediagrid extends Component {
           </IconButton>
           
           <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}  aria-labelledby="edit-media-dialog">
-          <DialogTitle id="edit-dialog-title">
-            <Typography variant="h6" className={classes.title}>
+          <DialogTitle id="edit-dialog-title" >
               {this.state.buttonType === 'Edit' ? 'Edit Media' : 'Create a new Media'}
-            </Typography>
           </DialogTitle>
           <Divider />
           <DialogContent>
@@ -549,7 +545,7 @@ class mediagrid extends Component {
               <Button onClick={handleClose}>Cancel</Button>
               <Button
                   autoFocus
-                  variant="contained"
+                  variant="outlined"
                   color="primary"
                   onClick={handleSubmit}
                 >

@@ -3,7 +3,6 @@
 
 // Material UI components
 import React, { Component } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -14,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box'; 
 
 import axios from 'axios';
 
@@ -24,10 +24,6 @@ const styles = (theme) => ({
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center'
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main
 	},
 	form: {
 		width: '100%',
@@ -43,6 +39,15 @@ const styles = (theme) => ({
 	},
 	progess: {
 		position: 'absolute'
+	},
+	bottom: {
+    position: 'fixed',
+    bottom: 0,
+		alignContent: "flex-end",
+		color: '#c6bfc7'
+  },
+	legal: {
+		color: '#c6bfc7'
 	}
 });
 
@@ -108,11 +113,12 @@ class login extends Component {
 				<CssBaseline />
 				<div className={classes.paper}>
 					<h1>Minimum Movement Catalog</h1>
-					<Avatar className={classes.avatar}>
-						<LockOutlinedIcon />
-					</Avatar>
+
+					<img src={process.env.PUBLIC_URL + 'noun_LuckyCat_42819x512.png'} alt="Logo" width="300" />
+
+					<Typography component="h1" variant="h5"></Typography>
 					<Typography component="h1" variant="h5">
-						Login
+						Please log in to continue
 					</Typography>
 					<form className={classes.form} noValidate>
 						<TextField
@@ -162,13 +168,31 @@ class login extends Component {
 								</Link>
 							</Grid>
 						</Grid>
+						
+						<Grid container>
+							<Grid item>
+								<Link href="about" variant="body2" className={classes.legal}>
+									{"About this site"}
+								</Link>
+							</Grid>
+						</Grid>
 						{errors.general && (
 							<Typography variant="body2" className={classes.customError}>
 								{errors.general}
 							</Typography>
 						)}
 					</form>
+					<Box className={classes.bottom}>
+					<Typography variant="body2" color="textSecondary" align="center">
+							{' © '}{new Date().getFullYear()}{' '}
+							<Link color="inherit" href="about">
+								data mascara in collaboration with Maho Ogawa
+							</Link>
+							
+						</Typography>
+          </Box>
 				</div>
+				
 			</Container>
 		);
 	}

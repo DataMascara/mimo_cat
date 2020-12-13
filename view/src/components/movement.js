@@ -4,6 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,10 +13,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
+import { Card, CardContent } from '@material-ui/core';
+import CardHeader from '@material-ui/core/CardActions';
 import CardActions from '@material-ui/core/CardActions';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import CardContent from '@material-ui/core/CardContent';
+import CircularProgress from '@material-ui/core/CircularProgress'; 
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -29,11 +30,11 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { authMiddleWare } from '../util/auth';
 
 const styles = (theme) => ({
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-    },
-    toolbar: theme.mixins.toolbar,
+	content: {
+			flexGrow: 1,
+			padding: theme.spacing(3),
+	},
+  toolbar: theme.mixins.toolbar,
 	title: {
 		marginLeft: theme.spacing(2),
 		flex: 1
@@ -57,10 +58,10 @@ const styles = (theme) => ({
 	form: {
 		width: '98%',
 		marginLeft: 13,
-		marginTop: theme.spacing(10)
+		marginTop: theme.spacing(0)
 	},
 	root: {
-		minWidth: 470
+		flexGrow : 1,
 	},
 	bullet: {
 		display: 'inline-block',
@@ -101,9 +102,6 @@ const styles = (theme) => ({
     '& > *': {
       margin: theme.spacing(0.5),
     },
-	},
-	locationText: {
-		paddingLeft: '15px'
 	},
 });
 
@@ -233,6 +231,8 @@ class media extends Component {
 			}
 		}))(MuiDialogContent);
 
+    const baseurl = "https://storage.googleapis.com/mimo-cat-f82c7";
+
 		dayjs.extend(relativeTime);
 		const { classes } = this.props;
 		const { open, errors, viewOpen } = this.state;
@@ -307,11 +307,20 @@ class media extends Component {
 				</main>
 			);
 		} else {
-			// var filterCatOpt=this.props.data.map((item) => { return item.filters.category });
-      // filterCatOpt.unshift("");
+
 			return (
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
+					<Card  className={classes.root}>
+            <CardHeader>
+              <Typography className={classes.locationText} gutterBottom variant="h4">
+										Movements
+							</Typography>
+            </CardHeader>
+						<CardContent>
+						<div className={classes.progress} />
+						</CardContent>
+					</Card>
 
 					<IconButton
 						className={classes.floatingButton}
@@ -321,25 +330,14 @@ class media extends Component {
 					>
 						<AddCircleIcon style={{ fontSize: 60 }} />
 					</IconButton>
-					<Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-						<AppBar className={classes.appBar}>
-							<Toolbar>
-								<IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-									<CloseIcon />
-								</IconButton>
-								<Typography variant="h6" className={classes.title}>
-									{this.state.buttonType === 'Edit' ? 'Edit Media' : 'Create a new Media'}
-								</Typography>
-								<Button
-									autoFocus
-									color="inherit"
-									onClick={handleSubmit}
-									className={classes.submitButton}
-								>
-									{this.state.buttonType === 'Edit' ? 'Save' : 'Submit'}
-								</Button>
-							</Toolbar>
-						</AppBar>
+					<Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
+						
+						<DialogTitle id="edit-dialog-title">
+							<Typography variant="h6" className={classes.title}>
+								{this.state.buttonType === 'Edit' ? 'Edit Movement' : 'Create a new Movement'}
+							</Typography>
+						</DialogTitle>
+						<DialogContent>
 
 						<form className={classes.form} noValidate>
 					
@@ -410,26 +408,33 @@ class media extends Component {
 								</Grid>
 							</Grid>
 						</form>
+						</DialogContent>
+						<DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button
+                  autoFocus
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                >
+                  {this.state.buttonType === 'Edit' ? 'Save' : 'Submit'}
+                </Button>
+            </DialogActions>
 					</Dialog>
 					{/* <FilterItems data={this.props.data} filter={this.state.filters.category} /> */}
 					
-
+					<br />
 					<Grid container spacing={2}>
-					<Grid item xs={12}>
-						<Typography className={classes.locationText} gutterBottom variant="h4">
-							Movements
-						</Typography>
-					</Grid>
 
 						{this.state.media.filter((x) => x.category === 'movement' )
 							.map((item) => (
 							<Grid item xs={12} sm={4} md={3}>
 								<Card variant="outlined">
 									<CardMedia
-											component="iframe"
+											component="image"
 											className={classes.media}
 											title={item.filename}
-											image={`https://storage.googleapis.com/mimo-cat-f82c7/${item.category}/${item.filename}`}
+											image={`${baseurl}/${item.category}/${item.thumbnail}`}
 									/>
 									<CardContent>
 										<Typography variant="h5" component="h2">
@@ -479,7 +484,7 @@ class media extends Component {
 											component="iframe"
 											className={classes.media}
 											title={this.state.media_name}
-											image={`https://storage.googleapis.com/mimo-cat-f82c7/movement/${this.state.media_filename}`}
+											image={`${baseurl}/${this.state.media_category}/${this.state.media_filename}`}
 									/>
 						<Typography className={classes.pos} color="textSecondary">
 						{this.state.media_filename}
