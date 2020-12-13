@@ -3,10 +3,9 @@ import React, { Component } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 
+import CardHeader from '@material-ui/core/CardActions';
+import { Card, CardActions, CardContent, Divider, Grid, TextField } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -23,6 +22,14 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import LaunchIcon from '@material-ui/icons/Launch';
+
+import MenuItem from '@material-ui/core/MenuItem';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Slide from '@material-ui/core/Slide';
 
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -43,6 +50,11 @@ const styles = ((theme) => ({
           borderColor: '#FFFFFF'
         }
     },
+    floatingButton: {
+        position: 'fixed',
+        bottom: 0,
+        right: 0
+    },
     closeButton: {
 		position: 'absolute',
 		right: theme.spacing(1),
@@ -59,6 +71,31 @@ const styles = ((theme) => ({
       },
     })
 );
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
+function fetchAPI(url, param) {
+    const authToken = localStorage.getItem('AuthToken');
+    let routines = [];
+
+      axios.defaults.headers.common = { Authorization: `${authToken}` };
+      axios
+        .get(`/routines/${param}`)
+        .then((response) => {
+          this.setState({
+            routines: response.data,
+            uiLoading: false
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+}
+
+
 
 class routine extends Component {
     constructor(props) {
@@ -117,18 +154,7 @@ class routine extends Component {
           .catch((err) => {
             console.log(err);
           });
-        
-          axios
-          .get('/media')
-          .then((response) => {
-            this.setState({
-              media: response.data,
-              uiLoading: false
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+
       };
     
       deleteRoutineHandler(data) {
@@ -160,28 +186,24 @@ class routine extends Component {
       }
     
       handleViewOpen(data) {
-        console.log("ids to retreive: " + data.row.movements);
-        console.log(this.state.media[0]);
-        var moveData = [];
-        data.row.movements.forEach((m, i) => {
-            var move = this.state.media.filter((i) => i.id === m);
-            console.log("move info retrieved: " + move);
-            moveData.push({
-                order: i,
-                movement_name: move.name,
-                movement_file: move.filename,
-            });
-        })
 
-        this.setState({
-          active: true,
-          id: data.row.id,
-          routine_name: data.row.name,
-          movements: data.row.movements, 
-          m: moveData,
-          created_at: data.row.created_at,
-          viewOpen: true
-        });
+        var routineData = [];
+
+        axios.get(`/routines/${data.row.id}`)
+            .then((response) => {
+                    console.log(response.data[0]);
+           
+                        this.setState({ 
+                                    routines: response.data, 
+                                    id: data.row.id,
+                                    routine_name: data.row.name,
+                                    num_movements: data.row.num_movements,
+                                    movements: response.data[0].movements,
+                                    created_at: data.row.created_at,
+                                    viewOpen: true
+                                })
+             });
+
       }
     
 
@@ -299,22 +321,19 @@ class routine extends Component {
                     {this.state.routines.map((row) => (
                         <TableRow key={row.name} className={classes.hideLastBorder}>
                         <TableCell component="th" scope="row">
-                            {row.routineId}
-                            
+                            {row.id}
                         </TableCell>
                         <TableCell align="center">{row.name}</TableCell>
-                        <TableCell align="center">{row.movements.length}</TableCell>
-                            {/* {row.movements.map((move) => (
-                            <Link href="#" variant="body2">
-                            {move.media_name} {' '}
-                          </Link>
-                        ))} */}
-                        
+                        <TableCell align="center">{row.num_movements}</TableCell>                        
                         <TableCell align="center">{dayjs(row.created_at).fromNow()}</TableCell>
                         <TableCell align="center">
                             <Button size="small" color="secondary" onClick={() => this.handleViewOpen({ row })}>
                                 {' '}
                                 View{' '}
+                            </Button>
+                            <Button size="small" color="secondary" disabled onClick={() => this.handleEditOpen({ row })}>
+                                {' '}
+                                Edit{' '}
                             </Button>
                         </TableCell>
                         
@@ -324,6 +343,15 @@ class routine extends Component {
                 </Table>
                 </TableContainer>
             </Card>
+
+            <IconButton
+            className={classes.floatingButton}
+            color="primary"
+            aria-label="Add Media"
+            onClick={handleClickOpen}
+          >
+            <AddCircleIcon style={{ fontSize: 60 }} />
+          </IconButton>
 
             <Dialog
                 onClose={handleViewClose}
@@ -341,17 +369,22 @@ class routine extends Component {
                     className={classes.media}
                     title={this.state.name} 
                 />
-                <Typography className={classes.pos} color="textSecondary">
-                {this.state.movements.map ((move) => (
-                    <Link href="#" variant="body2">
-                        A link
-                    {/* {move.move.media_name} */}
-                    </Link>
-                ))}
-                </Typography>
+                
+                
                 <div className={classes.media_tags}>
-                    {this.state.movements.length} movements
+                    This routine contains {this.state.num_movements} movements, created {dayjs(this.state.created_at).fromNow()}
                 </div>
+                
+                <br />
+
+                {this.state.movements.map((move) => (
+
+                    <Typography className={classes.pos} color="textSecondary">
+                    <Link href={`https://storage.googleapis.com/mimo-cat-f82c7/movement/${move.medie_filename}`} variant="body2">
+                        {move.media_name} <LaunchIcon fontSize="small" />
+                    </Link>
+                    </Typography>
+                ))}
                 {/* .map((move) => (
                       <Link href="#" variant="body2">
                         {move.media_name} {' '}
@@ -361,6 +394,82 @@ class routine extends Component {
                 </DialogContent>
             </Dialog>
             
+            <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}  aria-labelledby="edit-media-dialog">
+          <DialogTitle id="edit-dialog-title">
+            <Typography variant="h6" className={classes.title}>
+              {this.state.buttonType === 'Edit' ? 'Edit Routine' : 'Create a new Routine'}
+            </Typography>
+          </DialogTitle>
+          <Divider />
+          <DialogContent>
+            <DialogContentText>
+              Instructions for the form can go here.
+            </DialogContentText>
+
+
+            <form className={classes.form} noValidate>
+            <TextField
+                variant="standard"
+                disabled
+                fullWidth
+                id="media_id"
+                label="Id"
+                name="media_id"
+                autoComplete="mediaId"
+                helperText={errors.media_id}
+                placeholder="system generated"
+                value={this.state.media_id}
+                error={errors.media_id ? true : false}
+                onChange={this.handleChange}
+                margin="normal"
+              />
+
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="media_name"
+                label="Display Name"
+                name="media_name"
+                autoComplete="mediaName"
+                helperText={errors.media_name}
+                value={this.state.media_name}
+                error={errors.media_name ? true : false}
+                onChange={this.handleChange}
+                margin="normal"
+              />
+
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="media_filename"
+                label="Movements"
+                name="media_filename"
+                autoComplete="mediaFileName"
+                helperText={errors.media_filename}
+                error={errors.media_filename ? true : false}
+                onChange={this.handleChange}
+                value={this.state.media_filename}
+                helperText="Movement ID's separated by tags"
+                margin="normal"
+              />
+
+            </form>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button
+                  autoFocus
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                >
+                  {this.state.buttonType === 'Edit' ? 'Save' : 'Submit'}
+                </Button>
+            </DialogActions>
+          </Dialog>
+
             </main>
         )
     }

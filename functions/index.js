@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const app = require('express')();
 const cors = require("cors");
+const util = require('util');
 const auth = require('./util/auth');
 
 // // Create and Deploy Your First Cloud Functions
@@ -30,12 +31,14 @@ app.use(cors(corsOptions));
 /* Routines API endpoints */
 const {
   getAllRoutines,
+  getARoutine,
   addRoutine,
   deleteRoutine,
   editRoutine
 } = require('./api/routines')
 
 app.get('/routines', auth, getAllRoutines);
+app.get('/routines/:id', auth, getARoutine);
 app.post('/routines/add', auth, addRoutine);
 app.delete('/routines/:id', auth, deleteRoutine);
 app.put('/routines/:id', auth, editRoutine);
