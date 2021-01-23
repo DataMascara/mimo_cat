@@ -81,7 +81,7 @@ export default function SignInSide() {
           <br />
           
           <Typography component="h1" variant="h5">
-            <b>Minimum Movement Catalog</b>
+            <b>Minimum Movement</b>
           </Typography>
           </Box>
 
