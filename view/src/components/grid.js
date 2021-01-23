@@ -11,20 +11,18 @@ import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CardContent from '@material-ui/core/CardContent';
 import EditIcon from '@material-ui/icons/Edit';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogTitle from '@material-ui/core/DialogContent';
 import Box from '@material-ui/core/Box';
 
 
 import MenuItem from '@material-ui/core/MenuItem';
 import { Divider } from '@material-ui/core';
 
-import { DataGrid, RowsProp, ColDef, CellParams, RowParams, GridApi, ValueGetterParams } from '@material-ui/data-grid';
+import { DataGrid, ColDef, CellParams, GridApi } from '@material-ui/data-grid';
 
 
 import DialogActions from '@material-ui/core/DialogActions';
@@ -277,7 +275,7 @@ class mediagrid extends Component {
 
     dayjs.extend(relativeTime);
     const { classes } = this.props;
-    const { open, errors, viewOpen } = this.state;
+    const { open, errors } = this.state;
 
     const handleClickOpen = () => {
       this.setState({
@@ -332,10 +330,6 @@ class mediagrid extends Component {
         });
     };
 
-    const handleViewClose = () => {
-      this.setState({ viewOpen: false });
-    };
-
     const handleClose = (event) => {
       this.setState({ open: false });
     };
@@ -388,7 +382,7 @@ class mediagrid extends Component {
                     select
                     label="by Category"
                     value={this.state.filters.category}
-                    onChange={this. handleChange}
+                    onChange={this.handleChange}
                     helperText="Filter disabled"
                   >
                     {catBuckets.map((option) => (
@@ -405,7 +399,7 @@ class mediagrid extends Component {
                     disabled
                     label="by Tags"
                     value={this.state.filters.category}
-                    onChange={this. handleChange}
+                    onChange={this.handleChange}
                     helperText="Filters disabled"
                   >
                     {catBuckets.map((option) => (
@@ -504,7 +498,7 @@ class mediagrid extends Component {
                 error={errors.media_tags ? true : false}
                 onChange={this.handleChange}
                 value={this.state.media_tags}
-                helperText="Tags separated by commas"
+                // helperText="Tags separated by commas"
                 margin="normal"
               />
               <TextField
@@ -513,7 +507,7 @@ class mediagrid extends Component {
                 fullWidth
                 label="Select Category"
                 value={this.state.filters.category}
-                onChange={this. handleChange}
+                onChange={this.handleChange}
                 helperText="Subfolder"
               >
                 {catBuckets.map((option) => (
@@ -535,7 +529,7 @@ class mediagrid extends Component {
                 error={errors.media_filename ? true : false}
                 onChange={this.handleChange}
                 value={this.state.media_filename}
-                helperText="Filename"
+                // helperText="Filename"
                 margin="normal"
               />
 

@@ -3,16 +3,18 @@ import React, { Component } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
+
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import { Card, CardActions, CardContent, Divider, Grid, TextField } from '@material-ui/core';
+import { Card, CardContent, Divider, TextField } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 
@@ -29,9 +31,7 @@ import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+
 
 
 import axios from 'axios';
@@ -44,7 +44,6 @@ const styles = (theme) => ({
         flexGrow: 1,
         padding: theme.spacing(3),
     },
-    toolbar: theme.mixins.toolbar,
   title: {
     marginLeft: theme.spacing(2),
     flex: 1
@@ -122,7 +121,8 @@ const styles = (theme) => ({
   },
 
   icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
+    // color: 'rgba(255, 255, 255, 0.54)',
+    color: 'white',
   },
   tileRoot: {
     // width: 800,
@@ -134,9 +134,6 @@ const styles = (theme) => ({
     background:
       'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
       'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-  },
-  icon: {
-    color: 'white',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -275,7 +272,7 @@ class media extends Component {
 
     dayjs.extend(relativeTime);
     const { classes } = this.props;
-    const { open, errors, viewOpen } = this.state;
+    const { open, errors } = this.state;
 
     const handleClickOpen = () => {
       this.setState({
@@ -331,10 +328,6 @@ class media extends Component {
         });
     };
 
-    const handleViewClose = () => {
-      this.setState({ viewOpen: false });
-    };
-
     const handleClose = (event) => {
       this.setState({ open: false });
     };
@@ -342,7 +335,6 @@ class media extends Component {
     if (this.state.uiLoading === true) {
       return (
         <main className={classes.content}>
-          <div className={classes.toolbar} />
           {this.state.uiLoading && <CircularProgress size={150} className={classes.uiProgess} />}
         </main>
       );
@@ -368,13 +360,12 @@ class media extends Component {
 
       return (
         <main className={classes.content}>
-          <div className={classes.toolbar} />
           <Card  className={classes.root}>
 						<CardContent>
 							<div style={{ display: 'flex' }}>
 								<div>
 									<Typography className={classes.locationText} gutterBottom variant="h4">
-										Media Files
+                    Categories
 									</Typography>
 									 
                   <FormControl className={classes.formControl} xs={6}>
@@ -496,11 +487,6 @@ class media extends Component {
               ))}
 
             </ImageList>
-
-{/* 							
-						</CardContent>
-					</Card> */}
-
           
           <IconButton
             className={classes.floatingButton}
@@ -567,7 +553,7 @@ class media extends Component {
                 error={errors.media_tags ? true : false}
                 onChange={this.handleChange}
                 value={this.state.media_tags}
-                helperText="Tags separated by commas"
+                // helperText="Tags separated by commas"
                 margin="normal"
               />
               <TextField
@@ -576,7 +562,7 @@ class media extends Component {
                 fullWidth
                 label="Select Category"
                 value={this.state.filters.category}
-                onChange={this. handleChange}
+                onChange={this.handleChange}
                 helperText="Subfolder"
               >
                 {catBuckets.map((option) => (
@@ -598,7 +584,7 @@ class media extends Component {
                 error={errors.media_filename ? true : false}
                 onChange={this.handleChange}
                 value={this.state.media_filename}
-                helperText="Filename"
+                // helperText="Filename"
                 margin="normal"
               />
 

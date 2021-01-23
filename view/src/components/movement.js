@@ -6,8 +6,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
@@ -34,7 +32,6 @@ const styles = (theme) => ({
 			flexGrow: 1,
 			padding: theme.spacing(3),
 	},
-  toolbar: theme.mixins.toolbar,
 	title: {
 		marginLeft: theme.spacing(2),
 		flex: 1
@@ -310,7 +307,6 @@ class media extends Component {
 
 			return (
 				<main className={classes.content}>
-					<div className={classes.toolbar} />
 					<Card  className={classes.root}>
             <CardHeader>
               <Typography className={classes.locationText} gutterBottom variant="h4">

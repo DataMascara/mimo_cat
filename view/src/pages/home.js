@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import Account from '../components/account';
+// import Account from '../components/account';
 import Media from '../components/media';
 import Movement from '../components/movement';
 import Routine from '../components/routine';
 import BatchEdit1 from '../components/grid';
 
 import { Box, Button, Link, Grid, Container } from '@material-ui/core';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -26,34 +22,29 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Avatar from '@material-ui/core/Avatar';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
-import QueueIcon from '@material-ui/icons/Queue';
-import PermMediaIcon from '@material-ui/icons/PermMedia';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu'; 
 
 import { authMiddleWare } from '../util/auth'
-import { COLUMN_FILTER_BUTTON_CLICK } from '@material-ui/data-grid';
+// import { COLUMN_FILTER_BUTTON_CLICK } from '@material-ui/data-grid';
 
 axios.defaults.baseURL = 'https://us-east4-mimo-cat-f82c7.cloudfunctions.net/api';
 
 
 
 const styles = (theme) => ({
-	content:{
-		marginTop: 140,
-	},
 	root: {
 		display: 'flex'
 	},
-	appBar: {
-		zIndex: theme.zIndex.drawer + 1
-	},
 	content: {
+		marginTop: 140,
 		flexGrow: 1,
 		padding: theme.spacing(3)
+	},
+	topSpace: {
+		marginTop: 100
 	},
 	uiProgess: {
 		position: 'fixed',
@@ -63,15 +54,12 @@ const styles = (theme) => ({
 		left: '50%',
 		top: '35%'
 	},
-	toolbar: theme.mixins.toolbar,
 	appBar: {
+		zIndex: theme.zIndex.drawer + 1,
 		background: '#FFFFFF',
 		color: theme.palette.primary.main
 	},
-	toolbar: {
-    // justifyContent: 'space-between',
-    justifyContent: 'flex-start',
-	},
+	toolbar: theme.mixins.toolbar,
 	left: {
 		color: theme.palette.primary.main
   },
@@ -94,8 +82,8 @@ const styles = (theme) => ({
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
+		
     <div
       role="tabpanel"
       hidden={value !== index}
@@ -105,7 +93,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+						{children}
         </Box>
       )}
     </div>
@@ -121,7 +109,8 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+		'aria-controls': `simple-tabpanel-${index}`,
+		name: index
   };
 }
 
@@ -132,7 +121,8 @@ const StyledMenu = withStyles({
 })((props) => (
   <Menu
     elevation={0}
-    getContentAnchorEl={null}
+		getContentAnchorEl={null}
+		open={false}
     anchorOrigin={{
       vertical: 'bottom',
       horizontal: 'center',
@@ -140,7 +130,7 @@ const StyledMenu = withStyles({
     transformOrigin={{
       vertical: 'top',
       horizontal: 'center',
-    }}
+		}}
     {...props}
   />
 ));
@@ -156,33 +146,14 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
+
 class home extends Component {
 	state = {
 		render: false,
-		page: 'Media',
+		page: 'Categories',
 		value: 0,
 		anchorEl: null,
 		openUserMenu: Boolean(this.anchorEl)
-	};
-
-	loadAccountPage = (event) => {
-		this.setState({ render: false, page: 'Profile' });
-	};
-
-	loadMediaPage = (event) => {
-		this.setState({ render: true, page: 'Media' });
-  };
-  
-  loadMovementPage = (event) => {
-		this.setState({ render: false, page: 'Movement' });
-  };
-
-  loadRoutinePage = (event) => {
-		this.setState({ render: false, page: 'Routine' });
-	};
-
-  loadBatchEditPage = (event) => {
-		this.setState({ render: false, page: 'BatchEdit1' });
 	};
 
 	logoutHandler = (event) => {
@@ -197,8 +168,14 @@ class home extends Component {
 	};
 	handleClose = () => {
 		this.setState({  anchorEl: null });
-  };
+	};
 	
+	changeTab = (event, newValue) => {
+		this.setState({  
+			value: newValue
+		});
+	};
+
 
 	constructor(props) {
 		super(props);
@@ -207,11 +184,14 @@ class home extends Component {
 			firstName: '',
 			lastName: '',
 			username: '',
+			email: '',
+			value: 0,
 			profilePicture: '',
 			uiLoading: true,
 			imageLoading: false
 		};
 	}
+	
 
   // Recommended as per https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
 	componentWillMount = () => {
@@ -226,8 +206,6 @@ class home extends Component {
 					firstName: response.data.userCredentials.firstName,
 					lastName: response.data.userCredentials.lastName,
 					email: response.data.userCredentials.email,
-					phoneNumber: response.data.userCredentials.phoneNumber,
-					country: response.data.userCredentials.country,
 					username: response.data.userCredentials.username,
 					uiLoading: false,
 					profilePicture: response.data.userCredentials.imageUrl
@@ -243,6 +221,7 @@ class home extends Component {
 			});
 		};
 		
+		
 
 	render() {
 		
@@ -255,6 +234,8 @@ class home extends Component {
 				</div>
 			);
 		} else {
+			
+
 			return (
 				<div className={classes.root}>
 					<CssBaseline />
@@ -281,7 +262,7 @@ class home extends Component {
 										<GitHubIcon />
 									</IconButton>
 									<Button
-										color="default" 
+										color="primary" 
 										className={classes.rightLink} 
 										aria-controls="menu-appbar"
 										aria-haspopup="true"
@@ -302,29 +283,20 @@ class home extends Component {
 						</Toolbar>
 						<Divider />
 						<Tabs value={this.state.value} 
-						onChange={this.handleChange} 
-						centered 
-						indicatorColor="secondary"
-						aria-label="tabs">
-							<Tab label="Routines" onClick={this.loadRoutinePage} {...a11yProps(0)}  />
-							<Tab label="Movements" onClick={this.loadMovementPage} {...a11yProps(1)} />
-							<Tab label="Media"  onClick={this.loadMediaPage} {...a11yProps(2)} />
-							<Tab label="Files"  onClick={this.loadBatchEditPage} {...a11yProps(3)} />
+							onChange={this.changeTab}
+							name={this.state.value}
+							centered 
+							indicatorColor="secondary"
+							aria-label="tabs">
+							<Tab label="Home" {...a11yProps(0)}  />
+							<Tab label="Routines" {...a11yProps(1)}  />
+							<Tab label="Movements" {...a11yProps(2)} />
+							<Tab label="Categories"  {...a11yProps(3)} />
+							<Tab label="Admin"  {...a11yProps(4)} />
 						</Tabs>
 					</AppBar>
 					
-					<TabPanel value={this.state.value} index={0}>
-						< Routine /> 
-					</TabPanel>
-					<TabPanel value={this.state.value} index={1}>
-					<Movement /> 
-					</TabPanel>
-					<TabPanel value={this.state.value} index={2}>
-						<Media />
-					</TabPanel>
-					<TabPanel value={this.state.value} index={2}>
-						<BatchEdit1 />
-					</TabPanel>
+
 
 					<StyledMenu
                 id="menu-appbar"
@@ -354,19 +326,26 @@ class home extends Component {
 									<ListItemText primary="Logout" />
 								</StyledMenuItem> 
           </StyledMenu>
+					
 					<Container>
-					<Grid container spacing={3}>
-						<Grid item xs={12}>
-							<Box></Box>
-							<Box></Box>
-						</Grid>
+					<Grid container spacing={10} className={classes.topSpace}>
 						<Grid item xs={12}>
 							<div>
-								{ (this.state.page === 'Profile') ? <Account /> 
-								: (this.state.page === 'Media') ? <Media />
-								: (this.state.page === 'Movement') ? <Movement /> 
-								: (this.state.page === 'BatchEdit1') ? <BatchEdit1 />
-								: < Routine /> }
+							<TabPanel value={this.state.value} index={0}>
+								Landing Page
+							</TabPanel>
+							<TabPanel value={this.state.value} index={1}>
+								< Routine />
+							</TabPanel>
+							<TabPanel value={this.state.value} index={2}>
+								<Movement />
+							</TabPanel>
+							<TabPanel value={this.state.value} index={3}>
+								<Media />
+							</TabPanel>
+							<TabPanel value={this.state.value} index={4}>
+								<BatchEdit1 />
+							</TabPanel>
 							</div>
 						</Grid>
 					</Grid>

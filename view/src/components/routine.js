@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 
 
 import CardHeader from '@material-ui/core/CardActions';
-import { Card, CardActions, CardContent, Divider, Grid, TextField } from '@material-ui/core';
+import { Card, CardContent, Divider, TextField } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -25,9 +25,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import LaunchIcon from '@material-ui/icons/Launch';
 
-import MenuItem from '@material-ui/core/MenuItem';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 
@@ -35,14 +33,13 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { authMiddleWare } from '../util/auth';
-import media from './media';
+// import media from './media';
 
 const styles = ((theme) => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
     },
-    toolbar: theme.mixins.toolbar,
     root: {
         flexGrow : 1,
         "& .MuiPaper-root": {
@@ -74,26 +71,6 @@ const styles = ((theme) => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
-
-function fetchAPI(url, param) {
-    const authToken = localStorage.getItem('AuthToken');
-    let routines = [];
-
-      axios.defaults.headers.common = { Authorization: `${authToken}` };
-      axios
-        .get(`/routines/${param}`)
-        .then((response) => {
-          this.setState({
-            routines: response.data,
-            uiLoading: false
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-}
-
 
 
 class routine extends Component {
@@ -186,8 +163,6 @@ class routine extends Component {
     
       handleViewOpen(data) {
 
-        var routineData = [];
-
         axios.get(`/routines/${data.row.id}`)
             .then((response) => {
                     console.log(response.data[0]);
@@ -237,7 +212,6 @@ class routine extends Component {
                 routine_name: '',
                 movements: [], 
                 created_at: '',
-                id: '',
 				buttonType: '',
 				open: true
 			});
@@ -291,8 +265,7 @@ class routine extends Component {
 		};
         
         return (
-            <main className={classes.content}>
-            <div className={classes.toolbar} />
+            <div className={classes.content}>
             <Card  className={classes.root}>
             <CardHeader>
               <Typography className={classes.locationText} gutterBottom variant="h4">
@@ -450,7 +423,6 @@ class routine extends Component {
                 error={errors.media_filename ? true : false}
                 onChange={this.handleChange}
                 value={this.state.media_filename}
-                helperText="Movement ID's separated by tags"
                 margin="normal"
               />
 
@@ -469,7 +441,7 @@ class routine extends Component {
             </DialogActions>
           </Dialog>
 
-            </main>
+            </div>
         )
     }
 }

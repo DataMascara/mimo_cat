@@ -44,17 +44,17 @@ app.delete('/routines/:id', auth, deleteRoutine);
 app.put('/routines/:id', auth, editRoutine);
 
 /* Movements API endpoints */
-const {
-  getAllMovements,
-  addMovement,
-  deleteMovement,
-  editMovement
-} = require('./api/movements')
+// const {
+//   getAllMovements,
+//   addMovement,
+//   deleteMovement,
+//   editMovement
+// } = require('./api/movements')
 
-app.get('/movements', auth, getAllMovements);
-app.post('/movements/add', auth, addMovement);
-app.delete('/movements/:id', auth, deleteMovement);
-app.put('/movements/:id', auth, editMovement);
+// app.get('/movements', auth, getAllMovements);
+// app.post('/movements/add', auth, addMovement);
+// app.delete('/movements/:id', auth, deleteMovement);
+// app.put('/movements/:id', auth, editMovement);
 
 /* Media API endpoints */
 const {
