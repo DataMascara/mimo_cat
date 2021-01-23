@@ -249,7 +249,7 @@ class home extends Component {
 									className={classes.title}
 									href="/"
 								>
-									{'Minimal Movement Catalog'}
+									{'Minimum Movement'}
 								</Link>
 								<div className={classes.right}> 
 							
