@@ -268,7 +268,7 @@ class home extends Component {
 									className={classes.title}
 									href="/"
 								>
-									{'Minimal Movement'}
+									{'Minimum Movement'}
 								</Link>
 								<div className={classes.right}> 
 							
