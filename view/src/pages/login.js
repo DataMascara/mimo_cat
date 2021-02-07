@@ -113,8 +113,6 @@ class login extends Component {
 				<div className={classes.paper}>
 					<h1>Minimum Movement</h1>
 
-					<img src={process.env.PUBLIC_URL + 'noun_LuckyCat_42819x512.png'} alt="Logo" width="300" />
-
 					<Typography component="h1" variant="h5"></Typography>
 					<Typography component="h1" variant="h5">Minimum Movement
 						Please log in to continue
