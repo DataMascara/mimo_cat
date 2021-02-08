@@ -114,7 +114,7 @@ class login extends Component {
 					<h1>Minimum Movement</h1>
 
 					<Typography component="h1" variant="h5"></Typography>
-					<Typography component="h1" variant="h5">Minimum Movement
+					<Typography component="h1" variant="h5">
 						Please log in to continue
 					</Typography>
 					<form className={classes.form} noValidate>
@@ -168,7 +168,7 @@ class login extends Component {
 						
 						<Grid container>
 							<Grid item>
-								<Link href="about" variant="body2" className={classes.legal}>
+								<Link href="about" variant="body2">
 									{"About this site"}
 								</Link>
 							</Grid>
