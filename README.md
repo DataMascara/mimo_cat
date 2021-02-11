@@ -45,7 +45,7 @@ To deploy the api changes, `firebase deploy --only functions` will deploy all th
 
 Note that the region settings are specificed in the the code with the function `.region('us-east4')`
 
-To test the UI locally, you must be in the view folder before running `npm run start` - this command looks at the package.json file for configuration information. While you're in that mode, it will refresh the page as you make changes to the JS files. You can set the proxy field in the `package.json` to connect to a specific backend location. Exit out of that preview mode using `CTRL+C` to return back to a regular terminal prompt. Make sure that you've cleaned up the URLs to the backend if you've been shifting between localhost and prod modes. 
+To test the UI locally, you must be in the view folder before running `npm start` - this command looks at the package.json file for configuration information. While you're in that mode, it will refresh the page as you make changes to the JS files. You can set the proxy field in the `package.json` to connect to a specific backend location. Exit out of that preview mode using `CTRL+C` to return back to a regular terminal prompt. Make sure that you've cleaned up the URLs to the backend if you've been shifting between localhost and prod modes. 
 
 To deploy the UI changes, `npm run build` while in the view folder to use creat-react-app's tools for packaging a deployable version. The `package.json` is configured such that a new build folder is created with the files to deploy in there. Go back to the root folder `cd ..` to run the firebase commands for deploying to the hosting server: `firebase deploy --only hosting --project <project-id>` 
 
@@ -90,7 +90,7 @@ To deploy the UI changes, `npm run build` while in the view folder to use creat-
 
 
 
-## First Time Setup
+## First Time Setup of a firebase project
 
 1. In Firebase console: go to the Functions section and click button 'get started'
 2. in terminal of local computer, install firebase command line tools using npm: `npm install -g firebase-tools` (this is a one time thing on a new computer)
@@ -98,13 +98,13 @@ To deploy the UI changes, `npm run build` while in the view folder to use creat-
     1. select set up functions only (3rd on list), and use exiesting project. Javascript; no eslint; yes to dependencies installed now
     2. This creates a subfolder, `functions` as its own nodejs app. At the time of this writing it is set to engine node v12.
     3. You should see the message in your console: `Firebase initialization complete!`
-    4. Also you now have firebase.json, .firebaserc
+    4. Also you now have `firebase.json`, `.firebaserc` files created for you.
 4. In Firebase console go to Firestore section and click button 'create database'
   1. Select from production or test
   2. Select region - here we defaulted to us-east4
 5. In your terminal you need to install some NPM dependencies for API creationg and also create files that handle the information exposed by the API (see scripts.sh for examples)
-    1. `npm install i express` allows us to use the express library
-    2. `npm i express firebase-admin` allows interaction firebase project
+    1. `npm i express` allows us to use the express library
+    2. `npm i firebase-admin` allows interaction firebase project
     3. Update the functions/index.js and functions/api/object.js files for rendering JSON objects
     4. When ready, preview changes with `firebase serve`
     5. Use curl or an API client to check each of the endpoints

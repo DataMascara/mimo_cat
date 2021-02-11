@@ -79,7 +79,7 @@ exports.deleteMedia = (request, response) => {
         .get()
         .then((doc) => {
             if (!doc.exists) {
-                return response.status(404).json({ error: 'Car not found' })
+                return response.status(404).json({ error: 'Media not found' })
             }
             return document.delete();
         })
