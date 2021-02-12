@@ -15,8 +15,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import { Card, CardContent, ListItemIcon, ListItemText } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Avatar from '@material-ui/core/Avatar';
@@ -77,6 +76,14 @@ const styles = (theme) => ({
 	},
 	horizontalList: {
 		display: 'inline-block',
+	},
+	landing: {
+		background: `url('./background.jpg')`,
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+		backgroundAttachment: 'fixed',
+    opacity: .8
 	}
 });
 
@@ -237,7 +244,7 @@ class home extends Component {
 			
 
 			return (
-				<div className={classes.root}>
+				<div className={(this.state.value == 0 ?  (classes.root, classes.landing) : classes.root )}>
 					<CssBaseline />
 					<AppBar position="fixed" className={classes.appBar}>
 						<Toolbar className={classes.toolbar}> 
@@ -332,10 +339,28 @@ class home extends Component {
 						<Grid item xs={12}>
 							<div>
 							<TabPanel value={this.state.value} index={0}>
-								Landing Page
+								<Grid container spacing={2}>
+							
+									{["Routines", "Movements", "Categories", "Admin"].map((item) => (
+											<Grid item xs={12} sm={6} md={6}>
+													<Card variant="outlined">
+
+															<CardContent>
+																	<Typography variant="h5" component="h2">
+																			{item}
+																	</Typography>
+
+																	<div className={classes.tags}>
+																			Subtitle
+																	</div>
+															</CardContent>
+													</Card>
+											</Grid>
+									))}
+								</Grid>
 							</TabPanel>
 							<TabPanel value={this.state.value} index={1}>
-								< Routine />
+								<Routine />
 							</TabPanel>
 							<TabPanel value={this.state.value} index={2}>
 								<Movement />

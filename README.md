@@ -27,15 +27,19 @@ First - contact (@[katychuang](https://github.com/katychuang)) to get permission
 
 1. Install CLI tools needed for managing various 
     - All at once `npm i -g firebase-tools create-react-app` 
-2. Clone this repository `git clone git@github.com:DataMascara/mimo_cat.git`
-3. Install backend dependences: 
-    - Go into the project root `cd mimo_cat` and then one more time into functions subfolder `cd functions`.
-    - From within the functions folder, install dependencies. `npm i`
-4. Configuring access with firebase: 
+2. Clone this repository, i.e. `git clone git@github.com:DataMascara/mimo_cat.git`
+
+#### Install backend dependences: 
+
+1. Go into the project root `cd mimo_cat` and then one more time into functions subfolder `cd functions`.
+2. From within the functions folder, install dependencies. `npm i`
+3. Configuring access with firebase: 
     - Copy the configs from the firebase console under your app settings information page into `config.js`. The *config-example.js* file shows the structure of the file. 
-6. Install frontend dependencies:
-    - Go into the view subfolder. From the project root, `cd view`
-    - install dependecies. Running `npm i` works because there is a `package.json` file in that subfolder that specifies which libraries to install.
+
+#### Install frontend dependencies:
+
+1. Go into the view subfolder. From the project root, `cd view`
+2. install dependecies. Running `npm i` works because there is a `package.json` file in that subfolder that specifies which libraries to install.
 
 ### Development flow
 
