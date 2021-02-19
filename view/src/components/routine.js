@@ -282,7 +282,7 @@ class routine extends Component {
                 <Table className={classes.table} size="small" aria-label="a dense table">
                     <TableHead>
                     <TableRow>
-                        <TableCell>Id</TableCell>
+                        <TableCell>User</TableCell>
                         <TableCell align="center">Display Name</TableCell>
                         <TableCell align="center">Length</TableCell>
                         <TableCell align="center">Created</TableCell>
@@ -293,7 +293,7 @@ class routine extends Component {
                     {this.state.routines.map((row) => (
                         <TableRow key={row.name} className={classes.hideLastBorder}>
                         <TableCell component="th" scope="row">
-                            {row.id}
+                            {row.username}
                         </TableCell>
                         <TableCell align="center">{row.name}</TableCell>
                         <TableCell align="center">{row.num_movements}</TableCell>                        
