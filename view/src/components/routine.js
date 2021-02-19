@@ -82,6 +82,7 @@ class routine extends Component {
           media: [],
           routine_name: '',
           movements: [], 
+          mList: '',
           created_at: '',
           id: '',
           errors: [], 
@@ -149,7 +150,7 @@ class routine extends Component {
       }
     
       handleEditClickOpen(data) {
-        console.log(data.item);
+        // console.log(data.item);
         this.setState({
           active: true,
           id: data.item.routineId,
@@ -165,8 +166,8 @@ class routine extends Component {
 
         axios.get(`/routines/${data.row.id}`)
             .then((response) => {
-                    console.log(response.data[0]);
-           
+              console.log(response.data[0]);
+              var m = '';
                         this.setState({ 
                                     routines: response.data, 
                                     id: data.row.id,
@@ -220,27 +221,28 @@ class routine extends Component {
 		const handleSubmit = (event) => {
 			authMiddleWare(this.props.history);
 			event.preventDefault();
-			const userMedia = {
-                id: this.state.media.id,
-                active: this.state.media.active,
-                created_by: this.state.media.uploade_by,
-                media_name: this.state.media_name,
-                media_filename: this.state.media_filename,
-                media_tags: this.state.media_tags,
-                media_category: this.state.category
+			const newRoutine = {
+        id: this.state.media.id,
+        active: this.state.media.active,
+        created_by: this.state.media.uploade_by,
+        movements: null,
+        mList: this.state.mList || '',
+        name: this.state.name,
+        username: this.state.username,
+        video_url: this.state.video_url || ''
 			};
 			let options = {};
 			if (this.state.buttonType === 'Edit') {
 				options = {
-					url: `/routine/${this.state.id}`,
+					url: `/routines/${this.state.id}`,
 					method: 'put',
-					data: userMedia
+					data: newRoutine
 				};
 			} else {
 				options = {
-					url: '/routine',
+					url: '/routines/add',
 					method: 'post',
-					data: userMedia
+					data: newRoutine
 				};
 			}
 			const authToken = localStorage.getItem('AuthToken');
@@ -284,8 +286,9 @@ class routine extends Component {
                     <TableRow>
                         <TableCell>User</TableCell>
                         <TableCell align="center">Display Name</TableCell>
+                        <TableCell align="center">Video</TableCell>
                         <TableCell align="center">Length</TableCell>
-                        <TableCell align="center">Created</TableCell>
+                        <TableCell align="center">Date of Creation</TableCell>
                         <TableCell align="center"> </TableCell>
                     </TableRow>
                     </TableHead>
@@ -296,10 +299,13 @@ class routine extends Component {
                             {row.username}
                         </TableCell>
                         <TableCell align="center">{row.name}</TableCell>
+                        <TableCell align="center">
+                          <Link href={row.video_url} variant="body2" rel="noopener" target="_blank">{row.video_url}</Link>
+                        </TableCell>
                         <TableCell align="center">{row.num_movements}</TableCell>                        
                         <TableCell align="center">{dayjs(row.created_at).fromNow()}</TableCell>
                         <TableCell align="center">
-                            <Button size="small" color="secondary" onClick={() => this.handleViewOpen({ row })}>
+                            <Button size="small" color="secondary" onClick={() => this.handleViewOpen({ row })} disabled tooltip='disabled'>
                                 {' '}
                                 View{' '}
                             </Button>
@@ -350,12 +356,13 @@ class routine extends Component {
                 <br />
 
                 {this.state.movements.map((move) => (
-
+                  (move.media_filename ? 
                     <Typography className={classes.pos} color="textSecondary">
-                    <Link href={`https://storage.googleapis.com/mimo-cat-f82c7/movement/${move.medie_filename}`} variant="body2">
+                    <Link href={`https://storage.googleapis.com/mimo-cat-f82c7/movement/${move.media_filename}`} variant="body2">
                         {move.media_name} <LaunchIcon fontSize="small" />
                     </Link>
                     </Typography>
+                  : '' )
                 ))}
                 {/* .map((move) => (
                       <Link href="#" variant="body2">
@@ -366,7 +373,7 @@ class routine extends Component {
                 </DialogContent>
             </Dialog>
             
-            <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}  aria-labelledby="edit-media-dialog">
+          <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}  aria-labelledby="edit-media-dialog">
           <DialogTitle id="edit-dialog-title">
             <Typography variant="h6" className={classes.title}>
               {this.state.buttonType === 'Edit' ? 'Edit Routine' : 'Create a new Routine'}
@@ -382,16 +389,15 @@ class routine extends Component {
             <form className={classes.form} noValidate>
             <TextField
                 variant="standard"
+                hidden
                 disabled
                 fullWidth
-                id="media_id"
+                id="username"
                 label="Id"
-                name="media_id"
-                autoComplete="mediaId"
-                helperText={errors.media_id}
-                placeholder="system generated"
-                value={this.state.media_id}
-                error={errors.media_id ? true : false}
+                name="username"
+                autoComplete="username"
+                value={this.state.username}
+                error={errors.username ? true : false}
                 onChange={this.handleChange}
                 margin="normal"
               />
@@ -400,13 +406,27 @@ class routine extends Component {
                 variant="outlined"
                 required
                 fullWidth
-                id="media_name"
+                id="name"
                 label="Display Name"
-                name="media_name"
-                autoComplete="mediaName"
-                helperText={errors.media_name}
-                value={this.state.media_name}
-                error={errors.media_name ? true : false}
+                name="name"
+                autoComplete="routineName"
+                helperText={errors.name}
+                value={this.state.name}
+                error={errors.name ? true : false}
+                onChange={this.handleChange}
+                margin="normal"
+              />
+
+              <TextField
+                variant="outlined"
+                fullWidth
+                id="video_url"
+                label="Video"
+                name="video_url"
+                autoComplete="video_url"
+                helperText={errors.video_url}
+                value={this.state.video_url}
+                error={errors.video_url ? true : false}
                 onChange={this.handleChange}
                 margin="normal"
               />
@@ -415,14 +435,14 @@ class routine extends Component {
                 variant="outlined"
                 required
                 fullWidth
-                id="media_filename"
+                id="mList"
                 label="Movements"
-                name="media_filename"
-                autoComplete="mediaFileName"
-                helperText={errors.media_filename}
-                error={errors.media_filename ? true : false}
+                name="mList"
+                autoComplete="mList"
+                helperText={errors.mList}
+                error={errors.movements ? true : false}
                 onChange={this.handleChange}
-                value={this.state.media_filename}
+                value={this.state.mList}
                 margin="normal"
               />
 
