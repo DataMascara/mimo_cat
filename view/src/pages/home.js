@@ -347,7 +347,7 @@ class home extends Component {
 							
 							{menuNames.splice(1).map((item,index) => (
 									<Grid item xs={12} sm={6} md={6}>
-										<CardActionArea component="a" href={item.toLowerCase()} value={index+1} key={item} name={this.state.value} onclick={this.changeTab}>
+										<CardActionArea component="a" href={item.toLowerCase()} value={index+1} key={item} name={this.state.value} onClick={this.changeTab}>
 								
 											<Card variant="outlined">
 													<CardContent>
