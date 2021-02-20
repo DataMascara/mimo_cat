@@ -3,8 +3,6 @@ import axios from 'axios';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { alpha } from '@material-ui/core/styles';
-// import Account from '../components/account';
 
 import Categories from '../components/media';
 import Movement from '../components/movement';
@@ -163,7 +161,7 @@ class home extends Component {
 		page: 'Categories',
 		value: 0,
 		anchorEl: null,
-		openUserMenu: Boolean(this.anchorEl)
+		openUserMenu: false
 	};
 
 	logoutHandler = (event) => {
@@ -192,7 +190,6 @@ class home extends Component {
 	constructor(props) {
 		super(props);
 		var x = window.location.pathname.substring(1);
-		console.log(x);
 		var y = menuNames.map(x => x.toLowerCase()).indexOf(x);
 
 		this.state = {
@@ -216,7 +213,7 @@ class home extends Component {
 		axios
 			.get('/user')
 			.then((response) => {
-				// console.log(response.data);
+
 				this.setState({
 					firstName: response.data.userCredentials.firstName,
 					lastName: response.data.userCredentials.lastName,
@@ -227,11 +224,11 @@ class home extends Component {
 				});
 			})
 			.catch((error) => {
-        console.log(error);
+				
 				if(error.response.status === 403) {
 					this.props.history.push('/login')
 				}
-				console.log(error);
+				
 				this.setState({ errorMsg: 'Error in retrieving the data' });
 			});
 		};

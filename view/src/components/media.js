@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route, useParams } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -8,21 +8,17 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import { Card, CardContent, Divider, TextField, Grid, CardActionArea } from '@material-ui/core';
+import { Card, CardContent, TextField, Grid, CardActionArea } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
 
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select'; 
 
 
 // import { makeStyles } from '@material-ui/core/styles';
@@ -146,6 +142,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 class media extends Component {
+   
   constructor(props) {
     super(props);
 
@@ -167,14 +164,14 @@ class media extends Component {
       open: false,
       uiLoading: true,
       buttonType: '',
-      viewOpen: false
+      viewOpen: false,
     };
 
     this.deleteMediaHandler = this.deleteMediaHandler.bind(this);
     this.handleEditClickOpen = this.handleEditClickOpen.bind(this);
     this.handleViewOpen = this.handleViewOpen.bind(this);
   }
-
+  
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
@@ -258,18 +255,12 @@ class media extends Component {
       );
     });
 
-    const DialogContent = withStyles((theme) => ({
-      viewRoot: {
-        padding: theme.spacing(2)
-      }
-    }))(MuiDialogContent);
-
     const baseurl = "https://storage.googleapis.com/mimo-cat-f82c7";
      
 
 
     dayjs.extend(relativeTime);
-    const { classes, params } = this.props;
+    const { classes } = this.props;
     const { open, errors } = this.state;
 
     const handleClickOpen = () => {
@@ -365,19 +356,7 @@ class media extends Component {
         {
           value: 'loweringHip',
           label: 'Lowering Hip',
-        },
-        {
-          value: 'movement',
-          label: 'Movement',
-        },
-        {
-          value: 'clips',
-          label: 'Clip',
-        },
-        {
-          value: 'other',
-          label: 'Other',
-        },
+        }
       ];
       
 
@@ -440,22 +419,22 @@ class media extends Component {
             <AddCircleIcon style={{ fontSize: 60 }} />
           </IconButton>
           
-          <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}  aria-labelledby="edit-media-dialog">
+          <Dialog open={open} onClose={handleClose} TransitionComponent={Transition} aria-labelledby="edit-dialog"
+          >
           <DialogTitle id="edit-dialog-title">
             <Typography variant="h6" className={classes.title}>
               {this.state.buttonType === 'Edit' ? 'Edit Media' : 'Create a new Media'}
             </Typography>
           </DialogTitle>
-          <Divider />
-          <DialogContent>
+          <DialogContent dividers>
             <DialogContentText>
               Instructions for the form can go here.
             </DialogContentText>
 
-
             <form className={classes.form} noValidate>
             <TextField
                 variant="standard"
+                hidden
                 disabled
                 fullWidth
                 id="media_id"
@@ -483,7 +462,6 @@ class media extends Component {
                 margin="normal"
               />
 
-            
               <TextField
                 variant="outlined"
                 required
@@ -499,6 +477,7 @@ class media extends Component {
                 // helperText="Tags separated by commas"
                 margin="normal"
               />
+
               <TextField
                 id="outlined-select-category"
                 select
@@ -506,7 +485,6 @@ class media extends Component {
                 label="Select Category"
                 value={this.state.filters.category}
                 onChange={this.handleChange}
-                helperText="Subfolder"
               >
                 {catBuckets.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -527,7 +505,6 @@ class media extends Component {
                 error={errors.media_filename ? true : false}
                 onChange={this.handleChange}
                 value={this.state.media_filename}
-                // helperText="Filename"
                 margin="normal"
               />
 

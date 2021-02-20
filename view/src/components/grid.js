@@ -20,7 +20,6 @@ import Box from '@material-ui/core/Box';
 
 
 import MenuItem from '@material-ui/core/MenuItem';
-import { Divider } from '@material-ui/core';
 
 import { DataGrid, ColDef, CellParams } from '@material-ui/data-grid';
 
@@ -148,11 +147,11 @@ class mediagrid extends Component {
   }
   
   handleChange = (event) => {
-    // console.log("handleChange " + event.target + " Id: " + event.target.id + "; Name: " + [event.target.name] + " ; Value: " + event.target.value)
     this.setState({
       [event.target.name]: event.target.value
     });
   };
+
 
   componentWillMount = () => {
     authMiddleWare(this.props.history);
@@ -463,8 +462,7 @@ class mediagrid extends Component {
           <DialogTitle id="edit-dialog-title" >
               {this.state.buttonType === 'Edit' ? 'Edit Media' : 'Create a new Media'}
           </DialogTitle>
-          <Divider />
-          <DialogContent>
+          <DialogContent dividers>
             <DialogContentText>
               Instructions for the form can go here.
             </DialogContentText>
@@ -515,7 +513,6 @@ class mediagrid extends Component {
                 error={errors.media_filename ? true : false}
                 onChange={this.handleChange}
                 value={this.state.media_filename}
-                // helperText="Filename"
                 margin="normal"
               />
             </Grid>

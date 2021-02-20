@@ -18,7 +18,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
+import DialogContent from '@material-ui/core/DialogContent';
 
 import FormHelperText from '@material-ui/core/FormHelperText';
 
@@ -183,7 +183,7 @@ class media extends Component {
 		this.setState({
 			active: data.item.active,
 			id: data.item.id,
-			media_type: data.item.category,
+			media_type: data.item.media_category,
 			media_id: data.item.id,
 			media_name: data.item.name,
 			lexicon_movement: data.item.lexicon.movement,
@@ -199,7 +199,7 @@ class media extends Component {
 	handleViewOpen(data) {
 		this.setState({
 			active: data.item.active,
-			media_type: data.item.category,
+			media_type: data.item.media_type,
 			media_id: data.item.id,
 			media_name: data.item.name,
 			lexicon_tags: data.item.lexicon.tags,
@@ -226,12 +226,6 @@ class media extends Component {
 				</MuiDialogTitle>
 			);
 		});
-
-		const DialogContent = withStyles((theme) => ({
-			viewRoot: {
-				padding: theme.spacing(2)
-			}
-		}))(MuiDialogContent);
 
     const baseurl = "https://storage.googleapis.com/mimo-cat-f82c7";
 
