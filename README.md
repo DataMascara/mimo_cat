@@ -144,3 +144,33 @@ Helpful Links for frontend dev:
 * Create-React-App https://create-react-app.dev/
 * Material UI v5 https://next.material-ui.com/
   * In case you're looking for Material-UI v5 changes, check the migration guide https://next.material-ui.com/guides/migration-v4/#pagination
+
+---
+
+## Troubleshooting
+
+* Multiple NVM versions
+    From: https://www.digitalocean.com/community/tutorials/nodejs-node-version-manager
+
+    Install NVM
+
+    ```sh
+    #install Node Version Manger
+    `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash`
+    ```
+
+    Settings
+
+    ```sh
+    # set $NVM_DIR
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+    ```
+
+    Then, set the nvm version you want:
+    
+    * To install, `nvm install 12`
+    * To switch node version, `nvm use 12`
+
+
