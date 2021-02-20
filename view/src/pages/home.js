@@ -3,9 +3,10 @@ import axios from 'axios';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { alpha } from '@material-ui/core/styles';
 // import Account from '../components/account';
 
-import Media from '../components/media';
+import Categories from '../components/media';
 import Movement from '../components/movement';
 import Routine from '../components/routine';
 import BatchEdit1 from '../components/grid';
@@ -255,7 +256,7 @@ class home extends Component {
 					<CssBaseline />
 					<AppBar position="fixed" className={classes.appBar}>
 						<Toolbar className={classes.toolbar}> 
-							<div className={classes.left} />
+							<div className={classes.left} key="topleft" />
 								<Link
 									variant="h6"
 									underline="none"
@@ -265,11 +266,11 @@ class home extends Component {
 								>
 									{'Minimum Movement'}
 								</Link>
-								<div className={classes.right}> 
+								<div className={classes.right} key="topmiddle" > 
 							
 								</div>
 									{/* onClick={() => {}} */}
-								<div className={classes.right}> 
+								<div className={classes.right} key="topright" > 
 									<IconButton  aria-label="source code" 
 									 target="_blank" href="http://github.com/DataMascara/mimo_cat">
 										<GitHubIcon />
@@ -302,11 +303,11 @@ class home extends Component {
 							centered 
 							indicatorColor="secondary"
 							aria-label="tabs">
-							<Tab label="Home"  href="/" {...a11yProps(0)} />
-							<Tab label="Routines"  href="routines" {...a11yProps(1)} />
-							<Tab label="Movements"  href="movements" {...a11yProps(2)} />
-							<Tab label="Categories" href="categories" {...a11yProps(3)}  />
-							<Tab label="Admin" href="admin" {...a11yProps(4)} />
+							<Tab label="Home"  href="/" {...a11yProps(0)} key="tab0" />
+							<Tab label="Routines"  href="/routines" {...a11yProps(1)} key="tab1" />
+							<Tab label="Movements"  href="/movements" {...a11yProps(2)} key="tab2" />
+							<Tab label="Categories" href="/categories" {...a11yProps(3)} key="tab3" />
+							<Tab label="Admin" href="/admin" {...a11yProps(4)} key="tab4" />
 						</Tabs>
 					: '' }
 					</AppBar>
@@ -326,7 +327,7 @@ class home extends Component {
               open={this.state.openUserMenu}
               onClose={this.handleClose}
               >
-              <StyledMenuItem onClick={this.loadAccountPage}>
+              <StyledMenuItem onClick={this.loadAccountPage} >
                 <ListItemIcon>
                   <AccountBoxIcon fontSize="small" />
                 </ListItemIcon>
@@ -343,11 +344,11 @@ class home extends Component {
 					
 
 					<Route exact path="/">
-						<Grid container spacing={2}>
+						<Grid container spacing={2} key="home-main">
 							
 							{menuNames.splice(1).map((item,index) => (
-									<Grid item xs={12} sm={6} md={6}>
-										<CardActionArea component="a" href={item.toLowerCase()} value={index+1} key={item} name={this.state.value} onClick={this.changeTab}>
+									<Grid item xs={12} sm={6} md={6} key={item+"g"}>
+										<CardActionArea component="a" href={item.toLowerCase()} value={index+1} key={item+"c"} name={this.state.value} onClick={this.changeTab}>
 								
 											<Card variant="outlined">
 													<CardContent>
@@ -367,7 +368,7 @@ class home extends Component {
 					</Route>
 
 					<Container>
-					<Grid container spacing={10} className={classes.topSpace}>
+					<Grid container spacing={10} className={classes.topSpace} key="gridall">
 						<Grid item xs={12}>
 							<div>
 							<Route exact path="/routines">
@@ -376,8 +377,8 @@ class home extends Component {
 							<Route exact path="/movements">
 								<Movement />
 							</Route>
-							<Route exact path="/categories">
-								<Media />
+							<Route path="/categories">
+								<Categories />
 							</Route>
 							<Route exact path="/admin">
 								<BatchEdit1 />

@@ -45,7 +45,6 @@ function App() {
       <Router>
           <div>
             <Switch>
-                <Route path="/" component={home} />
                 <Route exact path="/about" component={about}/>
                 <Route exact path="/login" component={login}/>
                 <Route exact path="/signup" component={signup}/>

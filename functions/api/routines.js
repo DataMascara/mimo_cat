@@ -143,10 +143,6 @@ exports.editRoutine = ( request, response ) => {
   .catch((err) => {
       console.error(err);
       return response.status(500).json({ 
-			return response.status(500).json({ 
-      return response.status(500).json({ 
-              error: err.code 
-							error: err.code 
               error: err.code 
       });
   });
@@ -170,11 +166,7 @@ function LoadMediaDetail(MediaId) {
           tags: doc.media_tags,
         });
       } 
-			} 
-      } 
 
-    }); 
-		}); 
     }); 
   return mediaDetails;
 }

@@ -10,16 +10,25 @@ exports.getAllMedia = (request, response) => {
     .get()
     .then((data) => {
       let media = [];
+      
       data.forEach((doc) => {
+        let imgname = "thumbnail/" + doc.data().media_filename.split('.')[0] + ".jpg";
+
         media.push({
           active: doc.data().active,
           created_at: doc.data().created_at,
           created_by: doc.data().created_by,
-          category: doc.data().media_category,
+          lexicon: ( doc.get('lexicon') == undefined ? 
+            { movement: doc.data().media_category,
+              body_direction: '',
+              tags: doc.data().media_tags
+            } : doc.data().lexicon  ),
           filename: doc.data().media_filename,
           id: doc.id,
           name: doc.data().media_name,
-          tags: doc.data().media_tags,
+          description: doc.data().description,
+          media_type: doc.data().media_category,
+          thumbnail: imgname
         });
       });
       return response.json(media);
@@ -49,17 +58,20 @@ exports.addMedia = (request, response) => {
         active: request.body.active || true,
         created_at: new Date().toISOString(),
         created_by: request.user.username,
-        media_category: request.body.category || "",
         media_filename: request.body.filename || "",
         media_name: request.body.name || "Untitled",
         media_tags: request.body.tags || "Unknown",
+        lexicon: {
+          movement: request.body.category || "",
+          body_direction: request.body.body_direction || ""
+        },
     }
     db
         .collection('media')
         .add(newMedia)
         .then((doc)=>{
             const responseItem = newMedia;
-            responseItem.id = doc.id;
+            responseItem.id = media_name;  // Rename with movement name
             return response.json(responseItem);
         })
         .catch((err) => {

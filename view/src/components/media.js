@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { Route, useParams } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -8,7 +8,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import { Card, CardContent, Divider, TextField } from '@material-ui/core';
+import { Card, CardContent, Divider, TextField, Grid, CardActionArea } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -26,12 +26,10 @@ import Select from '@material-ui/core/Select';
 
 
 // import { makeStyles } from '@material-ui/core/styles';
-import ImageList from '@material-ui/core/ImageList';
-import ImageListItem from '@material-ui/core/ImageListItem';
-import ImageListItemBar from '@material-ui/core/ImageListItemBar';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
-
-
 
 
 import axios from 'axios';
@@ -271,7 +269,7 @@ class media extends Component {
 
 
     dayjs.extend(relativeTime);
-    const { classes } = this.props;
+    const { classes, params } = this.props;
     const { open, errors } = this.state;
 
     const handleClickOpen = () => {
@@ -341,8 +339,32 @@ class media extends Component {
     } else {
       const catBuckets = [
         {
-          value: '',
-          label: 'None',
+          value: 'bending',
+          label: 'Bending',
+        },
+        {
+          value: 'curving',
+          label: 'Curving',
+        },
+        {
+          value: 'centerOfGravity',
+          label: 'Center of Gravity',
+        },
+        {
+          value: 'elevating',
+          label: 'Elevating',
+        },
+        {
+          value: 'dropping',
+          label: 'Dropping',
+        },
+        {
+          value: 'pushing',
+          label: 'Pushing',
+        },
+        {
+          value: 'loweringHip',
+          label: 'Lowering Hip',
         },
         {
           value: 'movement',
@@ -357,136 +379,57 @@ class media extends Component {
           label: 'Other',
         },
       ];
+      
 
       return (
         <main className={classes.content}>
-          <Card  className={classes.root}>
-						<CardContent>
-							<div style={{ display: 'flex' }}>
-								<div>
-									<Typography className={classes.locationText} gutterBottom variant="h4">
-                    Categories
-									</Typography>
-									 
-                  <FormControl className={classes.formControl} xs={6}>
-                    <InputLabel id="filter_category-label">Media Type</InputLabel>
-                    <Select
-                      labelId="filter_category"
-                      id="media_category"
-                      value={this.state.filters.category}
-                      onChange={this.handleChange}
-                      inputProps={{ readOnly: true }}
-                      
-                    >
-                      <MenuItem key="1" value="">All</MenuItem>
-                      <MenuItem key="2" value="movement">Movement</MenuItem>
-                      <MenuItem key="3" value="clip">Clip</MenuItem>
-                      <MenuItem key="4" value="other">Other</MenuItem>
-                    </Select>
-                    <FormHelperText>Filters currently turned off</FormHelperText>
-                  </FormControl>
-
-                  <FormControl className={classes.formControl} >
-                    <InputLabel id="filter_category-label2">Tag</InputLabel>
-                    <Select
-                      labelId="filter_tags"
-                      id="media_tags"
-                      value={this.state.media_tags}
-                      onChange={this.handleChange}
-                      inputProps={{ readOnly: true }} 
-                      // renderValue={(selected) => {
-                      //   if (selected.length === 0) {
-                      //     return <em>Tags</em>;
-                      //   }
-                      //   return selected.join(', ');
-                      // }}
-                    >
-                      <MenuItem key="1" value="all">All tags</MenuItem>
-                      <MenuItem key="2" value="arm">Arm</MenuItem>
-                      <MenuItem key="3" value="back">Back</MenuItem>
-                      <MenuItem key="4" value="leg">Leg</MenuItem>
-                    </Select>
-                    {/* <FormHelperText>This filter currently currently doesnt work</FormHelperText> */}
-                  </FormControl>
-								</div>
-							</div>
-							<div className={classes.progress} />
-						</CardContent>
-					</Card>
-          <br />
-          {/* <Card  className={classes.root} >
-						<CardContent> */}
-
-            <ImageList className={classes.tileRoot} variant="standard" cols={3} gap={8}>
-              <ImageListItem key="Subheader" cols={1}>
-                <ListSubheader component="div">Clips</ListSubheader>
-              </ImageListItem>
-
-              {this.state.media.filter(item => item.category === 'clips').map((item) => (
-                <ImageListItem key={item.media_filename}>
-                  <img
-                    srcSet={`${baseurl}/${item.category}/${item.thumbnail}`}
-                    // {`${item.img}?w=248&fit=crop&auto=format 1x,
-                    //     ${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                    alt={item.title}
-                  />
-
-                  <ImageListItemBar
-                    title={item.name}
-                    // subtitle={<span>by: {item.created_by}</span>}
-                    className={classes.titleBar}
-                    position="top" 
-                    actionPosition="right"
-                    actionIcon={<Button 
-                      aria-label={`edit ${item.filename}`}
-                      className={classes.icon} 
-                      onClick={() => this.handleEditClickOpen({ item })}>
-                    <EditIcon />
-                    </Button>
-                    }
-                  />
+          <Route exact path="/categories">
+						<Grid container spacing={2} key="home-main">
+							
+							{catBuckets.map((item,index) => (
+									<Grid item xs={12} sm={6} md={4} key={item.value+"g1"}>
 										
-                </ImageListItem>
-              ))}
+										<CardActionArea component="a" href={`/categories/`+item.value} value={index.value} key={item.value+"c"} name={this.state.value} >
+								
+											<Card variant="outlined">
+													<CardContent>
+															<Typography variant="h5" component="h2">
+																	{item.label}
+															</Typography>
 
-            </ImageList>
-            <Divider />
-
-            <ImageList className={classes.tileRoot} variant="standard" cols={3}  gap={8}>
-            <ImageListItem key="Subheader" cols={1}>
-                <ListSubheader component="div">Movements</ListSubheader>
-              </ImageListItem>
-
-              {this.state.media.filter(item => item.category === 'movement').map((item) => (
-                <ImageListItem key={item.media_filename}>
-                  <img
-                    srcSet={`${baseurl}/${item.category}/${item.thumbnail}`}
-                    // {`${item.img}?w=248&fit=crop&auto=format 1x,
-                    //     ${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                    alt={item.title}
-                  />
-                  {/*                   
-                  <video width="320" height="240" controls>
-                    <source src={`${baseurl}/${item.category}/${item.filename}`} type="video/mp4" />
-                    Your browser does not support the video tag. 
-                  </video> */}
-
-                  <ImageListItemBar
-                    title={item.name}
-                    className={classes.titleBar}
-                    position="top" 
-                    actionIcon={<Button 
-                      aria-label={`edit ${item.filename}`}
-                      size="small" 
-                      className={classes.icon} onClick={() => this.handleEditClickOpen({ item })}>
-                    <EditIcon /> 
-                    </Button>  
-                    }
-                  />
-                </ImageListItem>
-              ))}
-
-            </ImageList>
+															<div style={{ color: '#AAA' }}>
+																	<em>Description</em>
+                                  <br/>
+                                  <br/>
+															</div>
+													</CardContent>
+											</Card>
+										</CardActionArea>
+									</Grid>
+							))}
+						</Grid>
+					</Route>
+          <Route exact path="/categories/bending">
+            <CategoryClips name="Bending" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'bending')} />
+          </Route>
+          <Route exact path="/categories/curving">
+            <CategoryClips name="Curving" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'curving')} />
+          </Route>
+          <Route exact path="/categories/centerOfGravity">
+            <CategoryClips name="Center of Gravity" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'centerOfGravity')} />
+          </Route>
+          <Route exact path="/categories/elevating">
+            <CategoryClips name="Elevating" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'elevating')} />
+          </Route>
+          <Route exact path="/categories/dropping">
+            <CategoryClips name="Dropping" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'dropping')} />
+          </Route>
+          <Route exact path="/categories/pushing">
+            <CategoryClips name="Pushing" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'pushing')} />
+          </Route>
+          <Route exact path="/categories/loweringHip">
+            <CategoryClips name="Lowering Hip" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'loweringHip')} />
+          </Route>
           
           <IconButton
             className={classes.floatingButton}
@@ -602,7 +545,7 @@ class media extends Component {
                 </Button>
             </DialogActions>
           </Dialog>
-
+        
   
         </main>
       );
@@ -611,3 +554,54 @@ class media extends Component {
 }
 
 export default (withStyles(styles)(media));
+
+
+class CategoryClips extends React.Component {
+  render(){ 
+    return(
+  <>
+  <Card key={"category_"+this.props.name}>
+    <CardContent>
+      <div style={{ display: 'flex' }}>
+        <div>
+          <Typography gutterBottom variant="h4">
+            {this.props.name} Movement
+          </Typography>
+          
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+  <br /> 
+    <GridList variant="standard" cols={3} gap={8}>
+    <GridListTile key="Subheader" cols={1}>
+      <ListSubheader component="div">{this.props.name}</ListSubheader>
+    </GridListTile>
+
+    {this.props.media.map((item) => (
+      <GridListTile key={item.media_filename}>
+        <img
+          srcSet={`${this.props.baseurl}/movement/${item.thumbnail}`}
+          alt={item.title}
+        />
+
+
+        <GridListTileBar
+          title={item.name}
+          position="top" 
+          actionPosition="right"
+          actionIcon={<Button 
+            aria-label={`edit ${item.filename}`}
+            onClick={() => this.handleEditClickOpen({ item })}>
+          <EditIcon />
+          </Button>
+          }
+        />
+          
+      </GridListTile>
+    ))}
+
+  </GridList>
+  </>)
+}
+}

@@ -167,17 +167,17 @@ class routine extends Component {
         axios.get(`/routines/${data.row.id}`)
             .then((response) => {
               console.log(response.data[0]);
-              var m = '';
-                        this.setState({ 
-                                    routines: response.data, 
-                                    id: data.row.id,
-                                    routine_name: data.row.name,
-                                    num_movements: data.row.num_movements,
-                                    movements: response.data[0].movements,
-                                    created_at: data.row.created_at,
-                                    viewOpen: true
-                                })
-             });
+            
+              this.setState({ 
+                routines: response.data, 
+                id: data.row.id,
+                routine_name: data.row.name,
+                num_movements: data.row.num_movements,
+                movements: response.data[0].movements,
+                created_at: data.row.created_at,
+                viewOpen: true
+              })
+            });
 
       }
     
