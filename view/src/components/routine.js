@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 
 
 import CardHeader from '@material-ui/core/CardActions';
-import { Card, CardContent, Divider, TextField } from '@material-ui/core';
+import { Card, CardContent, TextField, Chip} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,7 +18,6 @@ import Button from '@material-ui/core/Button';
 
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -26,6 +25,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import LaunchIcon from '@material-ui/icons/Launch';
 
 import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 
@@ -51,12 +51,16 @@ const styles = ((theme) => ({
         bottom: 0,
         right: 0
     },
+    viewRoot: {
+      margin: 0,
+      padding: theme.spacing(2)
+    },
     closeButton: {
-		position: 'absolute',
-		right: theme.spacing(1),
-		top: theme.spacing(1),
-		color: theme.palette.grey[500]
-	},
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500]
+  },
     table: {
         minWidth: 650,
     },
@@ -82,6 +86,7 @@ class routine extends Component {
           media: [],
           routine_name: '',
           movements: [], 
+          mList: '',
           created_at: '',
           id: '',
           errors: [], 
@@ -149,7 +154,7 @@ class routine extends Component {
       }
     
       handleEditClickOpen(data) {
-        console.log(data.item);
+        // console.log(data.item);
         this.setState({
           active: true,
           id: data.item.routineId,
@@ -165,104 +170,102 @@ class routine extends Component {
 
         axios.get(`/routines/${data.row.id}`)
             .then((response) => {
-                    console.log(response.data[0]);
-           
-                        this.setState({ 
-                                    routines: response.data, 
-                                    id: data.row.id,
-                                    routine_name: data.row.name,
-                                    num_movements: data.row.num_movements,
-                                    movements: response.data[0].movements,
-                                    created_at: data.row.created_at,
-                                    viewOpen: true
-                                })
-             });
+            
+              this.setState({ 
+                routines: response.data, 
+                id: data.row.id,
+                routine_name: data.row.name,
+                num_movements: data.row.num_movements,
+                movements: response.data[0].movements,
+                created_at: data.row.created_at,
+                viewOpen: true
+              })
+            });
 
       }
     
 
     render() {
 
-    const DialogTitle = withStyles(styles)((props) => {
-			const { children, classes, onClose, ...other } = props;
-			return (
-				<MuiDialogTitle disableTypography className={classes.root} {...other}>
-					<Typography variant="h6">{children}</Typography>
-					{onClose ? (
-						<IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-							<CloseIcon />
-						</IconButton>
-					) : null}
-				</MuiDialogTitle>
-			);
-		});
+      const DialogTitle = withStyles(styles)((props) => {
+        const { children, classes, onClose, ...other } = props;
+        return (
+          <MuiDialogTitle disableTypography className={classes.root} {...other}>
+            <Typography variant="h6">{children}</Typography>
+            {onClose ? (
+              <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            ) : null}
+          </MuiDialogTitle>
+        );
+      });
 
-		const DialogContent = withStyles((theme) => ({
-			viewRoot: {
-				padding: theme.spacing(2)
-			}
-        }))(MuiDialogContent);
-        dayjs.extend(relativeTime);
-		const { classes } = this.props;
-		const { open, errors, viewOpen } = this.state;
+    
+      const baseurl = "https://storage.googleapis.com/mimo-cat-f82c7";
 
-		const handleClickOpen = () => {
-			this.setState({
-                id: '',
-                routine_name: '',
-                movements: [], 
-                created_at: '',
-				buttonType: '',
-				open: true
-			});
-		};
+      dayjs.extend(relativeTime);
+      const { classes } = this.props;
+      const { open, errors, viewOpen } = this.state;
 
-		const handleSubmit = (event) => {
-			authMiddleWare(this.props.history);
-			event.preventDefault();
-			const userMedia = {
-                id: this.state.media.id,
-                active: this.state.media.active,
-                created_by: this.state.media.uploade_by,
-                media_name: this.state.media_name,
-                media_filename: this.state.media_filename,
-                media_tags: this.state.media_tags,
-                media_category: this.state.category
-			};
-			let options = {};
-			if (this.state.buttonType === 'Edit') {
-				options = {
-					url: `/routine/${this.state.id}`,
-					method: 'put',
-					data: userMedia
-				};
-			} else {
-				options = {
-					url: '/routine',
-					method: 'post',
-					data: userMedia
-				};
-			}
-			const authToken = localStorage.getItem('AuthToken');
-			axios.defaults.headers.common = { Authorization: `${authToken}` };
-			axios(options)
-				.then(() => {
-					this.setState({ open: false });
-					window.location.reload();
-				})
-				.catch((error) => {
-					this.setState({ open: true, errors: error.response.data });
-					console.log(error);
-				});
-		};
+      const handleClickOpen = () => {
+        this.setState({
+                  id: '',
+                  routine_name: '',
+                  movements: [], 
+                  created_at: '',
+          buttonType: '',
+          open: true
+        });
+      };
 
-		const handleViewClose = () => {
-			this.setState({ viewOpen: false });
-		};
+      const handleSubmit = (event) => {
+        authMiddleWare(this.props.history);
+        event.preventDefault();
+        const newRoutine = {
+          id: this.state.media.id,
+          active: this.state.media.active,
+          created_by: this.state.media.uploade_by,
+          movements: null,
+          mList: this.state.mList || '',
+          name: this.state.name,
+          username: this.state.username,
+          video_url: this.state.video_url || ''
+        };
+        let options = {};
+        if (this.state.buttonType === 'Edit') {
+          options = {
+            url: `/routines/${this.state.id}`,
+            method: 'put',
+            data: newRoutine
+          };
+        } else {
+          options = {
+            url: '/routines/add',
+            method: 'post',
+            data: newRoutine
+          };
+        }
+        const authToken = localStorage.getItem('AuthToken');
+        axios.defaults.headers.common = { Authorization: `${authToken}` };
+        axios(options)
+          .then(() => {
+            this.setState({ open: false });
+            window.location.reload();
+          })
+          .catch((error) => {
+            this.setState({ open: true, errors: error.response.data });
+            console.log(error);
+          });
+      };
 
-		const handleClose = (event) => {
-			this.setState({ open: false });
-		};
+      const handleViewClose = () => {
+        this.setState({ viewOpen: false });
+      };
+
+      const handleClose = (event) => {
+        this.setState({ open: false });
+      };
         
         return (
             <div className={classes.content}>
@@ -282,10 +285,11 @@ class routine extends Component {
                 <Table className={classes.table} size="small" aria-label="a dense table">
                     <TableHead>
                     <TableRow>
-                        <TableCell>Id</TableCell>
+                        <TableCell>User</TableCell>
                         <TableCell align="center">Display Name</TableCell>
+                        <TableCell align="center">Video</TableCell>
                         <TableCell align="center">Length</TableCell>
-                        <TableCell align="center">Created</TableCell>
+                        <TableCell align="center">Date of Creation</TableCell>
                         <TableCell align="center"> </TableCell>
                     </TableRow>
                     </TableHead>
@@ -293,13 +297,18 @@ class routine extends Component {
                     {this.state.routines.map((row) => (
                         <TableRow key={row.name} className={classes.hideLastBorder}>
                         <TableCell component="th" scope="row">
-                            {row.id}
+                            {row.username}
                         </TableCell>
                         <TableCell align="center">{row.name}</TableCell>
-                        <TableCell align="center">{row.num_movements}</TableCell>                        
+                        <TableCell align="center">
+                          <Link href={row.video_url} variant="body2" rel="noopener" target="_blank">{row.video_url}</Link>
+                        </TableCell>
+                        <TableCell align="center"><Chip size="small" label={row.num_movements} variant="outlined" color="primary">
+                            </Chip>{' '}{row.mList} 
+                        </TableCell>                        
                         <TableCell align="center">{dayjs(row.created_at).fromNow()}</TableCell>
                         <TableCell align="center">
-                            <Button size="small" color="secondary" onClick={() => this.handleViewOpen({ row })}>
+                            <Button size="small" color="secondary" onClick={() => this.handleViewOpen({ row })} disabled tooltip='disabled'>
                                 {' '}
                                 View{' '}
                             </Button>
@@ -327,7 +336,7 @@ class routine extends Component {
 
             <Dialog
                 onClose={handleViewClose}
-                aria-labelledby="customized-dialog-title"
+                aria-labelledby="routine-dialog"
                 open={viewOpen}
                 fullWidth
                 classes={{ paperFullWidth: classes.dialogStyle }}
@@ -350,12 +359,13 @@ class routine extends Component {
                 <br />
 
                 {this.state.movements.map((move) => (
-
+                  (move.media_filename ? 
                     <Typography className={classes.pos} color="textSecondary">
-                    <Link href={`https://storage.googleapis.com/mimo-cat-f82c7/movement/${move.medie_filename}`} variant="body2">
+                    <Link href={`${baseurl}/movement/${move.media_filename}`} variant="body2">
                         {move.media_name} <LaunchIcon fontSize="small" />
                     </Link>
                     </Typography>
+                  : '' )
                 ))}
                 {/* .map((move) => (
                       <Link href="#" variant="body2">
@@ -366,14 +376,13 @@ class routine extends Component {
                 </DialogContent>
             </Dialog>
             
-            <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}  aria-labelledby="edit-media-dialog">
+          <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}  aria-labelledby="edit-routine-dialog">
           <DialogTitle id="edit-dialog-title">
             <Typography variant="h6" className={classes.title}>
               {this.state.buttonType === 'Edit' ? 'Edit Routine' : 'Create a new Routine'}
             </Typography>
           </DialogTitle>
-          <Divider />
-          <DialogContent>
+          <DialogContent dividers>
             <DialogContentText>
               Instructions for the form can go here.
             </DialogContentText>
@@ -384,14 +393,13 @@ class routine extends Component {
                 variant="standard"
                 disabled
                 fullWidth
-                id="media_id"
+                id="username"
                 label="Id"
-                name="media_id"
-                autoComplete="mediaId"
-                helperText={errors.media_id}
-                placeholder="system generated"
-                value={this.state.media_id}
-                error={errors.media_id ? true : false}
+                name="username"
+                autoComplete="username"
+                helperText={errors.username}
+                value={this.state.username}
+                error={errors.username ? true : false}
                 onChange={this.handleChange}
                 margin="normal"
               />
@@ -400,13 +408,27 @@ class routine extends Component {
                 variant="outlined"
                 required
                 fullWidth
-                id="media_name"
+                id="name"
                 label="Display Name"
-                name="media_name"
-                autoComplete="mediaName"
-                helperText={errors.media_name}
-                value={this.state.media_name}
-                error={errors.media_name ? true : false}
+                name="name"
+                autoComplete="routineName"
+                helperText={errors.name}
+                value={this.state.name}
+                error={errors.name ? true : false}
+                onChange={this.handleChange}
+                margin="normal"
+              />
+
+              <TextField
+                variant="outlined"
+                fullWidth
+                id="video_url"
+                label="Video URL"
+                name="video_url"
+                autoComplete="video_url"
+                helperText={errors.video_url}
+                value={this.state.video_url}
+                error={errors.video_url ? true : false}
                 onChange={this.handleChange}
                 margin="normal"
               />
@@ -415,14 +437,14 @@ class routine extends Component {
                 variant="outlined"
                 required
                 fullWidth
-                id="media_filename"
+                id="mList"
                 label="Movements"
-                name="media_filename"
-                autoComplete="mediaFileName"
-                helperText={errors.media_filename}
-                error={errors.media_filename ? true : false}
+                name="mList"
+                autoComplete="mList"
+                helperText={errors.mList}
+                error={errors.movements ? true : false}
                 onChange={this.handleChange}
-                value={this.state.media_filename}
+                value={this.state.mList}
                 margin="normal"
               />
 

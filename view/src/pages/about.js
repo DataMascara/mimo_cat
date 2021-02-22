@@ -72,7 +72,7 @@ export default function SignInSide() {
       <Grid item xs={12} sm={8} md={5} component={Paper}  elevation={6} square>
         <div className={classes.paper}>
         <Grid container > 
-          <Box  sx={{ textAlign : 'center',  width: '600', mx: 'auto' }}  >
+          <Box  style={{ textAlign : 'center',  width: '600', mx: 'auto' }}  >
             <img src={process.env.PUBLIC_URL + 'noun_LuckyCat_42819x100.png'} alt="Logo" width="100"  />
           <br />
           
@@ -109,7 +109,7 @@ export default function SignInSide() {
           </Grid>
           <Divider />
   
-          <Box  sx={{  width: '100%', }} >
+          <Box  style={{  width: '100%', }} >
             <Link href="login" variant="body2" className={classes.legal}>
               {"← Login"}
             </Link>

@@ -3,37 +3,43 @@ const util = require('util');
 
 // 
 exports.getAllRoutines = (async (request, response) => {
-	db
-		.collection('routines')
-		.orderBy('created_at', 'desc')
-		.get()
-		.then((data) => {
-			let routines = [];
-			
-			data.forEach((doc) => {
-				// console.log(util.inspect(doc.data()));
-			routines.push({
-				created_at: doc.data().created_at,
-				id: doc.id,
-				name: doc.data().name,
-				num_movements: doc.data().mArr.length,
-				});
-			});
-			return response.json(routines);
-		})
-		.catch((err) => {
-			console.error(err);
-			return response.status(500).json({ error: err.code});
-		});
-	
+  db
+    .collection('routines')
+    .orderBy('created_at', 'desc')
+    .get()
+    .then((data) => {
+      let routines = [];
+      
+      data.forEach((doc) => {
+        // console.log(util.inspect(doc.data()));
+        let num = 0;
+        (doc.data().mArr ? num = doc.data().mArr.length : 
+         num = doc.data().mList.split(",").length)
+
+      routines.push({
+        created_at: doc.data().created_at,
+        id: doc.id,
+        name: doc.data().name,
+        num_movements: num,
+        username: doc.data().username,
+        video_url: doc.data().video_url
+        });
+      });
+      return response.json(routines);
+    })
+    .catch((err) => {
+      console.error(err);
+      return response.status(500).json({ error: err.code});
+    });
+  
 });
 
 // routines/pHm5azU9gLAAw2zg4z6P
 exports.getARoutine = (async (request, response) => {
-	const routineId = request.params.id;
-	if (request.query.id){
-		routineId = request.query.id
-	}
+  const routineId = request.params.id;
+  if (request.query.id){
+    routineId = request.query.id
+  }
   
   const routine = [];
   if (routineId) {
@@ -44,66 +50,69 @@ exports.getARoutine = (async (request, response) => {
       // console.error('Nothing!');
       return [];
     }
-    const movementArray = routineData.mArr;
-    const fetchPromises = [] //: Promise<DocumentSnapshot>[] =[];
-    movementArray.forEach((mid) => {
-      // console.log(`Getting data for movement ${mid}`);
-			const nextPromise = db.doc(`media/${mid}`).get();
-			console.log(util.inspect(nextPromise));
-			// TODO(kchuang): add image thumbnail and order
-      fetchPromises.push(nextPromise);
-    });
-    const snapshots = await Promise.all(fetchPromises);
-    const movementData = snapshots.map((snapshot) => { return snapshot.data() });
-    // console.log('Done fetching!' + (util.inspect(movementData)));
+    if (routineData.mArr){
+      const movementArray = routineData.mArr;
+      const fetchPromises = [] //: Promise<DocumentSnapshot>[] =[];
+      movementArray.forEach((mid) => {
+        // console.log(`Getting data for movement ${mid}`);
+        const nextPromise = db.doc(`media/${mid}`).get();
+        console.log(util.inspect(nextPromise));
+        // TODO(kchuang): add image thumbnail and order
+        fetchPromises.push(nextPromise);
+      });
+      const snapshots = await Promise.all(fetchPromises);
+      const movementData = snapshots.map((snapshot) => { return snapshot.data() });
+      // console.log('Done fetching!' + (util.inspect(movementData)));
 
-    routine.push({
-      created_at: routineData.created_at,
-      name: routineData.name,
-			username: routineData.username,
-			num_movements: movementData.length,
-      movements: movementData,
-    })
-
+      routine.push({
+        created_at: routineData.created_at,
+        name: routineData.name,
+        username: routineData.username,
+        video_url: routineData.video_url,
+        num_movements: movementData.length,
+        movements: movementData
+      })
+    }
     return response.json(routine);
 
   } else {
-		const routineDoc = await db.collection('routines').orderBy('created_at', 'desc').get();
-		const listRoutines = routineDoc.docs;
-			console.error('All Done! no id. check logs');
-			return response.status(500).json({ error: 'No id given.' });
-		// } 
+    const routineDoc = await db.collection('routines').orderBy('created_at', 'desc').get();
+    const listRoutines = routineDoc.docs;
+      console.error('All Done! no id. check logs');
+      return response.status(500).json({ error: 'No id given.' });
   }
 });
 
 exports.addRoutine = (request, response) => {
-	if (request.body.movements.length === 0) {
-		return response.status(400).json({ movements: 'Must not be empty' });
-    }
+	// if (request.body.movements.length === 0) {
+	// 	return response.status(400).json({ movements: 'Must not be empty' });
+  // }
     
     const newRoutine = {
         // id is automatically generated
-				movements: request.body.movements,
-				name: request.body.name,
-				username: request.user.username,
-				created_at: new Date().toISOString()
+        movements: request.body.movements,
+        mList: request.body.mList,
+        name: request.body.name,  // displayname
+        username: request.user.username,
+        created_at: new Date().toISOString(),
+        video_url: request.body.video_url
     }
     db
-			.collection('routines')
-			.add(newRoutine)
-			.then((doc)=>{
-					const responseItem = newRoutine;
-					responseItem.id = doc.id;
-					return response.json(responseItem);
-			})
-			.catch((err) => {
-			response.status(500).json({ error: 'Something went wrong' });
-			console.error(err);
-		});
+      .collection('routines')
+      .add(newRoutine)
+      .then((doc)=>{
+          const responseItem = newRoutine;
+          responseItem.id = doc.id;
+          return response.json(responseItem);
+      })
+      .catch((err) => {
+      response.status(500).json({ error: 'Something went wrong' });
+      console.error(err);
+    });
 };
 
 exports.deleteRoutine = (request, response) => {
-	const document = db.doc(`/movement/${request.params.id}`);
+  const document = db.doc(`/movement/${request.params.id}`);
     document
         .get()
         .then((doc) => {
@@ -123,43 +132,43 @@ exports.deleteRoutine = (request, response) => {
 
 
 exports.editRoutine = ( request, response ) => { 
-	if(request.body.id || request.body.created_at){
-			response.status(403).json({message: 'Not allowed to edit'});
-	}
-	let document = db.collection('movement').doc(`${request.params.id}`);
-	document.update(request.body)
-	.then(()=> {
-			response.json({message: 'Updated successfully'});
-	})
-	.catch((err) => {
-			console.error(err);
-			return response.status(500).json({ 
-							error: err.code 
-			});
-	});
+  if(request.body.id || request.body.created_at){
+      response.status(403).json({message: 'Not allowed to edit'});
+  }
+  let document = db.collection('movement').doc(`${request.params.id}`);
+  document.update(request.body)
+  .then(()=> {
+      response.json({message: 'Updated successfully'});
+  })
+  .catch((err) => {
+      console.error(err);
+      return response.status(500).json({ 
+              error: err.code 
+      });
+  });
 };
 
 
 function LoadMediaDetail(MediaId) {
-	let media = GetAllMedia();
-	let mediaDetails = [];
-	media.forEach((doc) => {
+  let media = GetAllMedia();
+  let mediaDetails = [];
+  media.forEach((doc) => {
 
-			if (doc.id == MediaId){
+      if (doc.id == MediaId){
 
-				mediaDetails.push({
-					active: doc.active,
-					created_at: doc.created_at,
-					created_by: doc.created_by,
-					category: doc.media_category,
-					filename: doc.media_filename,
-					name: doc.media_name,
-					tags: doc.media_tags,
-				});
-			} 
+        mediaDetails.push({
+          active: doc.active,
+          created_at: doc.created_at,
+          created_by: doc.created_by,
+          category: doc.media_category,
+          filename: doc.media_filename,
+          name: doc.media_name,
+          tags: doc.media_tags,
+        });
+      } 
 
-		}); 
-	return mediaDetails;
+    }); 
+  return mediaDetails;
 }
 
 function GetAllMedia() {
@@ -175,19 +184,21 @@ function GetAllMedia() {
 
 				// if (doc.data().id == MediaId){
 
-					media.push({
-						active: doc.data().active,
-						created_at: doc.data().created_at,
-						created_by: doc.data().created_by,
-						category: doc.data().media_category,
-						filename: doc.data().media_filename,
-						name: doc.data().media_name,
-						tags: doc.data().media_tags,
-					});
+          media.push({
+            active: doc.data().active,
+            created_at: doc.data().created_at,
+            created_by: doc.data().created_by,
+            category: doc.data().media_category,
+            filename: doc.data().media_filename,
+            name: doc.data().media_name,
+            tags: doc.data().media_tags,
+          });
+        // } 
 				// } 
+        // } 
 
       }); 
-			return media;
+      return media;
     })
     .catch((err) => {
       console.error(err);

@@ -18,7 +18,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
+import DialogContent from '@material-ui/core/DialogContent';
 
 import FormHelperText from '@material-ui/core/FormHelperText';
 
@@ -112,20 +112,21 @@ class media extends Component {
 		super(props);
 
 		this.state = {
-			media: '',
+			media: [],
 			media_name: '',
 			media_filename: '',
-			media_tags: '',
-			media_category: '',
 			created_by: '',
 			id: '',
 			errors: [],
-			filters_category: 'movement',
 			filters: {
 				active: true,
 				created_by: '',
-				category: 'movement',
 				sort: 'Name'
+			},
+			lexicon: {
+				movement: '',
+				body_direction: '',
+				tags: ''
 			},
 			open: false,
 			uiLoading: true,
@@ -182,10 +183,12 @@ class media extends Component {
 		this.setState({
 			active: data.item.active,
 			id: data.item.id,
-			media_category: data.item.category,
+			media_type: data.item.media_category,
 			media_id: data.item.id,
 			media_name: data.item.name,
-			media_tags: data.item.tags,
+			lexicon_movement: data.item.lexicon.movement,
+			lexicon_body_direction: data.item.lexicon.body_direction,
+			lexicon_tags: data.item.lexicon.tags,
 			created_by: data.item.username,
       media_filename: data.item.filename,
 			buttonType: 'Edit',
@@ -196,10 +199,12 @@ class media extends Component {
 	handleViewOpen(data) {
 		this.setState({
 			active: data.item.active,
-			media_category: data.item.category,
+			media_type: data.item.media_type,
 			media_id: data.item.id,
 			media_name: data.item.name,
-			media_tags: data.item.tags,
+			lexicon_tags: data.item.lexicon.tags,
+			lexicon_body_direction: data.item.lexicon.body_direction,
+			lexicon_movement: data.item.lexicon.movement,
 			created_by: data.item.username,
 			media_filename: data.item.filename,
 			created_at: data.item.created_at,
@@ -222,12 +227,6 @@ class media extends Component {
 			);
 		});
 
-		const DialogContent = withStyles((theme) => ({
-			viewRoot: {
-				padding: theme.spacing(2)
-			}
-		}))(MuiDialogContent);
-
     const baseurl = "https://storage.googleapis.com/mimo-cat-f82c7";
 
 		dayjs.extend(relativeTime);
@@ -242,8 +241,10 @@ class media extends Component {
 				created_at: '',
 				media_name: '',
 				media_filename: '',
-				media_tags: '',
-				metia_type: '',
+				lexicon_tags: '',
+				lexicon_movement: '',
+				lexicon_body_direction: '',
+				media_type: '',
 				buttonType: '',
 				open: true
 			});
@@ -258,8 +259,11 @@ class media extends Component {
 						created_by: this.state.media.uploade_by,
             media_name: this.state.media_name,
 						media_filename: this.state.media_filename,
-						media_tags: this.state.media_tags,
-						media_category: this.state.category
+						lexicon: {
+							movement: this.state.lexicon_movement,
+							body_direction: this.state.lexicon_body_direction,
+							tags: this.state.lexicon_tags
+						}
 			};
 			let options = {};
 			if (this.state.buttonType === 'Edit') {
@@ -307,7 +311,8 @@ class media extends Component {
 
 			return (
 				<main className={classes.content}>
-					<Card  className={classes.root}>
+
+					<Card className={classes.root} >
             <CardHeader>
               <Typography className={classes.locationText} gutterBottom variant="h4">
 										Movements
@@ -375,14 +380,14 @@ class media extends Component {
 										variant="outlined"
 										required
 										fullWidth
-										id="media_category"
+										id="lexicon_movement"
 										label="Category"
-										name="media_category"
+										name="lexicon_movement"
 										autoComplete="mediaFileName"
-										helperText={errors.media_category}
+										helperText={errors.lexicon_movement}
 										error={errors.media_filename ? true : false}
 										onChange={this.handleChange}
-										value={this.state.media_category}
+										value={this.state.lexicon_movement}
 									/>
 									<FormHelperText>This should default to 'movement'</FormHelperText>
 								</Grid>
@@ -422,7 +427,7 @@ class media extends Component {
 					<br />
 					<Grid container spacing={2}>
 
-						{this.state.media.filter((x) => x.category === 'movement' )
+						{this.state.media.filter((x) => x.media_type === 'movement' )
 							.map((item) => (
 							<Grid item xs={12} sm={4} md={3}>
 								<Card variant="outlined">
@@ -430,7 +435,7 @@ class media extends Component {
 											component="image"
 											className={classes.media}
 											title={item.filename}
-											image={`${baseurl}/${item.category}/${item.thumbnail}`}
+											image={`${baseurl}/movement/${item.thumbnail}`}
 									/>
 									<CardContent>
 										<Typography variant="h5" component="h2">
@@ -441,7 +446,7 @@ class media extends Component {
 										</Typography>
 
 										<div className={classes.tags}>
-											{item.tags.split(',').map((t) => (
+											{item.lexicon.tags.split(',').map((t) => (
 												<Chip label={t} variant="outlined" color="primary" />
 											))} 
 										</div>
@@ -480,7 +485,7 @@ class media extends Component {
 											component="iframe"
 											className={classes.media}
 											title={this.state.media_name}
-											image={`${baseurl}/${this.state.media_category}/${this.state.media_filename}`}
+											image={`${baseurl}/${this.state.media_type}/${this.state.media_filename}`}
 									/>
 						<Typography className={classes.pos} color="textSecondary">
 						{this.state.media_filename}
