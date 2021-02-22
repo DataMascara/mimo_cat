@@ -1,5 +1,5 @@
 // login.js
-// accessed at localhost:3000/login during developmetn
+// accessed at localhost:3000/login during development
 
 // Material UI components
 import React, { Component } from 'react';
