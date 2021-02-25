@@ -29,6 +29,12 @@ First - contact (@[katychuang](https://github.com/katychuang)) to get permission
     - All at once `npm i -g firebase-tools create-react-app` 
 2. Clone this repository, i.e. `git clone git@github.com:DataMascara/mimo_cat.git`
 
+(The following instructions are not manditory, and can be skipped if you don't intend to create your own branch to push changes into before pushing into the main codebase)
+
+3. Create a new branch and switch to the newly made branch (All at once) `git checkout -b <branch-name>`
+4. If you need to update your working directory for whatever reason while inside your branch use `git pull https://github.com/DataMascara/mimo_cat.git`
+5. Pushing to "origin" will add your branch to a branch in the main codebase on github, from which you will be able to merge your changes to the main branch (or leave them in the branch in the main codebase without merging)
+
 #### Install backend dependences: 
 
 1. Go into the project root `cd mimo_cat` and then one more time into functions subfolder `cd functions`.
