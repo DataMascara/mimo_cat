@@ -20,6 +20,7 @@ exports.getAllRoutines = (async (request, response) => {
         created_at: doc.data().created_at,
         id: doc.id,
         name: doc.data().name,
+        mList: doc.data().mList,
         num_movements: num,
         username: doc.data().username,
         video_url: doc.data().video_url
