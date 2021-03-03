@@ -175,7 +175,8 @@ class home extends Component {
 			, openUserMenu: true });
 	};
 	handleClose = () => {
-		this.setState({  anchorEl: null });
+		this.setState({  anchorEl: null,
+		openUserMenu: false });
 	};
 	
 	changeTab = (event, newValue) => {
@@ -280,6 +281,7 @@ class home extends Component {
 										onClick={this.handleMenu}
 										// onClick={this.loadAccountPage}
 										startIcon={<Avatar src={this.state.pic}  />}
+										
 									>
 										<Box color="text.primary" >
 											<Typography variant="body1" gutterBottom>

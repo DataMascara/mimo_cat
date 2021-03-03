@@ -90,15 +90,17 @@ const styles = (theme) => ({
 		color: theme.palette.grey[500]
 	},
 	media: {
-			height: 250
+			height: 250,
+			cursor: 'pointer'
 	},
 	tags: {
     display: 'flex',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
-    '& > *': {
-      margin: theme.spacing(0.5),
-    },
+		'& > *': {
+				margin: theme.spacing(0.5),
+		},
+	
 	},
 });
 
@@ -131,7 +133,9 @@ class media extends Component {
 			open: false,
 			uiLoading: true,
 			buttonType: '',
-			viewOpen: false
+			viewOpen: false,
+
+			hover:false
 		};
 
 		this.deleteMediaHandler = this.deleteMediaHandler.bind(this);
@@ -211,8 +215,16 @@ class media extends Component {
 			viewOpen: true
 		});
 	}
+	handleOnMouseEnter = () => {
+		this.setState({hover:true});
+	}
+	handleOnMouseLeave = () => {
+		this.setState({hover:false})
+	}
+
 
 	render() {
+		const { hover } = this.state;
 		const DialogTitle = withStyles(styles)((props) => {
 			const { children, classes, onClose, ...other } = props;
 			return (
@@ -430,13 +442,15 @@ class media extends Component {
 						{this.state.media.filter((x) => x.media_type === 'movement' )
 							.map((item) => (
 							<Grid item xs={12} sm={4} md={3}>
-								<Card variant="outlined">
-									<CardMedia
-											component="image"
-											className={classes.media}
-											title={item.filename}
-											image={`${baseurl}/movement/${item.thumbnail}`}
-									/>
+								<Card variant="outlined"> 
+									<div onClick={() => this.handleViewOpen({ item })} onMouseEnter={this.handleOnMouseEnter} onMouseLeave={this.handleOnMouseLeave}>
+										<CardMedia
+												component="image"
+												className={classes.media}
+												title={item.filename}
+												image={`${baseurl}/movement/${item.thumbnail}`}
+										/>
+									</div>
 									<CardContent>
 										<Typography variant="h5" component="h2">
 											{item.name}
@@ -459,9 +473,7 @@ class media extends Component {
 										<Button size="small" color="secondary" onClick={() => this.handleEditClickOpen({ item })}>
 											Edit
 										</Button>
-										<Button size="small" color="secondary" 
-										disabled
-										onClick={() => this.deleteMediaHandler({ item })}>
+										<Button size="small" color="secondary" disabled onClick={() => this.deleteMediaHandler({ item })}>
 											Delete
 										</Button>
 									</CardActions>
@@ -490,10 +502,12 @@ class media extends Component {
 						<Typography className={classes.pos} color="textSecondary">
 						{this.state.media_filename}
 						</Typography>
-            <div className={classes.media_tags}>
-							{this.state.media_tags.split(',').map((t) => (
+            			<div className={classes.media_tags}>
+							{/* Commented this out because it otherwise would not load the page
+							would get "Split is undefined" */} 
+							{/* {this.state.media_tags.split(',').map((t) => (
 								<Chip label={t} variant="outlined" color="primary" />
-							))}
+							))} */}
 						</div>
 										
 						</DialogContent>
