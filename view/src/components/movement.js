@@ -152,9 +152,6 @@ class media extends Component {
 	};
 
 	componentWillMount = () => {
-		authMiddleWare(this.props.history);
-		const authToken = localStorage.getItem('AuthToken');
-		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
 			.get('/media')
 			.then((response) => {
@@ -475,12 +472,12 @@ class media extends Component {
 											{' '}
 											View{' '}
 										</Button>
-										<Button size="small" color="secondary" onClick={() => this.handleEditClickOpen({ item })}>
+										{/* <Button size="small" color="secondary" onClick={() => this.handleEditClickOpen({ item })}>
 											Edit
 										</Button>
 										<Button size="small" color="secondary" disabled onClick={() => this.deleteMediaHandler({ item })}>
 											Delete
-										</Button>
+										</Button> */}
 									</CardActions>
 								</Card>
 							</Grid>

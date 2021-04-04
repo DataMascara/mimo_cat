@@ -7,8 +7,9 @@ import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import SlowMotionVideoIcon from '@material-ui/icons/SlowMotionVideo';
 import Slide from '@material-ui/core/Slide';
-import { Card, CardContent, TextField, Grid, CardActionArea } from '@material-ui/core';
+import { Card, CardContent, CardMedia, TextField, Grid, CardActionArea } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -16,6 +17,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -112,7 +114,6 @@ const styles = (theme) => ({
 	locationText: {
 		paddingLeft: '15px'
 	},
-
 	icon: {
 		// color: 'rgba(255, 255, 255, 0.54)',
 		color: 'white',
@@ -178,9 +179,6 @@ class media extends Component {
 	};
 
 	componentWillMount = () => {
-		authMiddleWare(this.props.history);
-		const authToken = localStorage.getItem('AuthToken');
-		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
 			.get('/media')
 			.then((response) => {
@@ -355,7 +353,11 @@ class media extends Component {
 				{
 					value: 'loweringHip',
 					label: 'Lowering Hip',
-				}
+				},
+				{
+					value: 'clips',
+					label: 'Movies',
+				},
 			];
 
 
@@ -407,6 +409,9 @@ class media extends Component {
 					</Route>
 					<Route exact path="/categories/loweringHip">
 						<CategoryClips name="Lowering Hip" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'loweringHip')} />
+					</Route>
+					<Route exact path="/categories/clips">
+						<CategoryClips name="Movies" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'clips' )} />
 					</Route>
 
 					<IconButton
@@ -533,7 +538,35 @@ export default (withStyles(styles)(media));
 
 
 class CategoryClips extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			open: false
+		};
+
+		this.handleViewClose = this.handleViewClose.bind(this);
+		this.handlePreview = this.handlePreview.bind(this);
+	}
+
+	handlePreview(data) {
+		console.log(data);
+		this.setState({
+			media_filename: data.filename,
+			media_type: data.media_type,
+			media_name: data.name,
+			media_description: data.description,
+			open: true
+		});
+	}
+
+	handleViewClose() {
+		this.setState({ open: false });
+	}
+
+
 	render(){
+
 		return(
 	<>
 	<Card key={"category_"+this.props.name}>
@@ -541,7 +574,7 @@ class CategoryClips extends React.Component {
 			<div style={{ display: 'flex' }}>
 				<div>
 					<Typography gutterBottom variant="h4">
-						{this.props.name} Movement
+						{this.props.name} { (this.props.name === "Movies") ? '' : "Movement"}
 					</Typography>
 
 				</div>
@@ -554,21 +587,52 @@ class CategoryClips extends React.Component {
 		{this.props.media.map((item) => (
 			<GridListTile key={item.media_filename}>
 				<img
-					srcSet={`${this.props.baseurl}/movement/${item.thumbnail}`}
-					alt={item.title}
+				srcSet={`${this.props.baseurl}/${item.media_type}/${item.thumbnail}`}
+				alt={item.title}
 				/>
-
 				<GridListTileBar
-					title={item.name + " (" + item.lexicon.body_direction + ")"}
+					title={item.name}
 					subtitle={item.description}
 					position="top"
 					actionPosition="right"
+					actionIcon={<IconButton 
+            aria-label={`view ${item.filename}`}
+            onClick={() => this.handlePreview(item)}
+						>
+           <SlowMotionVideoIcon style={{ color: "white" }} />
+          </IconButton>
+          }
 				/>
 
 			</GridListTile>
 		))}
 
 	</GridList>
+
+	<Dialog
+		onClose={this.handleViewClose}
+		aria-labelledby="preview"
+		open={this.state.open}
+		fullWidth
+	>
+		<DialogTitle id="customized-dialog-title" onClose={this.handleViewClose}>
+			{this.state.media_name}
+		</DialogTitle>
+		
+		<DialogContent>
+		<CardMedia
+							component="video"
+							title={this.state.media_name}
+							image={`${this.props.baseurl}/${this.state.media_type}/${this.state.media_filename}`}
+							style={ {"height": 400 }}
+							autoPlay
+					/> 
+		<Typography variant="body2" align="center" paragraph={true}>
+		{this.state.media_description}<br/>
+		</Typography> 
+		</DialogContent>
+	</Dialog>
+
 	</>)
-}
+	}
 }
