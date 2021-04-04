@@ -17,7 +17,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Divider from '@material-ui/core/Divider';
-import GitHubIcon from '@material-ui/icons/GitHub';
+import CodeIcon from '@material-ui/icons/Code'
 import IconButton from '@material-ui/core/IconButton';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -85,7 +85,7 @@ const styles = (theme) => ({
 		backgroundRepeat: 'no-repeat',
 		backgroundAttachment: 'fixed',
 		opacity: .8,
-		height: '100vh'
+		height: '90vh'
 	}
 });
 
@@ -274,7 +274,7 @@ class demo extends Component {
 								<div className={classes.right} key="topright" > 
 									<IconButton  aria-label="source code" 
 									 target="_blank" href="http://github.com/DataMascara/mimo_cat">
-										<GitHubIcon />
+										<CodeIcon />
 									</IconButton>
 								</div>
 						</Toolbar>

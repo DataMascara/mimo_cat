@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "mimo-cat-f82c7"
+  },
+  "targets": {
+    "mimo-cat-f82c7": {
+      "hosting": {
+        "demo": [
+          "minimum-movement-demo"
+        ],
+        "dev": [
+          "mimo-cat-f82c7"
+        ]
+      }
+    }
   }
 }

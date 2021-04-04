@@ -1,10 +1,29 @@
 {
+  "functions": {
+    "predeploy": "npm --prefix functions install"
+  },
   "hosting": {
+    "target": "demo",
     "public": "view/build",
     "ignore": [
       "firebase.json",
-      "**/.*",
+      "database-rules.json",
+      "storage.rules",
+      "functions",
+      "src/**",
+      "**/.*",  // files with a leading period should be hidden from the system
       "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(js|html)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=0, must-revalidate"
+          }
+        ]
+      }
     ],
     "rewrites": [
       {
