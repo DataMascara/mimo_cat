@@ -157,7 +157,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 const menuNames = ["Home", "Routines", "Movements", "Categories", "Admin"];
 
-class home extends Component {
+class demo extends Component {
 	state = {
 		render: false,
 		page: 'Categories',
@@ -379,4 +379,4 @@ class home extends Component {
 	}
 }
 
-export default withStyles(styles)(home);
+export default withStyles(styles)(demo);
