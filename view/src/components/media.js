@@ -10,7 +10,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { Card, CardContent, TextField, Grid, CardActionArea } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import EditIcon from '@material-ui/icons/Edit';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -25,7 +24,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
 
 
 import axios from 'axios';
@@ -378,7 +376,7 @@ class media extends Component {
 															</Typography>
 
 															<div style={{ color: '#AAA' }}>
-																	<em>Description</em>
+																	<em> </em>
 																	<br/>
 																	<br/>
 															</div>
@@ -560,9 +558,9 @@ class CategoryClips extends React.Component {
 					alt={item.title}
 				/>
 
-
 				<GridListTileBar
-					title={item.name}
+					title={item.name + " (" + item.lexicon.body_direction + ")"}
+					subtitle={item.description}
 					position="top"
 					actionPosition="right"
 				/>

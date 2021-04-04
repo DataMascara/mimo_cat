@@ -9,7 +9,7 @@ import Movement from '../components/movement';
 import Routine from '../components/routine';
 import BatchEdit1 from '../components/grid';
 
-import { Box, Button, Link, Grid, Container } from '@material-ui/core';
+import { Box, Link, Grid, Container } from '@material-ui/core';
 import { Card, CardContent, ListItemIcon, ListItemText, CardActionArea, Tab, Tabs } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -17,7 +17,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Divider from '@material-ui/core/Divider';
-import Avatar from '@material-ui/core/Avatar';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import IconButton from '@material-ui/core/IconButton';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
@@ -26,7 +25,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu'; 
 
-import { authMiddleWare } from '../util/auth'
 // import { COLUMN_FILTER_BUTTON_CLICK } from '@material-ui/data-grid';
 
 axios.defaults.baseURL = 'https://us-east4-mimo-cat-f82c7.cloudfunctions.net/api';

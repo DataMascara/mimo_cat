@@ -50,7 +50,8 @@ const styles = (theme) => ({
 	floatingButton: {
 		position: 'fixed',
 		bottom: 0,
-		right: 0
+		right: 0,
+		display: 'none'
 	},
 	form: {
 		width: '98%',
@@ -224,7 +225,7 @@ class media extends Component {
 
 
 	render() {
-		const { hover } = this.state;
+		// const { hover } = this.state;
 		const DialogTitle = withStyles(styles)((props) => {
 			const { children, classes, onClose, ...other } = props;
 			return (
@@ -401,7 +402,7 @@ class media extends Component {
 										onChange={this.handleChange}
 										value={this.state.lexicon_movement}
 									/>
-									<FormHelperText>This should default to 'movement'</FormHelperText>
+									<FormHelperText>This the movement category</FormHelperText>
 								</Grid>
 								<Grid item xs={6}>
 									<TextField
@@ -428,6 +429,7 @@ class media extends Component {
                   autoFocus
                   variant="contained"
                   color="primary"
+									disabled
                   onClick={handleSubmit}
                 >
                   {this.state.buttonType === 'Edit' ? 'Save' : 'Submit'}
@@ -453,10 +455,13 @@ class media extends Component {
 									</div>
 									<CardContent>
 										<Typography variant="h5" component="h2">
-											{item.name}
+											{item.name} {' '}
+											<Typography variant="caption" color="textSecondary">
+												{dayjs(item.created_at).fromNow()}
+											</Typography>
 										</Typography>
 										<Typography className={classes.pos} color="textSecondary">
-											{dayjs(item.created_at).fromNow()}
+											{item.description}
 										</Typography>
 
 										<div className={classes.tags}>

@@ -49,7 +49,8 @@ const styles = ((theme) => ({
     floatingButton: {
         position: 'fixed',
         bottom: 0,
-        right: 0
+        right: 0,
+        display: 'none'
     },
     viewRoot: {
       margin: 0,

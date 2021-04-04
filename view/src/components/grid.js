@@ -26,7 +26,6 @@ import { DataGrid, ColDef, CellParams } from '@material-ui/data-grid';
 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -48,7 +47,8 @@ const styles = (theme) => ({
 	floatingButton: {
 		position: 'fixed',
 		bottom: 0,
-		right: 0
+		right: 0,
+		display: 'none'
 	},
 	form: {
 		marginTop: theme.spacing(0)
@@ -252,7 +252,7 @@ class mediagrid extends Component {
 
 			},
 			{ field: 'name', headerName: 'Name', },
-			{ field: 'movement', headerName: 'Movement Category', renderCell: (params) => { return params.row.lexicon.movement ;  }, width: 180 },
+			{ field: 'movement', headerName: 'Movement Category', renderCell: (params) => { return params.row.lexicon.movement;  }, width: 180 },
 			{ field: 'body_direction', headerName: 'Body Direction', renderCell: (params) => params.row.lexicon.body_direction, width: 150 },
 			{ field: 'tags', headerName: 'Tags', renderCell: (params) => params.row.lexicon.tags, width: 120,
 				description: 'User created',  },
