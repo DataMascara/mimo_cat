@@ -155,7 +155,7 @@ const StyledMenuItem = withStyles((theme) => ({
 	},
 }))(MenuItem);
 
-const menuNames = ["Home", "Routines", "Movements", "Categories", "Admin"];
+const menuNames = ["Home", "Routines", "Movements", "Categories", "Admin", "About"];
 
 class demo extends Component {
 	state = {
@@ -328,9 +328,13 @@ class demo extends Component {
 
 					<Route exact path="/">
 						<Grid container spacing={4} key="home-main">
-							
+							<Grid container sm={6} md={6} key="blankspace">
+								{' '}
+							</Grid>
+							<Grid container sm={6} md={6} key="menu items" spacing={4}>
+								
 							{menuNames.splice(1).map((item,index) => (
-									<Grid item xs={12} sm={6} md={6} key={item+"g"}>
+									<Grid item xs={12} key={item+"g"}>
 										<CardActionArea component="a" href={item.toLowerCase()} value={index+1} key={item+"c"} name={this.state.value} onClick={this.changeTab}>
 								
 											<Card variant="outlined">
@@ -346,7 +350,8 @@ class demo extends Component {
 											</Card>
 										</CardActionArea>
 									</Grid>
-							))}
+							))} 
+							</Grid>
 						</Grid>
 					</Route>
 

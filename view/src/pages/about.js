@@ -73,7 +73,7 @@ export default function SignInSide() {
         <div className={classes.paper}>
         <Grid container > 
           <Box  style={{ textAlign : 'center',  width: '600', mx: 'auto' }}  >
-            <img src={process.env.PUBLIC_URL + 'noun_LuckyCat_42819x100.png'} alt="Logo" width="100"  />
+            
           <br />
           
           <Typography component="h1" variant="h5">
@@ -99,7 +99,8 @@ export default function SignInSide() {
             The project is based off of the project spec requirements and prototype produced by students in CISC 4900 of Fall 2020. 
             <br />
             <br />
-            <GH username="khinethet" />, <GH username="stevezhuravel" />, <GH username="CallMeOnii-chan" />
+            <GH username="khinethet" />, <GH username="stevezhuravel" />, <GH username="CallMeOnii-chan" />, 
+            <GH username="Oljasa" />, <GH username="edmundSin" />, <GH username="Michael-Volynskiy-BC" />
             <br />supervised by <GH username="katychuang" />
             <br /><br />
             The source for this website is hosted on <Link color="textPrimary" href="https://github.com/DataMascara/mimo_cat">
@@ -110,8 +111,8 @@ export default function SignInSide() {
           <Divider />
   
           <Box  style={{  width: '100%', }} >
-            <Link href="login" variant="body2" className={classes.legal}>
-              {"← Login"}
+            <Link href="/" variant="body2" className={classes.legal}>
+              {"← Home"}
             </Link>
           </Box>
           <Box className={classes.bottom}>
