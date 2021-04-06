@@ -10,17 +10,22 @@ import signup from './pages/signup';
 const theme = createMuiTheme({
 	palette: {
     background: {
-      default: '#fbf9f9'
+      default: '#ffffff'
     },
 		primary: {
-			light: '#ce93d8',
-			main: '#ba68c8',
-			dark: '#9c27b0',
+			light: '#FDF899',
+			main: '#E6DD37',
+			dark: '#C3BD55',
+      
 			contrastText: '#FFFFFF'
     },
+    secondary: {
+      main: '#BE556D'
+    },
+    
     text: {
-      primary: '#495057',
-      secondary: '#c6bfc7'
+      primary: '#000000',
+      secondary: '#424242'
     }
   },
   typography: {

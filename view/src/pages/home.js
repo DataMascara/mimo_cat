@@ -53,11 +53,12 @@ const styles = (theme) => ({
 	},
 	appBar: {
 		zIndex: theme.zIndex.drawer + 1,
-		background: '#FFFFFF',
-		color: theme.palette.primary.main
+		background: '#FFF767',
+		color: theme.palette.common.white
 	},
 	toolbar: theme.mixins.toolbar,
 	left: {
+		
 		color: theme.palette.primary.main
   },
 	right: {
@@ -258,7 +259,7 @@ class home extends Component {
 								<Link
 									variant="h6"
 									underline="none"
-									color="textPrimary"
+									color= "textPrimary"
 									className={classes.title}
 									href="/"
 								>
@@ -300,7 +301,9 @@ class home extends Component {
 							onChange={this.changeTab}
 							name={this.state.value}
 							centered 
-							indicatorColor="secondary"
+							indicatorColor="primary"
+							background="secondary"
+
 							aria-label="tabs">
 							<Tab label="Home"  href="/" {...a11yProps(0)} key="tab0" />
 							<Tab label="Routines"  href="/routines" {...a11yProps(1)} key="tab1" />
@@ -348,9 +351,11 @@ class home extends Component {
 							{menuNames.splice(1).map((item,index) => (
 									<Grid item xs={12} sm={6} md={6} key={item+"g"}>
 										<CardActionArea component="a" href={item.toLowerCase()} value={index+1} key={item+"c"} name={this.state.value} onClick={this.changeTab}>
-								
+											
 											<Card variant="outlined">
+										
 													<CardContent>
+															
 															<Typography variant="h5" component="h2">
 																	{item}
 															</Typography>

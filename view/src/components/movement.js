@@ -461,7 +461,7 @@ class media extends Component {
 
 										<div className={classes.tags}>
 											{item.lexicon.tags.split(',').map((t) => (
-												<Chip label={t} variant="outlined" color="primary" />
+												<Chip label={t} variant="outlined" color="secondary" />
 											))} 
 										</div>
 									</CardContent>
