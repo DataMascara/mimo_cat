@@ -56,6 +56,9 @@ const styles = (theme) => ({
 		background: '#FFF767',
 		color: theme.palette.common.white
 	},
+	tab: {
+		backgroundColor: '#525252',
+	},
 	toolbar: theme.mixins.toolbar,
 	left: {
 		
@@ -77,8 +80,9 @@ const styles = (theme) => ({
 		display: 'inline-block',
 	},
 	landing: {
-		marginTop: 80,
+		marginTop: 75,
 		padding: 40,
+		height: 580,
 		background: `url('./background.jpg')`,
     backgroundPosition: 'center',
     backgroundSize: 'cover',
@@ -302,8 +306,11 @@ class home extends Component {
 							name={this.state.value}
 							centered 
 							indicatorColor="primary"
-							background="secondary"
-
+							classes={{
+								root: classes.tab,
+								
+							  }}
+							
 							aria-label="tabs">
 							<Tab label="Home"  href="/" {...a11yProps(0)} key="tab0" />
 							<Tab label="Routines"  href="/routines" {...a11yProps(1)} key="tab1" />
@@ -311,8 +318,11 @@ class home extends Component {
 							<Tab label="Categories" href="/categories" {...a11yProps(3)} key="tab3" />
 							<Tab label="Admin" href="/admin" {...a11yProps(4)} key="tab4" />
 						</Tabs>
+						
 					: '' }
 					</AppBar>
+
+					
 
           <StyledMenu
               id="menu-appbar"
