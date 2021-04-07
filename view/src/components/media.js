@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -551,9 +551,6 @@ class CategoryClips extends React.Component {
   </Card>
   <br /> 
     <GridList variant="standard" cols={3} gap={8}>
-    <GridListTile key="Subheader" cols={1}>
-      <ListSubheader component="div">{this.props.name}</ListSubheader>
-    </GridListTile>
 
     {this.props.media.map((item) => (
       <GridListTile key={item.media_filename}>
@@ -577,6 +574,13 @@ class CategoryClips extends React.Component {
           
       </GridListTile>
     ))}
+
+<GridListTile key="Subheader" cols={3}>
+    <ListSubheader component="div">
+        <center>This page is filtered to show only {this.props.name.toLowerCase()} movements. 
+        Click <Link to="/categories" style={{ textDecoration: 'none', color: '#ba68c8' }}>here</Link> to navigate back to the category selection menu!</center>
+    </ListSubheader>
+</GridListTile>
 
   </GridList>
   </>)
