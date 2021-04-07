@@ -83,12 +83,12 @@ const styles = (theme) => ({
 		marginTop: 75,
 		padding: 40,
 		height: 580,
-		background: `url('./background.jpg')`,
+		background: `url('./background2.jpeg')`,
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
 		backgroundAttachment: 'fixed',
-    opacity: .8
+    opacity: 1
 	}
 });
 
@@ -288,7 +288,7 @@ class home extends Component {
 										startIcon={<Avatar src={this.state.pic}  />}
 										
 									>
-										<Box color="text.primary" >
+										<Box color="text.secondary" >
 											<Typography variant="body1" gutterBottom>
 												{this.state.firstName}{' '}{this.state.lastName}
 											</Typography>
@@ -364,8 +364,10 @@ class home extends Component {
 											
 											<Card variant="outlined">
 										
-													<CardContent>
-															
+													<CardContent classes={{root: classes.tab,}}>
+								
+							  
+													       
 															<Typography variant="h5" component="h2">
 																	{item}
 															</Typography>
