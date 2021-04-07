@@ -16,16 +16,13 @@ const theme = createMuiTheme({
 			light: '#FDF899',
 			main: '#E6DD37',
 			dark: '#C3BD55',
-      
-			contrastText: '#FFFFFF'
     },
     secondary: {
-      main: '#BE556D'
+      main: '#BE556D',
     },
-    
     text: {
       primary: '#000000',
-      secondary: '#424242'
+      secondary: '#434242',   
     }
   },
   typography: {
@@ -43,6 +40,8 @@ const theme = createMuiTheme({
     ].join(','),
   },
 });
+
+
 
 function App() {
   return (

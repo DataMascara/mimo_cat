@@ -57,7 +57,10 @@ const styles = (theme) => ({
 		color: theme.palette.common.white
 	},
 	tab: {
-		backgroundColor: '#525252',
+		backgroundColor: '#4A4A4A',
+	},
+	contrastText: {
+		color: '#ffffff'
 	},
 	toolbar: theme.mixins.toolbar,
 	left: {
@@ -88,7 +91,7 @@ const styles = (theme) => ({
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
 		backgroundAttachment: 'fixed',
-    opacity: 1
+    opacity: .9
 	}
 });
 
@@ -288,7 +291,7 @@ class home extends Component {
 										startIcon={<Avatar src={this.state.pic}  />}
 										
 									>
-										<Box color="text.secondary" >
+										<Box color="text.primary" >
 											<Typography variant="body1" gutterBottom>
 												{this.state.firstName}{' '}{this.state.lastName}
 											</Typography>
@@ -368,7 +371,7 @@ class home extends Component {
 								
 							  
 													       
-															<Typography variant="h5" component="h2">
+															<Typography classes={{root: classes.contrastText,}} variant="h5" component="h2">
 																	{item}
 															</Typography>
 
