@@ -155,7 +155,7 @@ const StyledMenuItem = withStyles((theme) => ({
 	},
 }))(MenuItem);
 
-const menuNames = ["Home", "Routines", "Movements", "Categories", "Admin", "About"];
+const menuNames = ["Home", "Movements", "Categories", "About"];
 
 class demo extends Component {
 	state = {
@@ -287,10 +287,10 @@ class demo extends Component {
 							indicatorColor="secondary"
 							aria-label="tabs">
 							<Tab label="Home"  href="/" {...a11yProps(0)} key="tab0" />
-							<Tab label="Routines"  href="/routines" {...a11yProps(1)} key="tab1" />
+							{/* <Tab label="Routines"  href="/routines" {...a11yProps(1)} key="tab1" /> */}
 							<Tab label="Movements"  href="/movements" {...a11yProps(2)} key="tab2" />
 							<Tab label="Categories" href="/categories" {...a11yProps(3)} key="tab3" />
-							<Tab label="Admin" href="/admin" {...a11yProps(4)} key="tab4" />
+							{/* <Tab label="Admin" href="/admin" {...a11yProps(4)} key="tab4" /> */}
 						</Tabs>
 					: '' }
 					</AppBar>
