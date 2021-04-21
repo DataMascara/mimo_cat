@@ -455,7 +455,7 @@ class media extends Component {
 										<Typography variant="h5" component="h2">
 											{item.name}
 										</Typography>
-										<Typography className={classes.pos} color="textSecondary">
+										<Typography className={classes.pos} color="textPrimary">
 											{dayjs(item.created_at).fromNow()}
 										</Typography>
 
@@ -499,7 +499,7 @@ class media extends Component {
 											title={this.state.media_name}
 											image={`${baseurl}/${this.state.media_type}/${this.state.media_filename}`}
 									/>
-						<Typography className={classes.pos} color="textSecondary">
+						<Typography className={classes.pos} color="textPrimary">
 						{this.state.media_filename}
 						</Typography>
             			<div className={classes.media_tags}>

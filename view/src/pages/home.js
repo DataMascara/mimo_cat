@@ -270,7 +270,7 @@ class home extends Component {
 									className={classes.title}
 									href="/"
 								>
-									{'Minimum Movement'}
+									{'Minimum Movement Catalog'}
 								</Link>
 								<div className={classes.right} key="topmiddle" > 
 							
