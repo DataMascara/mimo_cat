@@ -111,7 +111,7 @@ class login extends Component {
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<div className={classes.paper}>
-					<h1>Minimum Movement</h1>
+					<h1>Minimum Movement Catalog</h1>
 
 					<Typography component="h1" variant="h5"></Typography>
 					<Typography component="h1" variant="h5">
