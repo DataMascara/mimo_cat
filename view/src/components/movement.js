@@ -503,11 +503,10 @@ class media extends Component {
 						{this.state.media_filename}
 						</Typography>
             			<div className={classes.media_tags}>
-							{/* Commented this out because it otherwise would not load the page
-							would get "Split is undefined" */} 
-							{/* {this.state.media_tags.split(',').map((t) => (
+							{}
+							{this.state.lexicon.tags.split(',').filter((i) => i !== "").map((t) => (
 								<Chip label={t} variant="outlined" color="primary" />
-							))} */}
+							))}
 						</div>
 										
 						</DialogContent>

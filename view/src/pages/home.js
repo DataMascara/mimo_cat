@@ -152,10 +152,13 @@ const StyledMenu = withStyles({
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
+	'&:hover': {
+		backgroundColor: theme.palette.primary.main,
+	},
     '&:focus': {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.white,
       '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
+        color: theme.palette.common.main,
       },
     },
   },
