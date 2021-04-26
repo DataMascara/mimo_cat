@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh'
   },
   image: {
-    backgroundImage: 'url("akabuki.gif")',
+    backgroundImage: 'url("unnamed.jpg")',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -77,7 +77,7 @@ export default function SignInSide() {
           <br />
           
           <Typography component="h1" variant="h5">
-            <b>Minimum Movement</b>
+            <b>Minimum Movement Catalog</b>
           </Typography>
           </Box>
 

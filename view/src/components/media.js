@@ -356,7 +356,7 @@ class media extends Component {
 				},
 				{
 					value: 'clips',
-					label: 'Movies',
+					label: 'Clips',
 				},
 			];
 

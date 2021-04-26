@@ -14,8 +14,8 @@ const auth = require('./util/auth');
 
 const allowedOrigins = [
   'http://localhost:3000', 
-  'https://mimo-cat-f82c7--preview-5g5u3mvt.web.app',
-  'https://mimo-cat-f82c7.web.app'
+  'https://mimo-cat-f82c7.web.app',
+  'https://minimum-movement-demo.web.app'
 ];
 const corsOptions = {
   origin: function (origin, callback) {
