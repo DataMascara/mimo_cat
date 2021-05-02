@@ -359,7 +359,7 @@ class home extends Component {
               </StyledMenuItem> 
             </StyledMenu>
 
-					
+				{/* COMMENT out to remove menu tabs from home page	
 			 
 					<Route exact path="/">
 						<Grid container spacing={2} key="home-main">
@@ -388,6 +388,7 @@ class home extends Component {
 							))}
 						</Grid>
 					</Route>
+				*/}
 
 					<Container>
 					<Grid container spacing={10} className={classes.topSpace} key="gridall">
