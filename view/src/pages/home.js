@@ -306,7 +306,7 @@ class home extends Component {
 								</div>
 						</Toolbar>
 						<Divider />
-						{( window.location.pathname !== "/") ? 
+						{( window.location.pathname !== "/") || ( window.location.pathname === "/") ? 
 						<Tabs value={this.state.value} 
 							onChange={this.changeTab}
 							name={this.state.value}
