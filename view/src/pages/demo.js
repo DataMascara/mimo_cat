@@ -79,7 +79,7 @@ const styles = (theme) => ({
 	landing: {
 		marginTop: 80,
 		padding: 40,
-		background: `url('./background.jpg')`,
+		background: `url('./unnamed.jpg')`,
 		backgroundPosition: 'center',
 		backgroundSize: 'cover',
 		backgroundRepeat: 'no-repeat',
