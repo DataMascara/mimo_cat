@@ -411,7 +411,7 @@ class media extends Component {
 						<CategoryClips name="Lowering Hip" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'loweringHip')} />
 					</Route>
 					<Route exact path="/categories/clips">
-						<CategoryClips name="Movies" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'clips' )} />
+						<CategoryClips name="Clips" baseurl={baseurl} media={this.state.media.filter(item => item.lexicon.movement === 'clips' )} />
 					</Route>
 
 					<IconButton
@@ -574,7 +574,7 @@ class CategoryClips extends React.Component {
 			<div style={{ display: 'flex' }}>
 				<div>
 					<Typography gutterBottom variant="h4">
-						{this.props.name} { (this.props.name === "Movies") ? '' : "Movement"}
+						{this.props.name} { (this.props.name === "Clips") ? '' : "Movement"}
 					</Typography>
 
 				</div>
