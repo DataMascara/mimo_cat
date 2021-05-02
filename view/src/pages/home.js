@@ -85,7 +85,7 @@ const styles = (theme) => ({
 	landing: {
 		marginTop: 75,
 		padding: 40,
-		height: 580,
+		height: '100vh',
 		background: `url('./background2.jpeg')`,
     backgroundPosition: 'center',
     backgroundSize: 'cover',
@@ -306,7 +306,7 @@ class home extends Component {
 								</div>
 						</Toolbar>
 						<Divider />
-						{( window.location.pathname !== "/") ?  
+						{( window.location.pathname !== "/") ? 
 						<Tabs value={this.state.value} 
 							onChange={this.changeTab}
 							name={this.state.value}
@@ -360,7 +360,7 @@ class home extends Component {
             </StyledMenu>
 
 					
-
+			 
 					<Route exact path="/">
 						<Grid container spacing={2} key="home-main">
 							
