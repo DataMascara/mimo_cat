@@ -334,39 +334,39 @@ class media extends Component {
           label: 'Bending',
         },
         {
-          value: 'curving',
-          label: 'Curving',
-        },
-        {
           value: 'centerOfGravity',
           label: 'Center of Gravity',
         },
         {
-          value: 'elevating',
-          label: 'Elevating',
+          value: 'curving',
+          label: 'Curving',
         },
         {
           value: 'dropping',
           label: 'Dropping',
         },
         {
-          value: 'pushing',
-          label: 'Pushing',
+          value: 'elevating',
+          label: 'Elevating',
         },
         {
           value: 'loweringHip',
           label: 'Lowering Hip',
-        }
+        },
+        {
+          value: 'pushing',
+          label: 'Pushing',
+        },
       ];
       
 
       return (
         <main className={classes.content}>
           <Route exact path="/categories">
-						<Grid container spacing={2} key="home-main">
+						<Grid container spacing={2} key="home-main" direction="row" justify="center" alignItems="center" alignContent="center">
 							
 							{catBuckets.map((item,index) => (
-									<Grid item xs={12} sm={6} md={4} key={item.value+"g1"}>
+									<Grid item xs={12} sm={6} md={5} key={item.value+"g1"}>
 										
 										<CardActionArea component="a" href={`/categories/`+item.value} value={index.value} key={item.value+"c"} name={this.state.value} >
 								
