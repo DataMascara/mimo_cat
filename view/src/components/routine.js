@@ -230,7 +230,8 @@ class routine extends Component {
           mList: this.state.mList || '',
           name: this.state.name,
           username: this.state.username,
-          video_url: this.state.video_url || ''
+          video_url: this.state.video_url || '',
+          description: this.state.description || ''
         };
         let options = {};
         if (this.state.buttonType === 'Edit') {
@@ -290,6 +291,7 @@ class routine extends Component {
                         <TableCell align="center">Video</TableCell>
                         <TableCell align="center">Length</TableCell>
                         <TableCell align="center">Date of Creation</TableCell>
+                        <TableCell align="center">Description</TableCell>
                         <TableCell align="center"> </TableCell>
                     </TableRow>
                     </TableHead>
@@ -307,6 +309,7 @@ class routine extends Component {
                             </Chip>{' '}{row.mList} 
                         </TableCell>                        
                         <TableCell align="center">{dayjs(row.created_at).fromNow()}</TableCell>
+                        <TableCell align="center" component="th" scope="row">{row.description}</TableCell>
                         <TableCell align="center">
                             <Button size="small" color="secondary" onClick={() => this.handleViewOpen({ row })} disabled tooltip='disabled'>
                                 {' '}
@@ -429,6 +432,20 @@ class routine extends Component {
                 helperText={errors.video_url}
                 value={this.state.video_url}
                 error={errors.video_url ? true : false}
+                onChange={this.handleChange}
+                margin="normal"
+              />
+
+              <TextField
+                variant="outlined"
+                fullWidth
+                id="description"
+                label="Description"
+                name="description"
+                autoComplete="description"
+                helperText={errors.description}
+                value={this.state.description}
+                error={errors.description ? true : false}
                 onChange={this.handleChange}
                 margin="normal"
               />

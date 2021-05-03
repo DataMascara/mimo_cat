@@ -23,6 +23,7 @@ exports.getAllRoutines = (async (request, response) => {
         mList: doc.data().mList,
         num_movements: num,
         username: doc.data().username,
+        description: doc.data().description,
         video_url: doc.data().video_url
         });
       });
@@ -71,7 +72,8 @@ exports.getARoutine = (async (request, response) => {
         username: routineData.username,
         video_url: routineData.video_url,
         num_movements: movementData.length,
-        movements: movementData
+        movements: movementData,
+        description: routineData.description
       })
     }
     return response.json(routine);
@@ -93,6 +95,7 @@ exports.addRoutine = (request, response) => {
         // id is automatically generated
         movements: request.body.movements,
         mList: request.body.mList,
+        description: request.body.description,
         name: request.body.name,  // displayname
         username: request.user.username,
         created_at: new Date().toISOString(),
@@ -163,6 +166,7 @@ function LoadMediaDetail(MediaId) {
           created_by: doc.created_by,
           category: doc.media_category,
           filename: doc.media_filename,
+          description: doc.description,
           name: doc.media_name,
           tags: doc.media_tags,
         });
@@ -191,6 +195,7 @@ function GetAllMedia() {
             created_by: doc.data().created_by,
             category: doc.data().media_category,
             filename: doc.data().media_filename,
+            description: doc.data().description,
             name: doc.data().media_name,
             tags: doc.data().media_tags,
           });
