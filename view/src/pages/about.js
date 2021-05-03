@@ -24,7 +24,7 @@ function Copyright() {
 
 function GH(props) {
   return (
-    <Link color="primary" href="https://github.com/${props.username}">
+    <Link color="primary" href="https://github.com/${props.username">
         {props.username}
     </Link> 
   );
