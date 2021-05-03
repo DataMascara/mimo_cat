@@ -24,7 +24,7 @@ function Copyright() {
 
 function GH(props) {
   return (
-    <Link color="primary" href="https://github.com/${props.username">
+    <Link color="primary" href="https://github.com/${props.username}">
         {props.username}
     </Link> 
   );
@@ -99,9 +99,13 @@ export default function SignInSide() {
             The project is based off of the project spec requirements and prototype produced by students in CISC 4900 of Fall 2020. 
             <br />
             <br />
-            <GH username="khinethet" />, <GH username="stevezhuravel" />, <GH username="CallMeOnii-chan" />, 
-            <GH username="Oljasa" />, <GH username="edmundSin" />, <GH username="Michael-Volynskiy-BC" />
-            <br />supervised by <GH username="katychuang" />
+            <Link color="primary" href="https://github.com/khinethet">Khine Thet</Link>, 
+            <Link color="primary" href="https://github.com/stevezhuravel"> Steve Zhuravel</Link>, 
+            <Link color="primary" href="https://github.com/CallMeOnii-chan"> Davante Middleton</Link>,
+            <Link color="primary" href="https://github.com/Oljasa"> Oljas Alishev</Link>, 
+            <Link color="primary" href="https://github.com/edmundSin"> Edmund Sin</Link>, 
+            <Link color="primary" href="https://github.com/Michael-Volynskiy-BC"> Michael Volynskiy</Link>
+            <br />supervised by <Link color="primary" href="https://github.com/katychuang"> Katherine Chuang</Link>
             <br /><br />
             The source for this website is hosted on <Link color="textPrimary" href="https://github.com/DataMascara/mimo_cat">
 								GitHub
