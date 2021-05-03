@@ -28,10 +28,10 @@ const styles = (theme) => ({
 		alignItems: 'center'
 	},
 	button: {
-		backgroundColor: '#ba68c8',
+		backgroundColor: '#E6DD37',
 		color: '#ffffff',
 		'&:hover': {
-		  backgroundColor: '#9c27b0',
+		  backgroundColor: '#d4cb2a',
 		  color: '#ffffff',
 	  },
 	},
@@ -65,10 +65,10 @@ const theme = createMuiTheme({
 	overrides: {
 		MuiButton: {
 		  contained: {
-			backgroundColor: "#ba68c8",
+			backgroundColor: "#E6DD37",
 			color: "#ffffff",
 			"&:hover": {
-				backgroundColor: "#9c27b0",
+				backgroundColor: "#d4cb2a",
 			},
 		  },
 		},
