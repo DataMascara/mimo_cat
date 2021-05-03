@@ -13,8 +13,11 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box'; 
+import { createMuiTheme } from '@material-ui/core/styles'
+import { ThemeProvider } from '@material-ui/styles';
 
 import axios from 'axios';
+import { withTheme } from '@material-ui/core';
 
 // define styling configurations
 const styles = (theme) => ({
@@ -23,6 +26,14 @@ const styles = (theme) => ({
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center'
+	},
+	button: {
+		backgroundColor: '#ba68c8',
+		color: '#ffffff',
+		'&:hover': {
+		  backgroundColor: '#9c27b0',
+		  color: '#ffffff',
+	  },
 	},
 	form: {
 		width: '100%',
@@ -49,6 +60,26 @@ const styles = (theme) => ({
 		color: '#c6bfc7'
 	}
 });
+
+const theme = createMuiTheme({
+	overrides: {
+		MuiButton: {
+		  contained: {
+			backgroundColor: "#ba68c8",
+			color: "#ffffff",
+			"&:hover": {
+				backgroundColor: "#9c27b0",
+			},
+		  },
+		},
+	},
+	palette: {
+	  action: {
+		disabledBackground: '#ba68c8',
+		disabled: '#ffffff'
+	  },
+	},
+  });
 
 // login.js
 
@@ -146,18 +177,20 @@ class login extends Component {
 							error={errors.password ? true : false}
 							onChange={this.handleChange}
 						/>
-						<Button
+						<ThemeProvider theme={theme}>
+						<Button className={classes.button}
 							type="submit"
 							fullWidth
 							variant="contained"
-							color="primary"
+							//color="primary"
 							className={classes.submit}
 							onClick={this.handleSubmit}
-							disabled={loading || !this.state.email || !this.state.password}
+							//disabled={loading || !this.state.email || !this.state.password}
 						>
 							Sign In
 							{loading && <CircularProgress size={30} className={classes.progess} />}
 						</Button>
+						</ThemeProvider>
 						<Grid container>
 							<Grid item>
 								<Link href="signup" variant="body2">

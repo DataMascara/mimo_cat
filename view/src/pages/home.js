@@ -154,6 +154,7 @@ const StyledMenuItem = withStyles((theme) => ({
   root: {
 	'&:hover': {
 		backgroundColor: theme.palette.primary.main,
+		color: "#ffffff",
 	},
     '&:focus': {
       backgroundColor: theme.palette.primary.white,
@@ -181,13 +182,17 @@ class home extends Component {
 	};
 
 	handleMenu = (event) => {
+		//this.props.history.go("home");
 		this.setState({  
 			  anchorEl: event.currentTarget
 			, openUserMenu: true });
 	};
 	handleClose = () => {
-		this.setState({  anchorEl: null,
-		openUserMenu: false });
+		this.setState({  
+			anchorEl: null,
+			openUserMenu: false,
+		});
+		this.props.history.go(0); 
 	};
 	
 	changeTab = (event, newValue) => {
