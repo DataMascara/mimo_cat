@@ -312,6 +312,20 @@ class media extends Component {
 			this.setState({ open: false });
 		};
 
+		const handleOnMouseHover=(event)=>{
+			event.target.play();
+			this.setState({hover:true})
+
+		}
+		const handleOnMouseLeave=(event)=>{
+			event.target.currentTime=0;
+			event.target.pause();
+			
+			
+			this.setState({hover:false})
+			
+		}
+		
 		if (this.state.uiLoading === true) {
 			return (
 				<main className={classes.content}>
@@ -445,23 +459,52 @@ class media extends Component {
 								<Card variant="outlined"> 
 									<div onClick={() => this.handleViewOpen({ item })} onMouseEnter={this.handleOnMouseEnter} onMouseLeave={this.handleOnMouseLeave}>
 										<CardMedia
+											component="video"
+											className={classes.media}
+											title={this.state.media_name}
+											image={`${baseurl}/${'movement'}/${item.filename}`}
+											//onMouseEnter={()=> this.play()}
+											//React does not make element available to play through using 'this' so use 'event' in order to play video on mouseOver//MouseOut
+											onMouseOver = {event =>handleOnMouseHover(event)}
+											onMouseOut = {event => handleOnMouseLeave(event)}
+											//onMouseOver={event => event.target.play()}
+											///onMouseOut={event => event.target.pause()}
+										/>
+										{/* {this.state.hover ? <CardMedia
+											component="video"
+											className={classes.media}
+											title={this.state.media_name}
+											image={`${baseurl}/${'movement'}/${item.filename}`}
+											//onMouseEnter={()=> this.play()}
+											//React does not make element available to play through using 'this' so use 'event' in order to play video on mouseOver//MouseOut
+											onMouseOver = {event =>handleOnMouseHover(event)}
+											onMouseOut = {event => handleOnMouseLeave(event)}
+											//onMouseOver={event => event.target.play()}
+											///onMouseOut={event => event.target.pause()}
+										/> : <CardMedia
 												component="image"
 												className={classes.media}
 												title={item.filename}
 												image={`${baseurl}/movement/${item.thumbnail}`}
-										/>
+										/>} */}
+										{/* <CardMedia
+												component="image"
+												className={classes.media}
+												title={item.filename}
+												image={`${baseurl}/movement/${item.thumbnail}`}
+										/> */}
 									</div>
 									<CardContent>
 										<Typography variant="h5" component="h2">
-											{item.name}
+											{item.name}											
 										</Typography>
-										<Typography className={classes.pos} color="textPrimary">
+										<Typography className={classes.pos} color="textSecondary">
 											{dayjs(item.created_at).fromNow()}
 										</Typography>
 
 										<div className={classes.tags}>
 											{item.lexicon.tags.split(',').map((t) => (
-												<Chip label={t} variant="outlined" color="secondary" />
+												<Chip label={t} variant="outlined" color="primary" />
 											))} 
 										</div>
 									</CardContent>
@@ -481,7 +524,10 @@ class media extends Component {
 							</Grid>
 						))}
 					</Grid>
+										
+					{/* Allow iFrame to be fullscreen, React doesnt allow */}
 
+									
 					<Dialog
 						onClose={handleViewClose}
 						aria-labelledby="customized-dialog-title"
@@ -493,13 +539,16 @@ class media extends Component {
 							{this.state.media_name}
 						</DialogTitle>
 						<DialogContent dividers>
-						<CardMedia
+						{/* <CardMedia
 											component="iframe"
 											className={classes.media}
 											title={this.state.media_name}
 											image={`${baseurl}/${this.state.media_type}/${this.state.media_filename}`}
-									/>
-						<Typography className={classes.pos} color="textPrimary">
+									/> */}
+						<iframe src={`${baseurl}/${this.state.media_type}/${this.state.media_filename}`} allowFullScreen className={classes.media} width="100%">
+								
+						</iframe>
+						<Typography className={classes.pos} color="textSecondary">
 						{this.state.media_filename}
 						</Typography>
             			<div className={classes.media_tags}>
