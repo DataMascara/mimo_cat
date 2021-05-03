@@ -86,7 +86,7 @@ const styles = (theme) => ({
 		marginTop: 75,
 		padding: 40,
 		height: '100vh',
-		background: `url('./background2.jpeg')`,
+		background: `url('./background2.jpg')`,
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
