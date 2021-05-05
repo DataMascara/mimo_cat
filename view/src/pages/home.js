@@ -184,7 +184,9 @@ class home extends Component {
 			anchorEl: null,
 			openUserMenu: false,
 		});
-		this.props.history.go(0); 
+		if (window.location.pathname === "/") {
+			this.props.history.go(0); 
+		}
 	};
 	
 	changeTab = (event, newValue) => {
