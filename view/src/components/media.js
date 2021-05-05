@@ -564,12 +564,12 @@ class CategoryClips extends React.Component {
           title={item.name}
           position="top" 
           actionPosition="right"
-          actionIcon={<Button 
-            aria-label={`edit ${item.filename}`}
-            onClick={() => this.handleEditClickOpen({ item })}>
-          <EditIcon />
-          </Button>
-          }
+          // actionIcon={<Button 
+          //   aria-label={`edit ${item.filename}`}
+          //   onClick={() => this.handleEditClickOpen({ item })}>
+          // <EditIcon />
+          // </Button>
+          // }
         />
           
       </GridListTile>
