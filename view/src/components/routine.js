@@ -291,7 +291,7 @@ class routine extends Component {
                         <TableCell align="center">Video</TableCell>
                         <TableCell align="center">Length</TableCell>
                         <TableCell align="center">Date of Creation</TableCell>
-                        <TableCell align="center">Description</TableCell>
+                        {/* <TableCell align="center">Description</TableCell> */}
                         <TableCell align="center"> </TableCell>
                     </TableRow>
                     </TableHead>
@@ -309,7 +309,7 @@ class routine extends Component {
                             </Chip>{' '}{row.mList} 
                         </TableCell>                        
                         <TableCell align="center">{dayjs(row.created_at).fromNow()}</TableCell>
-                        <TableCell align="center" component="th" scope="row">{row.description}</TableCell>
+                        {/* <TableCell align="center" component="th" scope="row">{row.description}</TableCell> */}
                         <TableCell align="center">
                             <Button size="small" color="secondary" onClick={() => this.handleViewOpen({ row })} disabled tooltip='disabled'>
                                 {' '}

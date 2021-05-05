@@ -566,12 +566,12 @@ class CategoryClips extends React.Component {
           title={item.name}
           position="top" 
           actionPosition="right"
-          actionIcon={<Button 
-            aria-label={`edit ${item.filename}`}
-            onClick={() => this.handleEditClickOpen({ item })}>
-          <EditIcon />
-          </Button>
-          }
+          // actionIcon={<Button 
+          //   aria-label={`edit ${item.filename}`}
+          //   onClick={() => this.handleEditClickOpen({ item })}>
+          // <EditIcon />
+          // </Button>
+          // }
         />
           
       </GridListTile>
@@ -580,7 +580,7 @@ class CategoryClips extends React.Component {
 <GridListTile key="Subheader" cols={3}>
     <ListSubheader component="div">
         <center>This page is filtered to show only {this.props.name.toLowerCase()} movements. 
-        Click <Link to="/categories" style={{ textDecoration: 'none', color: '#ba68c8' }}>here</Link> to navigate back to the category selection menu!</center>
+        Click <Link to="/categories" style={{ textDecoration: 'none', color: '#c9be00' }}>here</Link> to navigate back to the category selection menu!</center>
     </ListSubheader>
 </GridListTile>
 
