@@ -313,7 +313,7 @@ class home extends Component {
 								</div>
 						</Toolbar>
 						<Divider />
-						{( window.location.pathname !== "/") || ( window.location.pathname === "/") ? 
+						
 						<Tabs value={this.state.value} 
 							onChange={this.changeTab}
 							name={this.state.value}
@@ -332,7 +332,6 @@ class home extends Component {
 							<Tab label="Admin" href="/admin" {...a11yProps(4)} key="tab4" />
 						</Tabs>
 						
-					: '' }
 					</AppBar>
 
 					
