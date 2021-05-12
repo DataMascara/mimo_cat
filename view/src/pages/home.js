@@ -155,6 +155,9 @@ const StyledMenuItem = withStyles((theme) => ({
 	'&:hover': {
 		backgroundColor: theme.palette.primary.main,
 		color: "#ffffff",
+		'& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+			color: theme.palette.common.white,
+		},
 	},
     '&:focus': {
       backgroundColor: theme.palette.primary.white,
